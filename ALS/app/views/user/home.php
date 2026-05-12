@@ -4,23 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistem Informasi Pemesanan Tiket - PT. Antar Lintas Sumatera</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="penumpang.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
   </head>
   <body>
+    
     <div class="BagianPalingAtasHalaman">
       <div class="WadahPembatasLebarKonten">
+
         <div>
           <i class="fa-solid fa-headset"></i>
           Layanan Pelanggan 24 Jam: <strong>0821-3825-9191</strong>
         </div>
+
         <div class="GrupLinkNavigasiKecil">
           <a href="#">
             <i class="fa-solid fa-mobile-screen"></i> Unduh Aplikasi
@@ -30,28 +27,27 @@
           <a href="#">Pusat Bantuan</a>
           <a href="#">Cek Pesanan Saya</a>
         </div>
+        
       </div>
     </div>
 
     <nav class="BatangNavigasiUtama">
       <div class="WadahPembatasLebarKonten">
+
         <div class="ElemenLogoPerusahaan">
-          <img
-            src="gambar/logo als.jpg"
-            alt="Logo ALS"
-            width="58"
-            height="58"
-          />
+          <img src="<?= BASEURL; ?>/gambar/logo als.jpg" alt="Logo ALS" width="58" height="58" />
           <div class="WadahTeksLogo">
             <h1>ALS</h1>
             <p>Bekerjasama Dan Sama-Sama Bekerja</p>
           </div>
         </div>
+
         <div class="DaftarMenuNavigasi">
-          <a href="homepenumpang.html" class="MenuSaatIni">Tiket Bus</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home" class="MenuSaatIni">Tiket Bus</a>
           <a href="#kelas">Kelas Armada</a>
           <a href="#agen">Jaringan Agen</a>
         </div>
+
         <div class="grup-tombol-pendaftaran">
           <a href="#" class="TombolTipeGarisTepi">Daftar Akun</a>
           <a href="#" class="TombolTipeWarnaBiru">Masuk</a>
@@ -59,7 +55,7 @@
       </div>
     </nav>
 
-    <header class="AreaBannerHeroUtama">
+    <header class="AreaBannerHeroUtama" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('<?= BASEURL; ?>/gambar/foto5.jpg');">
       <div class="WadahPembatasLebarKonten">
         <div class="WadahTeksPromosiHero">
           <h2>Jelajahi Nusantara dengan Nyaman</h2>
@@ -78,13 +74,16 @@
           <div class="LabelIdentitasTabPencarian">
             <i class="fa-regular fa-calendar-check"></i> Pencarian Tiket Bus
           </div>
+
           <div class="BingkaiPutihFormulirPencarian">
-            <form action="jadwal.html" method="GET" class="TataLetakFormulirDuaBaris">
+            <form action="<?= BASEURL; ?>/index.php" method="GET" class="TataLetakFormulirDuaBaris">
+              <input type="hidden" name="page" value="jadwal">
               <div class="BarisFormulirKe1">
                 <div class="DesainInputBentukLonjong">
                   <div class="WadahIkonDalamInput">
                     <i class="fa-solid fa-location-dot"></i>
                   </div>
+
                   <div class="WadahTeksDalamLonjong">
                     <label class="LabelKecilDiAtasInput">Kota Asal</label>
                     <select name="asal" class="ElemenInputFormUtama" required>
@@ -98,19 +97,19 @@
                       <option value="Jakarta">Jakarta</option>
                     </select>
                   </div>
+
                   <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
+
                 </div>
+
                 <div class="DesainInputBentukLonjong">
                   <div class="WadahIkonDalamInput">
                     <i class="fa-solid fa-location-crosshairs"></i>
                   </div>
+
                   <div class="WadahTeksDalamLonjong">
                     <label class="LabelKecilDiAtasInput">Kota Tujuan</label>
-                    <select
-                      name="tujuan"
-                      class="ElemenInputFormUtama"
-                      required
-                    >
+                    <select name="tujuan" class="ElemenInputFormUtama" required>
                       <option value="" disabled selected>
                         Pilih Destinasi Tujuan
                       </option>
@@ -121,9 +120,12 @@
                       <option value="Bandung">Bandung</option>
                     </select>
                   </div>
+
                   <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
+
                 </div>
               </div>
+              
               <div class="BarisFormulirKe2">
                 <div class="DesainInputBentukLonjong">
                   <div class="WadahIkonDalamInput">
@@ -131,15 +133,10 @@
                   </div>
                   <div class="WadahTeksDalamLonjong">
                     <label class="LabelKecilDiAtasInput">Tanggal Pergi</label>
-                    <input
-                      type="date"
-                      name="tanggal"
-                      class="ElemenInputFormUtama"
-                      value="2026-04-28"
-                      required
-                    />
+                    <input type="date" name="tanggal" class="ElemenInputFormUtama" value="2026-04-28" required />
                   </div>
                 </div>
+
                 <div class="DesainInputBentukLonjong">
                   <div class="WadahIkonDalamInput">
                     <i class="fa-solid fa-chair"></i>
@@ -154,8 +151,11 @@
                       <option value="4">4 Kursi Penumpang</option>
                     </select>
                   </div>
+
                   <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
+
                 </div>
+
                 <div class="DesainInputBentukLonjong">
                   <div class="WadahIkonDalamInput">
                     <i class="fa-solid fa-bus-simple"></i>
@@ -170,8 +170,11 @@
                       <option value="eko">Ekonomi AC</option>
                     </select>
                   </div>
+
                   <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
+
                 </div>
+                
                 <button type="submit" class="TombolProsesPencarianOranye">
                   <i class="fa-solid fa-magnifying-glass"></i> CARI JADWAL BUS
                 </button>
@@ -264,7 +267,7 @@
                 <div class="GarisPembatasOranye"></div>
                 <p class="JumlahTitikKantorAgen">35 Lokasi Agen</p>
               </div>
-              <img src="gambar/foto1.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/gambar/foto1.jpg" class="ElemenGambarWilayahAgen" />
             </div>
 
             <div class="KartuWilayahAgen">
@@ -274,7 +277,7 @@
                 <div class="GarisPembatasOranye"></div>
                 <p class="JumlahTitikKantorAgen">22 Lokasi Agen</p>
               </div>
-              <img src="gambar/foto2.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/gambar/foto2.jpg" class="ElemenGambarWilayahAgen" />
             </div>
 
             <div class="KartuWilayahAgen">
@@ -284,7 +287,7 @@
                 <div class="GarisPembatasOranye"></div>
                 <p class="JumlahTitikKantorAgen">15 Lokasi Agen</p>
               </div>
-              <img src="gambar/foto3.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/gambar/foto3.jpg" class="ElemenGambarWilayahAgen" />
             </div>
 
             <div class="KartuWilayahAgen">
@@ -294,7 +297,7 @@
                 <div class="GarisPembatasOranye"></div>
                 <p class="JumlahTitikKantorAgen">1 Lokasi Agen</p>
               </div>
-              <img src="gambar/foto4.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/gambar/foto4.jpg" class="ElemenGambarWilayahAgen" />
             </div>
           </div>
         </section>
@@ -324,15 +327,14 @@
           <div class="KolomInformasiFooter">
             <h4>PUSAT INFORMASI</h4>
             <ul>
-              <li><a href="pemesanan.html">Panduan Pemesanan</a></li>
-              <li><a href="pembayaran.html">Metode Pembayaran</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
             </ul>
           </div>
           <div class="KolomInformasiFooter">
             <h4>KEAMANAN TRANSAKSI</h4>
             <div class="IkonPembayaran">
-              <i class="fa-brands fa-cc-visa"></i
-              ><i class="fa-brands fa-cc-mastercard"></i>
+              <i class="fa-brands fa-cc-visa"></i><i class="fa-brands fa-cc-mastercard"></i>
             </div>
           </div>
         </div>

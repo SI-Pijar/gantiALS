@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Hasil Pencarian Jadwal - PT. Antar Lintas Sumatera</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="penumpang.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
   </head>
   <body>
     <div class="BagianPalingAtasHalaman">
@@ -32,20 +29,16 @@
     <nav class="BatangNavigasiUtama">
       <div class="WadahPembatasLebarKonten">
         <div class="ElemenLogoPerusahaan">
-          <img            src="gambar/logo als.jpg"
-            alt="Logo ALS"
-            width="58"
-            height="58"
-          />
+          <img src="<?= BASEURL; ?>/gambar/logo als.jpg" alt="Logo ALS" width="58" height="58" />
           <div class="WadahTeksLogo">
             <h1>ALS</h1>
             <p>Bekerjasama Dan Sama-Sama Bekerja</p>
           </div>
         </div>
         <div class="DaftarMenuNavigasi">
-          <a href="homepenumpang.html">Tiket Bus</a>
-          <a href="homepenumpang.html#kelas">Kelas Armada</a>
-          <a href="homepenumpang.html#agen">Jaringan Agen</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home">Tiket Bus</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home#kelas">Kelas Armada</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home#agen">Jaringan Agen</a>
         </div>
         <div class="grup-tombol-pendaftaran">
           <a href="#" class="TombolTipeGarisTepi">Daftar Akun</a>
@@ -54,16 +47,14 @@
       </div>
     </nav>
 
-
     <main class="WadahPembatasLebarKonten KontenHalaman">
         <div class="KepalaSeksiTengah">
             <h2>Hasil Pencarian Jadwal Bus</h2>
             <p>Menampilkan jadwal untuk rute <strong>Medan &rarr; Jakarta</strong> pada tanggal <strong>28 April 2026</strong>.</p>
-            <a href="homepenumpang.html" class="TombolUbahPencarian">
+            <a href="<?= BASEURL; ?>/index.php?page=home" class="TombolUbahPencarian">
                 <i class="fa-solid fa-pen-to-square"></i> Ubah Pencarian
             </a>
         </div>
-
 
         <div class="KontenUtamaHasil">
             <aside class="AreaFilterPencarian">
@@ -93,7 +84,6 @@
                 <button type="button" class="TombolTerapkanFilter">Terapkan Filter</button>
             </aside>
 
-
             <section class="AreaHasilPencarian">
                 <div class="KartuHasilJadwal">
                     <div class="InfoUtamaJadwal">
@@ -122,10 +112,9 @@
                             <p>Harga mulai dari</p>
                             <p class="HargaAngka">Rp 750.000</p>
                         </div>
-                        <a href="pemesanan.html" class="TombolTipeWarnaBiru">Pilih Kursi</a>
+                        <a href="<?= BASEURL; ?>/index.php?page=pemesanan" class="TombolTipeWarnaBiru">Pilih Kursi</a>
                     </div>
                 </div>
-
 
                 <div class="KartuHasilJadwal">
                     <div class="InfoUtamaJadwal">
@@ -154,45 +143,12 @@
                             <p>Harga mulai dari</p>
                             <p class="HargaAngka">Rp 680.000</p>
                         </div>
-                        <a href="pemesanan.html" class="TombolTipeWarnaBiru">Pilih Kursi</a>
-                    </div>
-                </div>
-
-
-                <div class="KartuHasilJadwal">
-                    <div class="InfoUtamaJadwal">
-                        <div class="WaktuKeberangkatan">
-                            <p class="jam">13:00</p>
-                            <p class="lokasi">Terminal Amplas</p>
-                        </div>
-                        <div class="DurasiPerjalanan">
-                            <i class="fa-solid fa-arrow-right-long"></i>
-                            <p>Est. 53 Jam</p>
-                        </div>
-                        <div class="WaktuKedatangan">
-                            <p class="jam">18:00 <span class="InfoHariPlus">(+2)</span></p>
-                            <p class="lokasi">Terminal Pulo Gebang</p>
-                        </div>
-                    </div>
-                    <div class="InfoKelasArmada InfoKolom">
-                        <i class="fa-solid fa-gem"></i>
-                        <div>
-                            <p class="NamaKelas">Executive Class</p>
-                            <p class="FasilitasSingkat">Kursi 2-2, AC, Toilet</p>
-                        </div>
-                    </div>
-                    <div class="InfoHargaDanAksi InfoKolom">
-                        <div class="Harga">
-                            <p>Harga mulai dari</p>
-                            <p class="HargaAngka">Rp 680.000</p>
-                        </div>
-                        <a href="pemesanan.html" class="TombolTipeWarnaBiru">Pilih Kursi</a>
+                        <a href="<?= BASEURL; ?>/index.php?page=pemesanan" class="TombolTipeWarnaBiru">Pilih Kursi</a>
                     </div>
                 </div>
             </section>
         </div>
     </main>
-
 
     <footer class="ElemenFooterPalingBawah">
       <div class="WadahPembatasLebarKonten">
@@ -208,24 +164,23 @@
           <div class="KolomInformasiFooter">
             <h4>PRODUK & LAYANAN</h4>
             <ul>
-              <li><a href="homepenumpang.html#kelas">Super Executive</a></li>
-              <li><a href="homepenumpang.html#kelas">Executive Class</a></li>
-              <li><a href="homepenumpang.html#kelas">Patas AC</a></li>
-              <li><a href="homepenumpang.html#kelas">Ekonomi</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Super Executive</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Executive Class</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Patas AC</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Ekonomi</a></li>
             </ul>
           </div>
           <div class="KolomInformasiFooter">
             <h4>PUSAT INFORMASI</h4>
             <ul>
-              <li><a href="pemesanan.html">Panduan Pemesanan</a></li>
-              <li><a href="pembayaran.html">Metode Pembayaran</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
             </ul>
           </div>
           <div class="KolomInformasiFooter">
             <h4>KEAMANAN TRANSAKSI</h4>
             <div class="IkonPembayaran">
-              <i class="fa-brands fa-cc-visa"></i
-              ><i class="fa-brands fa-cc-mastercard"></i>
+              <i class="fa-brands fa-cc-visa"></i><i class="fa-brands fa-cc-mastercard"></i>
             </div>
           </div>
         </div>

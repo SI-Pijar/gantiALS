@@ -4,11 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pilih Kursi & Detail Penumpang - PT. Antar Lintas Sumatera</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="penumpang.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
   </head>
   <body>
     <div class="BagianPalingAtasHalaman">
@@ -32,20 +29,16 @@
     <nav class="BatangNavigasiUtama">
       <div class="WadahPembatasLebarKonten">
         <div class="ElemenLogoPerusahaan">
-          <img            src="gambar/logo als.jpg"
-            alt="Logo ALS"
-            width="58"
-            height="58"
-          />
+          <img src="<?= BASEURL; ?>/gambar/logo als.jpg" alt="Logo ALS" width="58" height="58" />
           <div class="WadahTeksLogo">
             <h1>ALS</h1>
             <p>Bekerjasama Dan Sama-Sama Bekerja</p>
           </div>
         </div>
         <div class="DaftarMenuNavigasi">
-          <a href="homepenumpang.html">Tiket Bus</a>
-          <a href="homepenumpang.html#kelas">Kelas Armada</a>
-          <a href="homepenumpang.html#agen">Jaringan Agen</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home">Tiket Bus</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home#kelas">Kelas Armada</a>
+          <a href="<?= BASEURL; ?>/index.php?page=home#agen">Jaringan Agen</a>
         </div>
         <div class="grup-tombol-pendaftaran">
           <a href="#" class="TombolTipeGarisTepi">Daftar Akun</a>
@@ -53,7 +46,6 @@
         </div>
       </div>
     </nav>
-
 
     <main class="WadahPembatasLebarKonten KontenHalaman">
         <div class="KontenUtamaPemesanan">
@@ -99,9 +91,8 @@
                     </div>
                 </div>
 
-
                 <div class="FormDetailPenumpang">
-                    <form>
+                    <form action="<?= BASEURL; ?>/index.php?page=pembayaran" method="POST">
                         <h3>Detail Penumpang</h3>
 
                         <div class="GrupInputForm">
@@ -118,10 +109,10 @@
                             <label for="email">Alamat Email</label>
                             <input type="email" id="email" name="email" placeholder="Untuk pengiriman e-tiket" required>
                         </div>
+                        <button type="submit" class="TombolLanjutBayar" style="border:none;">Lanjutkan ke Pembayaran</button>
                     </form>
                 </div>
             </div>
-
 
             <aside class="AreaRingkasanPesanan">
                 <div class="KartuRingkasanPesanan">
@@ -145,13 +136,10 @@
                         <p>Total Harga</p>
                         <p class="HargaTotal">Rp 1.500.000</p>
                     </div>
-
-                    <a href="pembayaran.html" class="TombolLanjutBayar">Lanjutkan ke Pembayaran</a>
                 </div>
             </aside>
         </div>
     </main>
-
 
     <footer class="ElemenFooterPalingBawah">
       <div class="WadahPembatasLebarKonten">
@@ -167,24 +155,23 @@
           <div class="KolomInformasiFooter">
             <h4>PRODUK & LAYANAN</h4>
             <ul>
-              <li><a href="homepenumpang.html#kelas">Super Executive</a></li>
-              <li><a href="homepenumpang.html#kelas">Executive Class</a></li>
-              <li><a href="homepenumpang.html#kelas">Patas AC</a></li>
-              <li><a href="homepenumpang.html#kelas">Ekonomi</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Super Executive</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Executive Class</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Patas AC</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=home#kelas">Ekonomi</a></li>
             </ul>
           </div>
           <div class="KolomInformasiFooter">
             <h4>PUSAT INFORMASI</h4>
             <ul>
-              <li><a href="pemesanan.html">Panduan Pemesanan</a></li>
-              <li><a href="pembayaran.html">Metode Pembayaran</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
             </ul>
           </div>
           <div class="KolomInformasiFooter">
             <h4>KEAMANAN TRANSAKSI</h4>
             <div class="IkonPembayaran">
-              <i class="fa-brands fa-cc-visa"></i
-              ><i class="fa-brands fa-cc-mastercard"></i>
+              <i class="fa-brands fa-cc-visa"></i><i class="fa-brands fa-cc-mastercard"></i>
             </div>
           </div>
         </div>
