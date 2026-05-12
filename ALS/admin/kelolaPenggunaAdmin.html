@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Pengguna - Admin Panel ALS</title>
+    <link rel="stylesheet" href="admin.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="TataLetakAdmin">
+      <aside class="SidebarNavigasi">
+        <div class="LogoSidebar">
+          <img src="gambar/logo als.jpg" alt="Logo ALS" />
+          <span>ALS ADMIN</span>
+        </div>
+        <nav class="MenuNavigasi">
+          <a href="dashboardAdmin.html" class="ItemMenu">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="kelolaJadwalAdmin.html" class="ItemMenu">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>Kelola Jadwal</span>
+          </a>
+
+          <a href="kelolaPenggunaAdmin.html" class="ItemMenu aktif">
+            <i class="fa-solid fa-users"></i>
+            <span>Kelola Pengguna</span>
+          </a>
+
+          <a href="laporanTransaksiAdmin.html" class="ItemMenu">
+            <i class="fa-solid fa-receipt"></i>
+            <span>Laporan Transaksi</span>
+          </a>
+
+          <a href="pengaturanAdmin.html" class="ItemMenu">
+            <i class="fa-solid fa-gears"></i>
+            <span>Pengaturan Sistem</span>
+          </a>
+
+          <a href="logSistemAdmin.html" class="ItemMenu">
+            <i class="fa-solid fa-server"></i>
+            <span>Log Sistem</span>
+          </a>
+        </nav>
+        <div class="AreaUserSidebar">
+          <a href="loginAdmin.html" class="TombolLogout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </aside>
+
+      <main class="KontenUtamaAdmin">
+        <header class="HeaderKonten">
+          <h1>Kelola Pengguna & Hak Akses</h1>
+          <div class="ProfilAdmin">
+            <span>Selamat datang, <strong>Admin Utama</strong></span>
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+        </header>
+
+        <div class="KontenArea">
+          <div class="KartuKontenBesar">
+            <div class="HeaderKartu">
+                <h3><i class="fa-solid fa-users"></i> Daftar Pengguna Sistem</h3>
+                <button class="TombolAksi"><i class="fa-solid fa-plus"></i> Tambah Pengguna</button>
+            </div>
+
+            <table class="TabelData">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Nama Lengkap</th>
+                  <th>Hak Akses (Role)</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>admin_utama</td>
+                  <td>Admin Utama</td>
+                  <td><span class="StatusBadge superadmin">Super Admin</span></td>
+                  <td><span class="StatusBadge berhasil">Aktif</span></td>
+                  <td class="KolomAksi"><a href="#" class="TombolIkon edit"><i class="fa-solid fa-pen"></i></a> <a href="#" class="TombolIkon hapus"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+
+                <tr>
+                  <td>operator_medan</td>
+                  <td>Operator Medan</td>
+                  <td><span class="StatusBadge operator">Operator</span></td>
+                  <td><span class="StatusBadge berhasil">Aktif</span></td>
+                  <td class="KolomAksi"><a href="#" class="TombolIkon edit"><i class="fa-solid fa-pen"></i></a> <a href="#" class="TombolIkon hapus"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+
+                <tr>
+                  <td>user_budi</td>
+                  <td>Budi Santoso</td>
+                  <td><span class="StatusBadge pengguna">Pengguna</span></td>
+                  <td><span class="StatusBadge berhasil">Aktif</span></td>
+                  <td class="KolomAksi"><a href="#" class="TombolIkon edit"><i class="fa-solid fa-pen"></i></a> <a href="#" class="TombolIkon hapus"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+
+                 <tr>
+                  <td>user_siti</td>
+                  <td>Siti Aminah</td>
+                  <td><span class="StatusBadge pengguna">Pengguna</span></td>
+                  <td><span class="StatusBadge nonaktif">Non-Aktif</span></td>
+                  <td class="KolomAksi"><a href="#" class="TombolIkon edit"><i class="fa-solid fa-pen"></i></a> <a href="#" class="TombolIkon hapus"><i class="fa-solid fa-trash"></i></a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,996 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+body {
+  background-color: #f0f4f8;
+  color: #0f172a;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+}
+
+.WadahPembatasLebarKonten {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.BagianPalingAtasHalaman {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 8px 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.BagianPalingAtasHalaman .WadahPembatasLebarKonten {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.BagianPalingAtasHalaman .WadahPembatasLebarKonten > div:first-child i {
+  margin-right: 8px;
+}
+
+.GrupLinkNavigasiKecil {
+  display: flex;
+  gap: 24px;
+}
+
+.BadgeBaru {
+  background-color: #fef08a;
+  color: #a16207;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  margin-left: 6px;
+}
+
+.BatangNavigasiUtama {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.BatangNavigasiUtama .WadahPembatasLebarKonten {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ElemenLogoPerusahaan {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.WadahTeksLogo h1 {
+  font-size: 28px;
+  font-weight: 800;
+  color: #1e3a8a;
+}
+
+.WadahTeksLogo p {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.DaftarMenuNavigasi {
+  display: flex;
+  gap: 32px;
+}
+
+.DaftarMenuNavigasi a {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.DaftarMenuNavigasi a.MenuSaatIni {
+  color: #004d00;
+  padding-bottom: 8px;
+}
+
+.grup-tombol-pendaftaran {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.TombolTipeGarisTepi,
+.TombolTipeWarnaBiru {
+  border-radius: 100px;
+  font-weight: 600;
+}
+
+.TombolTipeGarisTepi {
+  border: 1.5px solid #cbd5e1;
+  padding: 10px 28px;
+  transition: all 0.2s ease;
+}
+
+.TombolTipeGarisTepi:hover {
+  background-color: #f1f5f9;
+  border-color: #1e3a8a;
+}
+
+.TombolTipeWarnaBiru {
+  background: #1e3a8a;
+  color: #fff;
+  padding: 10px 28px;
+}
+
+.TombolProsesPencarianOranye {
+  background: #ff8c00;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  height: 72px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.TombolTipeWarnaBiru:hover,
+.TombolProsesPencarianOranye:hover {
+  opacity: 0.9;
+}
+
+.TombolTipeGarisTepi:focus,
+.TombolTipeWarnaBiru:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.3);
+}
+.TombolProsesPencarianOranye:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.4);
+}
+.AreaBannerHeroUtama {
+  height: 520px;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)),
+    url("gambar/foto5.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.WadahTeksPromosiHero {
+  color: #fff;
+  max-width: 700px;
+}
+
+.WadahTeksPromosiHero h2 {
+  font-size: 52px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.AreaKotakPencarianInteraktif {
+  margin-top: -110px;
+  position: relative;
+  z-index: 10;
+  padding-bottom: 60px;
+}
+
+.LabelIdentitasTabPencarian {
+  background: #544a41;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px 12px 0 0;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.BingkaiPutihFormulirPencarian {
+  background: #fff;
+  border-radius: 0 24px 24px 24px;
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.BarisFormulirKe1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.BarisFormulirKe2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.2fr;
+  gap: 20px;
+}
+
+.DesainInputBentukLonjong {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  height: 72px;
+  position: relative;
+  cursor: pointer;
+}
+
+.WadahIkonDalamInput {
+  color: #94a3b8;
+  font-size: 20px;
+  width: 24px;
+  margin-right: 15px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.WadahTeksDalamLonjong {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.LabelKecilDiAtasInput {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  position: absolute;
+  top: 14px;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.ElemenInputFormUtama {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 800;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  padding-top: 18px;
+  position: relative;
+  z-index: 2;
+}
+
+input[type="date"].ElemenInputFormUtama {
+  appearance: auto;
+}
+
+.IkonPanahKecil {
+  position: absolute;
+  right: 24px;
+  color: #94a3b8;
+  pointer-events: none;
+  z-index: 1;
+  font-size: 14px;
+}
+.DesainInputBentukLonjong:has(.ElemenInputFormUtama:focus) {
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+}
+
+.KepalaSeksiTengah {
+  text-align: center;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.KepalaSeksiTengah h2 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.KepalaSeksiTengah p {
+  color: #64748b;
+  font-size: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.TataLetakGridArmada {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  margin-bottom: 80px;
+}
+
+.KartuInformasiArmada {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.WadahIkonArmadaBulat {
+  width: 64px;
+  height: 64px;
+  background: #f0fdf4;
+  color: #004d00;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px auto;
+  font-size: 28px;
+}
+
+.BarisJudulSeksiAgen {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.BarisJudulSeksiAgen p {
+  max-width: 500px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.TataLetakGridAgen {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 100px;
+}
+
+.KartuWilayahAgen {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.KontenInformasiAgen {
+  padding: 30px;
+}
+
+.GarisPembatasOranye {
+  width: 40px;
+  height: 4px;
+  background: #ff8c00;
+  margin: 15px 0;
+}
+
+.ElemenGambarWilayahAgen {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.ElemenFooterPalingBawah {
+  background: #0f172a;
+  color: #cbd5e1;
+  padding: 80px 0 40px 0;
+}
+
+.TataLetakGridFooter {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 60px;
+  margin-bottom: 40px;
+}
+
+.WadahBrandDiFooter h2 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.KolomInformasiFooter h4 {
+  color: #fff;
+  margin-bottom: 25px;
+}
+
+.KolomInformasiFooter ul {
+  list-style: none;
+}
+
+.KolomInformasiFooter li {
+  margin-bottom: 15px;
+}
+
+.WadahHakCiptaBawah {
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (max-width: 1024px) {
+  .BarisFormulirKe1,
+  .BarisFormulirKe2,
+  .TataLetakGridArmada,
+  .TataLetakGridAgen,
+  .TataLetakGridFooter {
+    grid-template-columns: 1fr;
+  }
+
+  .KontenUtamaHasil {
+    grid-template-columns: 1fr;
+  }
+  .AreaFilterPencarian {
+    position: static;
+    top: auto;
+  }
+}
+
+.KontenHalaman {
+  padding-top: 40px;
+  padding-bottom: 60px;
+}
+
+.KontenHalamanTengah {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 24px;
+}
+
+.KartuCekPesanan {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.KartuCekPesanan h2 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.KartuCekPesanan p {
+  text-align: center;
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+.TombolUbahPencarian {
+  display: inline-block;
+  margin-top: 24px;
+  color: #1e3a8a;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1.5px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.TombolUbahPencarian:hover {
+  background-color: #f1f5f9;
+  border-color: #1e3a8a;
+}
+
+.TombolUbahPencarian .fa-solid {
+  margin-right: 8px;
+}
+
+.KontenUtamaHasil {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-top: 32px;
+}
+
+.AreaFilterPencarian {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 100px;
+}
+
+.KartuFilter {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.KartuFilter h4 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.KartuFilter h4 .fa-solid {
+  margin-right: 8px;
+  color: #94a3b8;
+}
+
+.GrupPilihanFilter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.GrupPilihanFilter label {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.GrupPilihanFilter input[type="checkbox"] {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  accent-color: #1e3a8a;
+}
+
+.TombolTerapkanFilter {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  background: #ff8c00;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+.TombolTerapkanFilter:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.4);
+}
+
+
+.AreaHasilPencarian {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.KartuHasilJadwal {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.KartuHasilJadwal:hover {
+  border-color: #1e3a8a;
+  box-shadow: 0 6px 20px rgba(30, 58, 138, 0.1);
+  transform: translateY(-4px);
+}
+
+.InfoUtamaJadwal {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.WaktuKeberangkatan,
+.WaktuKedatangan {
+  text-align: left;
+}
+
+.WaktuKeberangkatan p,
+.WaktuKedatangan p {
+  margin: 0;
+}
+
+.jam {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.lokasi {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.InfoHariPlus {
+  font-size: 0.9rem;
+  color: #e53935;
+  font-weight: 500;
+}
+
+.DurasiPerjalanan {
+  text-align: center;
+  color: #777;
+}
+
+.DurasiPerjalanan i {
+  font-size: 1.5rem;
+}
+
+.DurasiPerjalanan p {
+  margin: 4px 0 0 0;
+  font-size: 0.85rem;
+}
+
+.InfoKolom {
+  padding-left: 24px;
+  border-left: 1px solid #f1f5f9;
+}
+
+.InfoKelasArmada {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.NamaKelas {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.FasilitasSingkat {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.InfoHargaDanAksi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.Harga {
+  text-align: left;
+}
+
+.HargaAngka {
+  font-size: 1.6rem;
+  color: #ff8c00;
+  font-weight: 800;
+}
+
+.InfoHargaDanAksi .TombolTipeWarnaBiru {
+  text-decoration: none;
+  padding: 12px 20px;
+  min-width: 120px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.KontenUtamaPemesanan {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.KartuDenahKursi, .FormDetailPenumpang {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+}
+.KartuDenahKursi h3,
+.FormDetailPenumpang h3,
+.AreaMetodePembayaran h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+.DenahKursi {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  justify-content: start;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.kursi {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+}
+
+.kursi.tersedia {
+  background-color: #ecfdf5;
+  border: 1px solid #10b981;
+  color: #047857;
+}
+
+.kursi.tersedia:hover {
+  background-color: #d1fae5;
+  transform: scale(1.05);
+}
+
+.kursi.terpilih {
+  background-color: #1e3a8a;
+  border: 1px solid #1e3a8a;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(30, 58, 138, 0.5);
+  font-size: 0;
+}
+
+.kursi.terpilih::after {
+  content: '\f00c';
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.kursi.terisi {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  font-size: 0;
+}
+
+.kursi.terisi::after {
+  content: '\f00d';
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.gang {}
+
+.LegendaKursi {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.ItemLegenda {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.KotakWarna {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.KotakWarna.tersedia { background-color: #ecfdf5; border: 1px solid #10b981; }
+.KotakWarna.terpilih { background-color: #1e3a8a; }
+.KotakWarna.terisi { background-color: #f1f5f9; border: 1px solid #cbd5e1; }
+
+.GrupInputForm {
+  margin-bottom: 20px;
+}
+
+.GrupInputForm label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.GrupInputForm input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+}
+.GrupInputForm input:focus {
+  outline: none;
+  border-color: #1e3a8a;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.2);
+}
+
+
+.AreaRingkasanPesanan {
+  position: sticky;
+  top: 100px;
+}
+
+.KartuRingkasanPesanan {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.KartuRingkasanPesanan h4 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.DetailPerjalanan .rute { font-weight: 700; font-size: 18px; }
+.DetailPerjalanan .tanggal-waktu { color: #64748b; font-size: 14px; }
+.DetailPerjalanan .NamaArmada { font-weight: 600; margin-top: 8px; }
+.DetailPerjalanan .NamaArmada i { color: #1e3a8a; margin-right: 6px; }
+
+.GarisPemisahRingkasan {
+  border-top: 1px dashed #e2e8f0;
+  margin: 20px 0;
+}
+
+.DetailHarga p, .TotalPembayaran p {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.DaftarNomorKursi {
+  font-size: 14px;
+  color: #64748b;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.TotalPembayaran {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 16px;
+}
+
+.HargaTotal {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ff8c00;
+}
+
+.TombolLanjutBayar {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+  margin-top: 16px;
+  border: none;
+  background: #ff8c00;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+.TombolLanjutBayar:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.4);
+}
+
+.KontenUtamaPembayaran {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+.KartuPilihanPembayaran {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.KartuPilihanPembayaran:hover {
+  border-color: #94a3b8;
+}
+
+.KartuPilihanPembayaran.aktif {
+  border-color: #1e3a8a;
+  background-color: #f0f5ff;
+  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.1);
+}
+
+.LogoMetode {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #1e3a8a;
+}
+
+.KartuPilihanPembayaran.aktif .LogoMetode {
+  background-color: #1e3a8a;
+  color: #fff;
+}
+
+.InfoMetode {
+  flex-grow: 1;
+}
+
+.InfoMetode h4 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.PanahPilih {
+  color: #94a3b8;
+  transition: all 0.2s ease;
+}
+
+.KartuPilihanPembayaran.aktif .PanahPilih {
+  color: #1e3a8a;
+  transform: translateX(5px);
+}
+
+.TimerPembayaran {
+  background-color: #fffbe6;
+  border: 1px solid #fef08a;
+  color: #a16207;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .KontenUtamaPemesanan {
+    grid-template-columns: 1fr;
+  }
+  .KontenUtamaPembayaran,
+  .KartuHasilJadwal {
+    grid-template-columns: 1fr;
+  }
+
+  .KartuHasilJadwal .InfoKolom {
+    border-left: none;
+    padding-left: 0;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f1f5f9;
+  }
+} }
+}
