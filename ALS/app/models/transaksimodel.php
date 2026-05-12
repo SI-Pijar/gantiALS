@@ -21,8 +21,11 @@ class TransaksiModel {
                   ORDER BY t.created_at DESC";
 
         $stmt = $this->conn->prepare($query);
+
         $stmt->execute();
+
         $result = $stmt->get_result();
+
         $rows = [];
 
         while ($row = $result->fetch_assoc()) {
@@ -44,8 +47,11 @@ class TransaksiModel {
                   WHERE t.id = ?";
 
         $stmt = $this->conn->prepare($query);
+
         $stmt->bind_param('i', $id);
+
         $stmt->execute();
+
         $result = $stmt->get_result();
 
         return $result->fetch_assoc();
@@ -59,8 +65,11 @@ class TransaksiModel {
                   AND status = 'berhasil'";
 
         $stmt = $this->conn->prepare($query);
+
         $stmt->execute();
+
         $result = $stmt->get_result();
+
         $row = $result->fetch_assoc();
 
         return $row['total'];
@@ -73,9 +82,12 @@ class TransaksiModel {
                   WHERE DATE(created_at) = CURDATE()
                   AND status = 'berhasil'";
 
-        $stmt = $this->conn->prepare($query)
+        $stmt = $this->conn->prepare($query);
+
         $stmt->execute();
+
         $result = $stmt->get_result();
+
         $row = $result->fetch_assoc();
 
         return $row['total'];
