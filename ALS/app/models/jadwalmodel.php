@@ -1,7 +1,5 @@
 <?php
-
 class JadwalModel {
-
     private $conn;
     private $table = 'jadwals';
 
@@ -9,55 +7,60 @@ class JadwalModel {
         $this->conn = $db;
     }
 
-    public function findAktif() {
-
-        $query = "SELECT * FROM {$this->table}
-                  WHERE status = 'aktif'
-                  ORDER BY tanggal ASC, jam_berangkat ASC";
-
-        $stmt = $this->conn->prepare($query);
+    public function getAllJadwal() {
+        $query = 'SELECT * FROM ' . $this->table . ' ORDER BY tanggal DESC, jam_berangkat ASC';
+        $stmt  = $this->conn->prepare($query);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $rows = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-
-        return $rows;
+        return $stmt;
     }
 
-    public function findByRute($asal, $tujuan, $tanggal) {
-
-        $query = "SELECT * FROM {$this->table}
-                  WHERE asal = ?
-                  AND tujuan = ?
-                  AND tanggal = ?
-                  AND status = 'aktif'";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param('sss', $asal, $tujuan, $tanggal);
+    public function getJadwalById($id) {
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE id = :id LIMIT 1';
+        $stmt  = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
-        $result = $stmt->get_result();
-        $rows = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-
-        return $rows;
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function kurangiKursi($id, $jumlah = 1) {
-
-        $query = "UPDATE {$this->table}
-                  SET kursi_tersedia = kursi_tersedia - ?
-                  WHERE id = ?";
-
+    public function createJadwal($asal, $tujuan, $tanggal, $jam_berangkat, $jam_tiba, $harga, $kursi, $status) {
+        $query = 'INSERT INTO ' . $this->table . '
+                  (asal, tujuan, tanggal, jam_berangkat, jam_tiba, harga, kursi_tersedia, status)
+                  VALUES (:asal, :tujuan, :tanggal, :jam_berangkat, :jam_tiba, :harga, :kursi, :status)';
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':asal',          $asal);
+        $stmt->bindParam(':tujuan',        $tujuan);
+        $stmt->bindParam(':tanggal',       $tanggal);
+        $stmt->bindParam(':jam_berangkat', $jam_berangkat);
+        $stmt->bindParam(':jam_tiba',      $jam_tiba);
+        $stmt->bindParam(':harga',         $harga);
+        $stmt->bindParam(':kursi',         $kursi);
+        $stmt->bindParam(':status',        $status);
+        return $stmt->execute();
+    }
 
-        $stmt->bind_param('ii', $jumlah, $id);
+    public function updateJadwal($id, $asal, $tujuan, $tanggal, $jam_berangkat, $jam_tiba, $harga, $kursi, $status) {
+        $query = 'UPDATE ' . $this->table . '
+                  SET asal = :asal, tujuan = :tujuan, tanggal = :tanggal,
+                      jam_berangkat = :jam_berangkat, jam_tiba = :jam_tiba,
+                      harga = :harga, kursi_tersedia = :kursi, status = :status
+                  WHERE id = :id';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id',            $id);
+        $stmt->bindParam(':asal',          $asal);
+        $stmt->bindParam(':tujuan',        $tujuan);
+        $stmt->bindParam(':tanggal',       $tanggal);
+        $stmt->bindParam(':jam_berangkat', $jam_berangkat);
+        $stmt->bindParam(':jam_tiba',      $jam_tiba);
+        $stmt->bindParam(':harga',         $harga);
+        $stmt->bindParam(':kursi',         $kursi);
+        $stmt->bindParam(':status',        $status);
+        return $stmt->execute();
+    }
 
+    public function deleteJadwal($id) {
+        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+        $stmt  = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
         return $stmt->execute();
     }
 }

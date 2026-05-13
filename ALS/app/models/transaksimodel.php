@@ -1,7 +1,5 @@
 <?php
-
 class TransaksiModel {
-
     private $conn;
     private $table = 'transaksis';
 
@@ -9,87 +7,66 @@ class TransaksiModel {
         $this->conn = $db;
     }
 
-    public function findAll() {
-
-        $query = "SELECT t.*, 
-                         a.username AS nama_pengguna,
-                         j.asal,
-                         j.tujuan
-                  FROM {$this->table} t
-                  LEFT JOIN admins a ON t.admin_id = a.id
+    public function getAllTransaksi() {
+        $query = 'SELECT t.*, a.username AS nama_pengguna, j.asal, j.tujuan
+                  FROM ' . $this->table . ' t
+                  LEFT JOIN admins  a ON t.admin_id  = a.id
                   LEFT JOIN jadwals j ON t.jadwal_id = j.id
-                  ORDER BY t.created_at DESC";
-
+                  ORDER BY t.created_at DESC';
         $stmt = $this->conn->prepare($query);
-
         $stmt->execute();
-
-        $result = $stmt->get_result();
-
-        $rows = [];
-
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-
-        return $rows;
+        return $stmt;
     }
 
-    public function findById($id) {
-
-        $query = "SELECT t.*,
-                         a.username AS nama_pengguna,
-                         j.asal,
-                         j.tujuan
-                  FROM {$this->table} t
-                  LEFT JOIN admins a ON t.admin_id = a.id
+    public function getTransaksiById($id) {
+        $query = 'SELECT t.*, a.username AS nama_pengguna, a.nama_lengkap,
+                         j.asal, j.tujuan, j.tanggal, j.jam_berangkat, j.jam_tiba
+                  FROM ' . $this->table . ' t
+                  LEFT JOIN admins  a ON t.admin_id  = a.id
                   LEFT JOIN jadwals j ON t.jadwal_id = j.id
-                  WHERE t.id = ?";
-
+                  WHERE t.id = :id LIMIT 1';
         $stmt = $this->conn->prepare($query);
-
-        $stmt->bind_param('i', $id);
-
+        $stmt->bindParam(':id', $id);
         $stmt->execute();
-
-        $result = $stmt->get_result();
-
-        return $result->fetch_assoc();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getTotalHariIni() {
-
-        $query = "SELECT SUM(total_harga) AS total
-                  FROM {$this->table}
-                  WHERE DATE(created_at) = CURDATE()
-                  AND status = 'berhasil'";
-
+    public function getTotalPendapatanHariIni() {
+        $query = "SELECT COALESCE(SUM(total_harga), 0) AS total
+                  FROM " . $this->table . "
+                  WHERE DATE(created_at) = CURDATE() AND status = 'berhasil'";
         $stmt = $this->conn->prepare($query);
-
         $stmt->execute();
-
-        $result = $stmt->get_result();
-
-        $row = $result->fetch_assoc();
-
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total'];
     }
 
     public function getTiketTerjualHariIni() {
-
         $query = "SELECT COUNT(*) AS total
-                  FROM {$this->table}
-                  WHERE DATE(created_at) = CURDATE()
-                  AND status = 'berhasil'";
+                  FROM " . $this->table . "
+                  WHERE DATE(created_at) = CURDATE() AND status = 'berhasil'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'];
+    }
+
+    public function filterTransaksi($dari, $sampai, $status) {
+        $query = 'SELECT t.*, a.username AS nama_pengguna, j.asal, j.tujuan
+                  FROM ' . $this->table . ' t
+                  LEFT JOIN admins  a ON t.admin_id  = a.id
+                  LEFT JOIN jadwals j ON t.jadwal_id = j.id
+                  WHERE 1=1';
+        if ($dari)   $query .= " AND DATE(t.created_at) >= :dari";
+        if ($sampai) $query .= " AND DATE(t.created_at) <= :sampai";
+        if ($status) $query .= " AND t.status = :status";
+        $query .= ' ORDER BY t.created_at DESC';
 
         $stmt = $this->conn->prepare($query);
-
+        if ($dari)   $stmt->bindParam(':dari',   $dari);
+        if ($sampai) $stmt->bindParam(':sampai', $sampai);
+        if ($status) $stmt->bindParam(':status', $status);
         $stmt->execute();
-
-        $result = $stmt->get_result();
-
-        $row = $result->fetch_assoc();
-
-        return $row['total'];
+        return $stmt;
     }
 }
