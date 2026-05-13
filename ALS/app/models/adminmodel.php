@@ -1,4 +1,4 @@
-<?php
+ <?php
 class AdminModel {
     private $conn;
     private $table = 'admins';
