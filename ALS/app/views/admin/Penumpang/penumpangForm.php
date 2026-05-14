@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><?= $user ? 'Edit' : 'Tambah' ?> Pengguna - Admin Panel ALS</title>
+  <title><?= $user ? 'Edit' : 'Tambah' ?> Penumpang - Admin Panel ALS</title>
   <link rel="stylesheet" href="public/css/admin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="public/css/adminTambahan.css" />
 </head>
 <body>
 <div class="TataLetakAdmin">
@@ -14,7 +15,7 @@
 
   <main class="KontenUtamaAdmin">
     <header class="HeaderKonten">
-      <h1><?= $user ? 'Edit' : 'Tambah' ?> Pengguna</h1>
+      <h1><?= $user ? 'Edit' : 'Tambah' ?> Penumpang</h1>
       <div class="ProfilAdmin">
         <span>Selamat datang, <strong><?= htmlspecialchars($_SESSION['admin_nama']) ?></strong></span>
         <i class="fa-solid fa-user-shield"></i>
@@ -27,18 +28,18 @@
 
     <div class="KartuKontenBesar">
       <div class="HeaderKartu">
-        <h3><i class="fa-solid fa-user-plus"></i> Form Pengguna</h3>
-        <a href="index.php?page=pengguna" class="TombolAksi" style="background:#64748b;">
+        <h3><i class="fa-solid fa-user-plus"></i> Form Penumpang</h3>
+        <a href="index.php?page=Penumpang" class="TombolAksi TombolAbu">
           <i class="fa-solid fa-arrow-left"></i> Kembali
         </a>
       </div>
 
-      <form method="POST" action="index.php?page=pengguna&action=<?= $user ? 'simpanedit' : 'simpan' ?>">
+      <form method="POST" action="index.php?page=Penumpang&action=<?= $user ? 'simpanedit' : 'simpan' ?>">
         <?php if ($user): ?>
           <input type="hidden" name="id" value="<?= $user['id'] ?>" />
         <?php endif; ?>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div class="GridDuaKolom">
           <?php if (!$user): ?>
           <div class="GrupInput">
             <label>Username</label>
@@ -61,7 +62,7 @@
             <select name="role">
               <option value="superadmin" <?= ($user['role'] ?? '') === 'superadmin' ? 'selected' : '' ?>>Super Admin</option>
               <option value="operator"   <?= ($user['role'] ?? '') === 'operator'   ? 'selected' : '' ?>>Operator</option>
-              <option value="pengguna"   <?= ($user['role'] ?? 'pengguna') === 'pengguna' ? 'selected' : '' ?>>Pengguna</option>
+              <option value="Penumpang"   <?= ($user['role'] ?? 'Penumpang') === 'Penumpang' ? 'selected' : '' ?>>Penumpang</option>
             </select>
           </div>
 
@@ -74,7 +75,7 @@
           </div>
         </div>
 
-        <button type="submit" class="TombolAksi" style="margin-top:10px;">
+        <button type="submit" class="TombolAksi MarginAtas10">
           <i class="fa-solid fa-floppy-disk"></i> Simpan
         </button>
       </form>

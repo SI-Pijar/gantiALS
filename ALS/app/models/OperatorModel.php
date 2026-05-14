@@ -11,7 +11,6 @@ class OperatorModel {
         $this->conn = $db;
     }
 
-    // Ambil semua data bus
     public function getAllBus() {
 
         $query = 'SELECT * FROM ' . $this->tableBus . '
@@ -24,7 +23,6 @@ class OperatorModel {
         return $stmt;
     }
 
-    // Ambil semua jadwal
     public function getAllJadwal() {
 
         $query = 'SELECT * FROM ' . $this->tableJadwal . '
@@ -37,7 +35,6 @@ class OperatorModel {
         return $stmt;
     }
 
-    // Ambil semua pemesanan
     public function getAllPemesanan() {
 
         $query = 'SELECT * FROM ' . $this->tablePemesanan . '
@@ -50,7 +47,6 @@ class OperatorModel {
         return $stmt;
     }
 
-    // Tambah bus
     public function tambahBus($nama_bus, $plat_nomor) {
 
         $query = 'INSERT INTO ' . $this->tableBus . '
@@ -65,7 +61,6 @@ class OperatorModel {
         return $stmt->execute();
     }
 
-    // Hapus bus
     public function hapusBus($id_bus) {
 
         $query = 'DELETE FROM ' . $this->tableBus . '

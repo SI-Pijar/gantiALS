@@ -6,6 +6,7 @@
     <title>Metode Pembayaran - PT. Antar Lintas Sumatera</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpangTambahan.css" />
   </head>
   <body>
     <div class="BagianPalingAtasHalaman">
@@ -50,6 +51,9 @@
     <main class="WadahPembatasLebarKonten KontenHalaman">
         <div class="KontenUtamaPembayaran">
             <div class="AreaMetodePembayaran">
+                <form action="<?= BASEURL; ?>/index.php?page=proses_pembayaran" method="POST" id="formBayar">
+                <input type="hidden" name="id_pemesanan" value="<?= $pesanan['id'] ?>">
+                <input type="hidden" name="metode_pembayaran" id="metodePembayaran" value="bca">
                 <h3>Pilih Metode Pembayaran</h3>
 
                 <div class="KartuPilihanPembayaran aktif" data-metode="bca">
@@ -80,31 +84,44 @@
                     <h4>Ringkasan Pesanan</h4>
 
                     <div class="DetailPerjalanan">
-                        <p class="rute">Medan &rarr; Jakarta</p>
-                        <p class="tanggal-waktu">28 April 2026, 14:00 WIB</p>
-                        <p class="NamaArmada"><i class="fa-solid fa-crown"></i> Super Executive</p>
+                        <p class="rute"><?= htmlspecialchars($pesanan['asal']) ?> &rarr; <?= htmlspecialchars($pesanan['tujuan']) ?></p>
+                        <p class="tanggal-waktu"><?= date('d M Y', strtotime($pesanan['tanggal'])) ?>, <?= substr($pesanan['jam_berangkat'], 0, 5) ?> WIB</p>
+                        <p class="NamaArmada"><i class="fa-solid fa-bus"></i> Reguler</p>
                     </div>
 
                     <div class="GarisPemisahRingkasan"></div>
 
                     <div class="DetailHarga">
-                        <p>Kursi yang Dipilih (2)</p>
-                        <div class="DaftarNomorKursi">4A, 5C</div>
+                        <p>Kursi yang Dipilih (<?= $pesanan['jumlah_kursi'] ?>)</p>
+                        <div class="DaftarNomorKursi"><?= htmlspecialchars($pesanan['kursi_dipesan']) ?></div>
                     </div>
 
                     <div class="GarisPemisahRingkasan"></div>
 
                     <div class="TotalPembayaran">
                         <p>Total Harga</p>
-                        <p class="HargaTotal">Rp 1.500.000</p>
+                        <p class="HargaTotal">Rp <?= number_format($pesanan['total_harga'], 0, ',', '.') ?></p>
                     </div>
 
-                    <a href="<?= BASEURL; ?>/index.php?page=home" class="TombolLanjutBayar">BAYAR SEKARANG</a>
+                    <button type="submit" class="TombolLanjutBayar TombolLebarPenuhPointer">BAYAR SEKARANG</button>
                 </div>
+                </form>
             </aside>
         </div>
     </main>
 
+    <script>
+        const kartuMetode = document.querySelectorAll('.KartuPilihanPembayaran');
+        const inputMetode = document.getElementById('metodePembayaran');
+
+        kartuMetode.forEach(kartu => {
+            kartu.addEventListener('click', () => {
+                kartuMetode.forEach(k => k.classList.remove('aktif'));
+                kartu.classList.add('aktif');
+                inputMetode.value = kartu.getAttribute('data-metode');
+            });
+        });
+    </script>
     <footer class="ElemenFooterPalingBawah">
       <div class="WadahPembatasLebarKonten">
         <div class="TataLetakGridFooter">
@@ -145,4 +162,4 @@
       </div>
     </footer>
   </body>
-</html
+</html>

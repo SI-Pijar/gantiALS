@@ -17,9 +17,9 @@ $halamanAktif = $_GET['page'] ?? 'dashboard';
       <i class="fa-solid fa-calendar-days"></i>
       <span>Kelola Jadwal</span>
     </a>
-    <a href="index.php?page=pengguna"   class="ItemMenu <?= $halamanAktif === 'pengguna'   ? 'aktif' : '' ?>">
+    <a href="index.php?page=Penumpang"   class="ItemMenu <?= $halamanAktif === 'Penumpang'   ? 'aktif' : '' ?>">
       <i class="fa-solid fa-users"></i>
-      <span>Kelola Pengguna</span>
+      <span>Kelola Penumpang</span>
     </a>
     <a href="index.php?page=transaksi"  class="ItemMenu <?= $halamanAktif === 'transaksi'  ? 'aktif' : '' ?>">
       <i class="fa-solid fa-receipt"></i>

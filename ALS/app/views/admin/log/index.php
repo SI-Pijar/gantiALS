@@ -41,7 +41,7 @@
         <thead>
           <tr>
             <th>Waktu</th>
-            <th>Pengguna</th>
+            <th>Penumpang</th>
             <th>Aktivitas</th>
             <th>Level</th>
           </tr>

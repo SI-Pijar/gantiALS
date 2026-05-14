@@ -48,8 +48,8 @@
           <i class="fa-solid fa-users" style="color:#f59e0b"></i>
         </div>
         <div class="InfoKartu">
-          <p>Pengguna Terdaftar</p>
-          <span><?= $totalPengguna ?></span>
+          <p>Penumpang Terdaftar</p>
+          <span><?= $totalPenumpang ?></span>
         </div>
       </div>
 
@@ -71,7 +71,7 @@
         <thead>
           <tr>
             <th>Waktu</th>
-            <th>Pengguna</th>
+            <th>Penumpang</th>
             <th>Aktivitas</th>
             <th>Status</th>
           </tr>

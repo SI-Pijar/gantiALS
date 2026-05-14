@@ -1,6 +1,6 @@
 <?php
 
-class UserModel {
+class PenumpangModel {
     private $conn;
     private $table = 'users';
 

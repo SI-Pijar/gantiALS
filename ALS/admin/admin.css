@@ -256,7 +256,7 @@ html {
   background-color: #fed7aa;
   color: #9a3412;
 }
-.StatusBadge.pengguna {
+.StatusBadge.Penumpang {
   background-color: #dbeafe;
   color: #1e40af;
 }
@@ -286,3 +286,12 @@ html {
 }
 .TombolIkon.edit { color: #f59e0b; }
 .TombolIkon.hapus { color: #ef4444; }
+
+.MarginBawah20 { margin-bottom:20px; }
+.FlexFilter { display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap; }
+.GrupInputFilter { margin:0; flex:1; min-width:150px; }
+.TombolAbu { background:#64748b; }
+.TeksTengahAbu { text-align:center; color:#64748b; }
+.IkonBiru { color:#0ea5e9; }
+.GridDuaKolom { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.MarginAtas10 { margin-top:10px; }

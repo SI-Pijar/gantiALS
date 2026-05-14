@@ -6,6 +6,7 @@
   <title>Detail Transaksi - Admin Panel ALS</title>
   <link rel="stylesheet" href="public/css/admin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="public/css/adminTambahan.css" />
 </head>
 <body>
 <div class="TataLetakAdmin">
@@ -24,7 +25,7 @@
     <div class="KartuKontenBesar">
       <div class="HeaderKartu">
         <h3><i class="fa-solid fa-file-invoice"></i> <?= htmlspecialchars($transaksi['nomor_invoice']) ?></h3>
-        <a href="index.php?page=transaksi" class="TombolAksi" style="background:#64748b;">
+        <a href="index.php?page=transaksi" class="TombolAksi TombolAbu">
           <i class="fa-solid fa-arrow-left"></i> Kembali
         </a>
       </div>
@@ -32,7 +33,7 @@
       <table class="TabelData">
         <tr><th>No. Invoice</th>    <td><?= htmlspecialchars($transaksi['nomor_invoice']) ?></td></tr>
         <tr><th>Nama Penumpang</th> <td><?= htmlspecialchars($transaksi['nama_penumpang']) ?></td></tr>
-        <tr><th>Pengguna</th>       <td><?= htmlspecialchars($transaksi['nama_pengguna'] ?? '-') ?></td></tr>
+        <tr><th>Penumpang</th>       <td><?= htmlspecialchars($transaksi['nama_Penumpang'] ?? '-') ?></td></tr>
         <tr><th>Rute</th>           <td><?= htmlspecialchars($transaksi['asal'] . ' → ' . $transaksi['tujuan']) ?></td></tr>
         <tr><th>Tanggal Jadwal</th> <td><?= date('d M Y', strtotime($transaksi['tanggal'])) ?></td></tr>
         <tr><th>Jam Berangkat</th>  <td><?= substr($transaksi['jam_berangkat'], 0, 5) ?></td></tr>

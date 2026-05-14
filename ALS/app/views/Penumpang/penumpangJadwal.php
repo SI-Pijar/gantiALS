@@ -6,6 +6,7 @@
     <title>Hasil Pencarian Jadwal - PT. Antar Lintas Sumatera</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpangTambahan.css" />
   </head>
   <body>
     <div class="BagianPalingAtasHalaman">
@@ -50,7 +51,7 @@
     <main class="WadahPembatasLebarKonten KontenHalaman">
         <div class="KepalaSeksiTengah">
             <h2>Hasil Pencarian Jadwal Bus</h2>
-            <p>Menampilkan jadwal untuk rute <strong>Medan &rarr; Jakarta</strong> pada tanggal <strong>28 April 2026</strong>.</p>
+            <p>Menampilkan jadwal untuk rute <strong><?= htmlspecialchars($_GET['asal'] ?? 'Semua') ?> &rarr; <?= htmlspecialchars($_GET['tujuan'] ?? 'Semua') ?></strong> pada tanggal <strong><?= !empty($_GET['tanggal']) ? date('d M Y', strtotime($_GET['tanggal'])) : 'Semua Tanggal' ?></strong>.</p>
             <a href="<?= BASEURL; ?>/index.php?page=home" class="TombolUbahPencarian">
                 <i class="fa-solid fa-pen-to-square"></i> Ubah Pencarian
             </a>
@@ -85,67 +86,51 @@
             </aside>
 
             <section class="AreaHasilPencarian">
+                <?php
+                $rows = $jadwals->fetchAll(PDO::FETCH_ASSOC);
+                if (empty($rows)):
+                ?>
+                <div class="KartuHasilJadwal">
+                    <p class="PesanTidakTersedia">Maaf, tidak ada jadwal yang tersedia untuk rute dan tanggal tersebut.</p>
+                </div>
+                <?php else: ?>
+                <?php foreach ($rows as $j): ?>
                 <div class="KartuHasilJadwal">
                     <div class="InfoUtamaJadwal">
                         <div class="WaktuKeberangkatan">
-                            <p class="jam">14:00</p>
-                            <p class="lokasi">Terminal Amplas</p>
+                            <p class="jam"><?= substr($j['jam_berangkat'], 0, 5) ?></p>
+                            <p class="lokasi"><?= htmlspecialchars($j['asal']) ?></p>
                         </div>
                         <div class="DurasiPerjalanan">
                             <i class="fa-solid fa-arrow-right-long"></i>
-                            <p>Est. 52 Jam</p>
+                            <p>Kursi: <?= $j['kursi_tersedia'] ?></p>
                         </div>
                         <div class="WaktuKedatangan">
-                            <p class="jam">18:00 <span class="InfoHariPlus">(+2)</span></p>
-                            <p class="lokasi">Terminal Pulo Gebang</p>
+                            <p class="jam"><?= substr($j['jam_tiba'], 0, 5) ?></p>
+                            <p class="lokasi"><?= htmlspecialchars($j['tujuan']) ?></p>
                         </div>
                     </div>
                     <div class="InfoKelasArmada InfoKolom">
-                        <i class="fa-solid fa-crown"></i>
+                        <i class="fa-solid fa-bus"></i>
                         <div>
-                            <p class="NamaKelas">Super Executive</p>
-                            <p class="FasilitasSingkat">Kursi 2-1, AC, Toilet</p>
+                            <p class="NamaKelas">Reguler</p>
+                            <p class="FasilitasSingkat">Sesuai Ketersediaan</p>
                         </div>
                     </div>
                     <div class="InfoHargaDanAksi InfoKolom">
                         <div class="Harga">
-                            <p>Harga mulai dari</p>
-                            <p class="HargaAngka">Rp 750.000</p>
+                            <p>Harga per kursi</p>
+                            <p class="HargaAngka">Rp <?= number_format($j['harga'], 0, ',', '.') ?></p>
                         </div>
-                        <a href="<?= BASEURL; ?>/index.php?page=pemesanan" class="TombolTipeWarnaBiru">Pilih Kursi</a>
+                        <?php if ($j['kursi_tersedia'] > 0): ?>
+                        <a href="<?= BASEURL; ?>/index.php?page=pemesanan&id=<?= $j['id'] ?>" class="TombolTipeWarnaBiru">Pilih Kursi</a>
+                        <?php else: ?>
+                        <button disabled class="TombolTipeWarnaBiru TombolPenuh">Penuh</button>
+                        <?php endif; ?>
                     </div>
                 </div>
-
-                <div class="KartuHasilJadwal">
-                    <div class="InfoUtamaJadwal">
-                        <div class="WaktuKeberangkatan">
-                            <p class="jam">15:30</p>
-                            <p class="lokasi">Terminal Amplas</p>
-                        </div>
-                        <div class="DurasiPerjalanan">
-                            <i class="fa-solid fa-arrow-right-long"></i>
-                            <p>Est. 54 Jam</p>
-                        </div>
-                        <div class="WaktuKedatangan">
-                            <p class="jam">21:30 <span class="InfoHariPlus">(+2)</span></p>
-                            <p class="lokasi">Terminal Pulo Gebang</p>
-                        </div>
-                    </div>
-                    <div class="InfoKelasArmada InfoKolom">
-                        <i class="fa-solid fa-gem"></i>
-                        <div>
-                            <p class="NamaKelas">Executive Class</p>
-                            <p class="FasilitasSingkat">Kursi 2-2, AC, Toilet</p>
-                        </div>
-                    </div>
-                    <div class="InfoHargaDanAksi InfoKolom">
-                        <div class="Harga">
-                            <p>Harga mulai dari</p>
-                            <p class="HargaAngka">Rp 680.000</p>
-                        </div>
-                        <a href="<?= BASEURL; ?>/index.php?page=pemesanan" class="TombolTipeWarnaBiru">Pilih Kursi</a>
-                    </div>
-                </div>
+                <?php endforeach; ?>
+                <?php endif; ?>
             </section>
         </div>
     </main>

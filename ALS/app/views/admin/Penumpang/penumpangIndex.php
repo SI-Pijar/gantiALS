@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kelola Pengguna - Admin Panel ALS</title>
+  <title>Kelola Penumpang - Admin Panel ALS</title>
   <link rel="stylesheet" href="public/css/admin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -14,7 +14,7 @@
 
   <main class="KontenUtamaAdmin">
     <header class="HeaderKonten">
-      <h1>Kelola Pengguna &amp; Hak Akses</h1>
+      <h1>Kelola Penumpang &amp; Hak Akses</h1>
       <div class="ProfilAdmin">
         <span>Selamat datang, <strong><?= htmlspecialchars($_SESSION['admin_nama']) ?></strong></span>
         <i class="fa-solid fa-user-shield"></i>
@@ -30,9 +30,9 @@
 
     <div class="KartuKontenBesar">
       <div class="HeaderKartu">
-        <h3><i class="fa-solid fa-users"></i> Daftar Pengguna Sistem</h3>
-        <a href="index.php?page=pengguna&action=tambah" class="TombolAksi">
-          <i class="fa-solid fa-plus"></i> Tambah Pengguna
+        <h3><i class="fa-solid fa-users"></i> Daftar Penumpang Sistem</h3>
+        <a href="index.php?page=Penumpang&action=tambah" class="TombolAksi">
+          <i class="fa-solid fa-plus"></i> Tambah Penumpang
         </a>
       </div>
 
@@ -49,10 +49,10 @@
         </thead>
         <tbody>
           <?php
-          $rows = $pengguna->fetchAll(PDO::FETCH_ASSOC);
+          $rows = $Penumpang->fetchAll(PDO::FETCH_ASSOC);
           if (empty($rows)):
           ?>
-            <tr><td colspan="6" style="text-align:center;color:#64748b;">Belum ada pengguna.</td></tr>
+            <tr><td colspan="6" style="text-align:center;color:#64748b;">Belum ada Penumpang.</td></tr>
           <?php else: ?>
             <?php foreach ($rows as $u): ?>
             <tr>
@@ -70,15 +70,15 @@
               </td>
               <td><?= date('d M Y', strtotime($u['created_at'])) ?></td>
               <td class="KolomAksi">
-                <a href="index.php?page=pengguna&action=edit&id=<?= $u['id'] ?>" class="TombolIkon edit" title="Edit">
+                <a href="index.php?page=Penumpang&action=edit&id=<?= $u['id'] ?>" class="TombolIkon edit" title="Edit">
                   <i class="fa-solid fa-pen"></i>
                 </a>
-                <a href="index.php?page=pengguna&action=toggle&id=<?= $u['id'] ?>" class="TombolIkon" style="color:#0ea5e9;" title="Toggle Status">
+                <a href="index.php?page=Penumpang&action=toggle&id=<?= $u['id'] ?>" class="TombolIkon" style="color:#0ea5e9;" title="Toggle Status">
                   <i class="fa-solid fa-power-off"></i>
                 </a>
-                <a href="index.php?page=pengguna&action=hapus&id=<?= $u['id'] ?>"
+                <a href="index.php?page=Penumpang&action=hapus&id=<?= $u['id'] ?>"
                    class="TombolIkon hapus" title="Hapus"
-                   onclick="return confirm('Yakin hapus pengguna <?= htmlspecialchars($u['username']) ?>?')">
+                   onclick="return confirm('Yakin hapus Penumpang <?= htmlspecialchars($u['username']) ?>?')">
                   <i class="fa-solid fa-trash"></i>
                 </a>
               </td>

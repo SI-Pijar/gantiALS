@@ -21,7 +21,7 @@ class DashboardController {
 
         $totalPendapatan    = $transaksiModel->getTotalPendapatanHariIni();
         $tiketTerjual       = $transaksiModel->getTiketTerjualHariIni();
-        $totalPengguna      = $adminModel->countAdmins();
+        $totalPenumpang      = $adminModel->countAdmins();
         $gangguanSistem     = $logModel->countErrorHariIni();
         $aktivitasTerbaru   = $logModel->getAktivitasTerbaru(5);
 

@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../config/Database.php';
 require_once __DIR__ . '/../models/AdminModel.php';
 require_once __DIR__ . '/../models/LogModel.php';
 
-class PenggunaController {
+class KelolaPenumpangController {
 
     public function index() {
         session_start();
@@ -15,9 +15,9 @@ class PenggunaController {
         $database   = new Database();
         $db         = $database->connect();
         $adminModel = new AdminModel($db);
-        $pengguna   = $adminModel->getAllAdmins();
+        $Penumpang   = $adminModel->getAllAdmins();
 
-        require_once __DIR__ . '/../views/admin/pengguna/index.php';
+        require_once __DIR__ . '/../views/admin/Penumpang/index.php';
     }
 
     public function tambahForm() {
@@ -28,7 +28,7 @@ class PenggunaController {
         }
 
         $user = null;
-        require_once __DIR__ . '/../views/admin/pengguna/form.php';
+        require_once __DIR__ . '/../views/admin/Penumpang/form.php';
     }
 
     public function tambah() {
@@ -41,13 +41,13 @@ class PenggunaController {
         $username    = trim($_POST['username']     ?? '');
         $namaLengkap = trim($_POST['nama_lengkap'] ?? '');
         $password    = $_POST['password'] ?? '';
-        $role        = $_POST['role']     ?? 'pengguna';
+        $role        = $_POST['role']     ?? 'Penumpang';
         $status      = $_POST['status']   ?? 'aktif';
 
         if (empty($username) || empty($namaLengkap) || empty($password)) {
             $error = 'Username, nama lengkap, dan password wajib diisi.';
             $user  = null;
-            require_once __DIR__ . '/../views/admin/pengguna/form.php';
+            require_once __DIR__ . '/../views/admin/Penumpang/form.php';
             return;
         }
 
@@ -58,7 +58,7 @@ class PenggunaController {
         if ($adminModel->getAdminByUsername($username)) {
             $error = 'Username sudah digunakan.';
             $user  = null;
-            require_once __DIR__ . '/../views/admin/pengguna/form.php';
+            require_once __DIR__ . '/../views/admin/Penumpang/form.php';
             return;
         }
 
@@ -66,14 +66,14 @@ class PenggunaController {
 
         if ($berhasil) {
             $logModel = new LogModel($db);
-            $logModel->createLog($_SESSION['admin_id'], "Menambahkan pengguna baru: $username ($role)", 'berhasil');
-            $success = 'Pengguna berhasil ditambahkan.';
+            $logModel->createLog($_SESSION['admin_id'], "Menambahkan Penumpang baru: $username ($role)", 'berhasil');
+            $success = 'Penumpang berhasil ditambahkan.';
         } else {
-            $error = 'Gagal menambahkan pengguna.';
+            $error = 'Gagal menambahkan Penumpang.';
         }
 
-        $pengguna = $adminModel->getAllAdmins();
-        require_once __DIR__ . '/../views/admin/pengguna/index.php';
+        $Penumpang = $adminModel->getAllAdmins();
+        require_once __DIR__ . '/../views/admin/Penumpang/index.php';
     }
 
     public function editForm() {
@@ -90,11 +90,11 @@ class PenggunaController {
         $user       = $adminModel->getAdminById($id);
 
         if (!$user) {
-            header('Location: index.php?page=pengguna');
+            header('Location: index.php?page=Penumpang');
             exit;
         }
 
-        require_once __DIR__ . '/../views/admin/pengguna/form.php';
+        require_once __DIR__ . '/../views/admin/Penumpang/form.php';
     }
 
     public function edit() {
@@ -106,7 +106,7 @@ class PenggunaController {
 
         $id          = (int)($_POST['id']            ?? 0);
         $namaLengkap = trim($_POST['nama_lengkap']   ?? '');
-        $role        = $_POST['role']     ?? 'pengguna';
+        $role        = $_POST['role']     ?? 'Penumpang';
         $status      = $_POST['status']   ?? 'aktif';
         $password    = $_POST['password'] ?? '';
 
@@ -117,14 +117,14 @@ class PenggunaController {
 
         if ($berhasil) {
             $logModel = new LogModel($db);
-            $logModel->createLog($_SESSION['admin_id'], "Mengubah data pengguna ID#$id", 'berhasil');
-            $success = 'Data pengguna berhasil diperbarui.';
+            $logModel->createLog($_SESSION['admin_id'], "Mengubah data Penumpang ID#$id", 'berhasil');
+            $success = 'Data Penumpang berhasil diperbarui.';
         } else {
-            $error = 'Gagal memperbarui pengguna.';
+            $error = 'Gagal memperbarui Penumpang.';
         }
 
-        $pengguna = $adminModel->getAllAdmins();
-        require_once __DIR__ . '/../views/admin/pengguna/index.php';
+        $Penumpang = $adminModel->getAllAdmins();
+        require_once __DIR__ . '/../views/admin/Penumpang/index.php';
     }
 
     public function hapus() {
@@ -141,8 +141,8 @@ class PenggunaController {
             $database   = new Database();
             $db         = $database->connect();
             $adminModel = new AdminModel($db);
-            $pengguna   = $adminModel->getAllAdmins();
-            require_once __DIR__ . '/../views/admin/pengguna/index.php';
+            $Penumpang   = $adminModel->getAllAdmins();
+            require_once __DIR__ . '/../views/admin/Penumpang/index.php';
             return;
         }
 
@@ -153,14 +153,14 @@ class PenggunaController {
 
         if ($user && $adminModel->deleteAdmin($id)) {
             $logModel = new LogModel($db);
-            $logModel->createLog($_SESSION['admin_id'], "Menghapus pengguna: {$user['username']}", 'berhasil');
-            $success = 'Pengguna berhasil dihapus.';
+            $logModel->createLog($_SESSION['admin_id'], "Menghapus Penumpang: {$user['username']}", 'berhasil');
+            $success = 'Penumpang berhasil dihapus.';
         } else {
-            $error = 'Gagal menghapus pengguna.';
+            $error = 'Gagal menghapus Penumpang.';
         }
 
-        $pengguna = $adminModel->getAllAdmins();
-        require_once __DIR__ . '/../views/admin/pengguna/index.php';
+        $Penumpang = $adminModel->getAllAdmins();
+        require_once __DIR__ . '/../views/admin/Penumpang/index.php';
     }
 
     public function toggleStatus() {
@@ -181,12 +181,12 @@ class PenggunaController {
             $adminModel->toggleStatus($id, $newStatus);
             $logModel = new LogModel($db);
             $logModel->createLog($_SESSION['admin_id'], "Mengubah status {$user['username']} menjadi $newStatus", 'berhasil');
-            $success = "Status pengguna diubah menjadi $newStatus.";
+            $success = "Status Penumpang diubah menjadi $newStatus.";
         } else {
-            $error = 'Pengguna tidak ditemukan.';
+            $error = 'Penumpang tidak ditemukan.';
         }
 
-        $pengguna = $adminModel->getAllAdmins();
-        require_once __DIR__ . '/../views/admin/pengguna/index.php';
+        $Penumpang = $adminModel->getAllAdmins();
+        require_once __DIR__ . '/../views/admin/Penumpang/index.php';
     }
 }

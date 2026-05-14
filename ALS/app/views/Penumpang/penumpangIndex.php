@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daftar Pengguna - PT. Antar Lintas Sumatera</title>
+    <title>Daftar Penumpang - PT. Antar Lintas Sumatera</title>
     <link rel="stylesheet" href="../penumpang/penumpang.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -18,14 +18,14 @@
                 </div>
             </div>
             <div class="DaftarMenuNavigasi">
-                <a href="#" class="MenuSaatIni">Daftar Pengguna</a>
+                <a href="#" class="MenuSaatIni">Daftar Penumpang</a>
             </div>
         </div>
     </nav>
 
     <main class="WadahPembatasLebarKonten" style="margin-top: 50px;">
         <div class="KartuKontenBesar">
-            <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-users"></i> Data Pengguna Terdaftar</h2>
+            <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-users"></i> Data Penumpang Terdaftar</h2>
             
             <table class="TabelData" style="width: 100%; border-collapse: collapse;">
                 <thead>

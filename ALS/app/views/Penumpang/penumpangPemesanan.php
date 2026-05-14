@@ -6,6 +6,7 @@
     <title>Pilih Kursi & Detail Penumpang - PT. Antar Lintas Sumatera</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpangTambahan.css" />
   </head>
   <body>
     <div class="BagianPalingAtasHalaman">
@@ -50,39 +51,22 @@
     <main class="WadahPembatasLebarKonten KontenHalaman">
         <div class="KontenUtamaPemesanan">
             <div class="AreaPilihKursi">
+                <form action="<?= BASEURL; ?>/index.php?page=proses_pemesanan" method="POST" id="formPemesanan">
+                <input type="hidden" name="id_jadwal" value="<?= $jadwal['id'] ?>">
+                <input type="hidden" name="kursi_dipesan" id="inputKursiDipesan" value="">
                 <div class="KartuDenahKursi">
                     <h3>Pilih Kursi Anda</h3>
-                    <div class="DenahKursi">
-                        <div class="kursi tersedia" data-nomor="1A">1A</div>
-                        <div class="kursi tersedia" data-nomor="1B">1B</div>
-                        <div class="gang"></div>
-                        <div class="kursi tersedia" data-nomor="1C">1C</div>
-                        <div class="kursi terisi" data-nomor="1D">1D</div>
-                        <div class="kursi tersedia" data-nomor="2A">2A</div>
-                        <div class="kursi tersedia" data-nomor="2B">2B</div>
-                        <div class="gang"></div>
-                        <div class="kursi tersedia" data-nomor="2C">2C</div>
-                        <div class="kursi tersedia" data-nomor="2D">2D</div>
-                        <div class="kursi tersedia" data-nomor="3A">3A</div>
-                        <div class="kursi terisi" data-nomor="3B">3B</div>
-                        <div class="gang"></div>
-                        <div class="kursi tersedia" data-nomor="3C">3C</div>
-                        <div class="kursi tersedia" data-nomor="3D">3D</div>
-                        <div class="kursi terpilih" data-nomor="4A">4A</div>
-                        <div class="kursi tersedia" data-nomor="4B">4B</div>
-                        <div class="gang"></div>
-                        <div class="kursi tersedia" data-nomor="4C">4C</div>
-                        <div class="kursi terisi" data-nomor="4D">4D</div>
-                        <div class="kursi tersedia" data-nomor="5A">5A</div>
-                        <div class="kursi tersedia" data-nomor="5B">5B</div>
-                        <div class="gang"></div>
-                        <div class="kursi terpilih" data-nomor="5C">5C</div>
-                        <div class="kursi tersedia" data-nomor="5D">5D</div>
-                        <div class="kursi tersedia" data-nomor="6A">6A</div>
-                        <div class="kursi tersedia" data-nomor="6B">6B</div>
-                        <div class="gang"></div>
-                        <div class="kursi tersedia" data-nomor="6C">6C</div>
-                        <div class="kursi tersedia" data-nomor="6D">6D</div>
+                    <div class="DenahKursi" id="DenahKursi">
+                        <?php for ($i = 1; $i <= 10; $i++): ?>
+                            <?php foreach (['A', 'B', 'C', 'D'] as $col): ?>
+                                <?php 
+                                $noKursi = $i . $col; 
+                                $statusKursi = in_array($noKursi, $kursiTerisi) ? 'terisi' : 'tersedia';
+                                ?>
+                                <div class="kursi <?= $statusKursi ?>" data-nomor="<?= $noKursi ?>"><?= $noKursi ?></div>
+                                <?php if ($col == 'B'): ?><div class="gang"></div><?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endfor; ?>
                     </div>
                     <div class="LegendaKursi">
                         <div class="ItemLegenda"><span class="KotakWarna tersedia"></span> Tersedia</div>
@@ -92,55 +76,93 @@
                 </div>
 
                 <div class="FormDetailPenumpang">
-                    <form action="<?= BASEURL; ?>/index.php?page=pembayaran" method="POST">
                         <h3>Detail Penumpang</h3>
 
                         <div class="GrupInputForm">
-                            <label for="nama-lengkap">Nama Lengkap (sesuai KTP)</label>
-                            <input type="text" id="nama-lengkap" name="nama-lengkap" placeholder="Masukkan nama lengkap Anda" required>
+                            <label for="nama_lengkap">Nama Lengkap (sesuai KTP)</label>
+                            <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Masukkan nama lengkap Anda" required>
                         </div>
 
                         <div class="GrupInputForm">
-                            <label for="nomor-telepon">Nomor Telepon</label>
-                            <input type="tel" id="nomor-telepon" name="nomor-telepon" placeholder="Contoh: 081234567890" required>
+                            <label for="nomor_telepon">Nomor Telepon</label>
+                            <input type="tel" id="nomor_telepon" name="nomor_telepon" placeholder="Contoh: 081234567890" required>
                         </div>
 
                         <div class="GrupInputForm">
                             <label for="email">Alamat Email</label>
                             <input type="email" id="email" name="email" placeholder="Untuk pengiriman e-tiket" required>
                         </div>
-                        <button type="submit" class="TombolLanjutBayar" style="border:none;">Lanjutkan ke Pembayaran</button>
-                    </form>
+                        <button type="submit" class="TombolLanjutBayar TombolLebarPenuh">Lanjutkan ke Pembayaran</button>
                 </div>
+                </form>
             </div>
 
             <aside class="AreaRingkasanPesanan">
                 <div class="KartuRingkasanPesanan">
                     <h4>Ringkasan Pesanan</h4>
                     <div class="DetailPerjalanan">
-                        <p class="rute">Medan &rarr; Jakarta</p>
-                        <p class="tanggal-waktu">28 April 2026, 14:00 WIB</p>
-                        <p class="NamaArmada"><i class="fa-solid fa-crown"></i> Super Executive</p>
+                        <p class="rute"><?= htmlspecialchars($jadwal['asal']) ?> &rarr; <?= htmlspecialchars($jadwal['tujuan']) ?></p>
+                        <p class="tanggal-waktu"><?= date('d M Y', strtotime($jadwal['tanggal'])) ?>, <?= substr($jadwal['jam_berangkat'], 0, 5) ?> WIB</p>
+                        <p class="NamaArmada"><i class="fa-solid fa-bus"></i> Reguler</p>
                     </div>
 
                     <div class="GarisPemisahRingkasan"></div>
 
                     <div class="DetailHarga">
-                        <p>Kursi yang Dipilih (2)</p>
-                        <div class="DaftarNomorKursi">4A, 5C</div>
+                        <p>Kursi yang Dipilih (<span id="jumlahKursiText">0</span>)</p>
+                        <div class="DaftarNomorKursi" id="daftarNomorKursi">-</div>
                     </div>
 
                     <div class="GarisPemisahRingkasan"></div>
 
                     <div class="TotalPembayaran">
                         <p>Total Harga</p>
-                        <p class="HargaTotal">Rp 1.500.000</p>
+                        <p class="HargaTotal" id="hargaTotalText">Rp 0</p>
                     </div>
                 </div>
             </aside>
         </div>
     </main>
 
+    <script>
+        const kursis = document.querySelectorAll('.kursi.tersedia');
+        const inputKursi = document.getElementById('inputKursiDipesan');
+        const listKursiElem = document.getElementById('daftarNomorKursi');
+        const jumlahKursiElem = document.getElementById('jumlahKursiText');
+        const totalHargaElem = document.getElementById('hargaTotalText');
+        const hargaPerKursi = <?= $jadwal['harga'] ?>;
+        let kursiTerpilih = [];
+
+        kursis.forEach(kursi => {
+            kursi.addEventListener('click', () => {
+                const nomor = kursi.getAttribute('data-nomor');
+                if (kursi.classList.contains('terpilih')) {
+                    kursi.classList.remove('terpilih');
+                    kursiTerpilih = kursiTerpilih.filter(k => k !== nomor);
+                } else {
+                    kursi.classList.add('terpilih');
+                    kursiTerpilih.push(nomor);
+                }
+                updateRingkasan();
+            });
+        });
+
+        function updateRingkasan() {
+            inputKursi.value = kursiTerpilih.join(',');
+            listKursiElem.textContent = kursiTerpilih.length > 0 ? kursiTerpilih.join(', ') : '-';
+            jumlahKursiElem.textContent = kursiTerpilih.length;
+            
+            const total = kursiTerpilih.length * hargaPerKursi;
+            totalHargaElem.textContent = 'Rp ' + total.toLocaleString('id-ID');
+        }
+
+        document.getElementById('formPemesanan').addEventListener('submit', function(e) {
+            if (kursiTerpilih.length === 0) {
+                e.preventDefault();
+                alert('Silakan pilih minimal 1 kursi sebelum melanjutkan.');
+            }
+        });
+    </script>
     <footer class="ElemenFooterPalingBawah">
       <div class="WadahPembatasLebarKonten">
         <div class="TataLetakGridFooter">

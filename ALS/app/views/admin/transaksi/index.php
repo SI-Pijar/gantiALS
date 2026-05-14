@@ -6,6 +6,7 @@
   <title>Laporan Transaksi - Admin Panel ALS</title>
   <link rel="stylesheet" href="public/css/admin.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="public/css/adminTambahan.css" />
 </head>
 <body>
 <div class="TataLetakAdmin">
@@ -21,18 +22,17 @@
       </div>
     </header>
 
-    <!-- Filter -->
-    <div class="KartuKontenBesar" style="margin-bottom:20px;">
-      <form method="POST" action="index.php?page=transaksi&action=filter" style="display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap;">
-        <div class="GrupInput" style="margin:0;flex:1;min-width:150px;">
+    <div class="KartuKontenBesar MarginBawah20">
+      <form method="POST" action="index.php?page=transaksi&action=filter" class="FlexFilter">
+        <div class="GrupInput GrupInputFilter">
           <label>Dari Tanggal</label>
           <input type="date" name="dari" value="<?= htmlspecialchars($dari ?? '') ?>" />
         </div>
-        <div class="GrupInput" style="margin:0;flex:1;min-width:150px;">
+        <div class="GrupInput GrupInputFilter">
           <label>Sampai Tanggal</label>
           <input type="date" name="sampai" value="<?= htmlspecialchars($sampai ?? '') ?>" />
         </div>
-        <div class="GrupInput" style="margin:0;flex:1;min-width:150px;">
+        <div class="GrupInput GrupInputFilter">
           <label>Status</label>
           <select name="status">
             <option value="">Semua</option>
@@ -42,11 +42,10 @@
           </select>
         </div>
         <button type="submit" class="TombolAksi"><i class="fa-solid fa-filter"></i> Filter</button>
-        <a href="index.php?page=transaksi" class="TombolAksi" style="background:#64748b;">Reset</a>
+        <a href="index.php?page=transaksi" class="TombolAksi TombolAbu">Reset</a>
       </form>
     </div>
 
-    <!-- Tabel -->
     <div class="KartuKontenBesar">
       <div class="HeaderKartu">
         <h3><i class="fa-solid fa-receipt"></i> Data Transaksi</h3>
@@ -57,7 +56,7 @@
           <tr>
             <th>No. Invoice</th>
             <th>Penumpang</th>
-            <th>Pengguna</th>
+            <th>Penumpang</th>
             <th>Rute</th>
             <th>Tanggal</th>
             <th>Total</th>
@@ -70,13 +69,13 @@
           $rows = $transaksis->fetchAll(PDO::FETCH_ASSOC);
           if (empty($rows)):
           ?>
-            <tr><td colspan="8" style="text-align:center;color:#64748b;">Tidak ada data transaksi.</td></tr>
+            <tr><td colspan="8" class="TeksTengahAbu">Tidak ada data transaksi.</td></tr>
           <?php else: ?>
             <?php foreach ($rows as $t): ?>
             <tr>
               <td><?= htmlspecialchars($t['nomor_invoice']) ?></td>
               <td><?= htmlspecialchars($t['nama_penumpang']) ?></td>
-              <td><?= htmlspecialchars($t['nama_pengguna'] ?? '-') ?></td>
+              <td><?= htmlspecialchars($t['nama_Penumpang'] ?? '-') ?></td>
               <td><?= htmlspecialchars($t['asal'] . ' - ' . $t['tujuan']) ?></td>
               <td><?= date('d M Y', strtotime($t['tanggal_transaksi'])) ?></td>
               <td>Rp <?= number_format($t['total_harga'], 0, ',', '.') ?></td>
@@ -91,7 +90,7 @@
                 <span class="StatusBadge <?= $badge ?>"><?= ucfirst($t['status']) ?></span>
               </td>
               <td>
-                <a href="index.php?page=transaksi&action=detail&id=<?= $t['id'] ?>" class="TombolIkon" style="color:#0ea5e9;">
+                <a href="index.php?page=transaksi&action=detail&id=<?= $t['id'] ?>" class="TombolIkon IkonBiru">
                   <i class="fa-solid fa-eye"></i>
                 </a>
               </td>

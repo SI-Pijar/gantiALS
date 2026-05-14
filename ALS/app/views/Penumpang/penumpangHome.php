@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
+    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpangTambahan.css" />
   </head>
   <body>
     
@@ -55,7 +56,7 @@
       </div>
     </nav>
 
-    <header class="AreaBannerHeroUtama" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('<?= BASEURL; ?>/gambar/foto5.jpg');">
+    <header class="AreaBannerHeroUtama BgBannerHero">
       <div class="WadahPembatasLebarKonten">
         <div class="WadahTeksPromosiHero">
           <h2>Jelajahi Nusantara dengan Nyaman</h2>
@@ -90,11 +91,9 @@
                       <option value="" disabled selected>
                         Pilih Kota Keberangkatan
                       </option>
-                      <option value="Medan">Medan</option>
-                      <option value="Padang">Padang</option>
-                      <option value="Banda Aceh">Banda Aceh</option>
-                      <option value="Pekanbaru">Pekanbaru</option>
-                      <option value="Jakarta">Jakarta</option>
+                      <?php foreach($asals as $a): ?>
+                        <option value="<?= htmlspecialchars($a['asal']) ?>"><?= htmlspecialchars($a['asal']) ?></option>
+                      <?php endforeach; ?>
                     </select>
                   </div>
 
@@ -113,11 +112,9 @@
                       <option value="" disabled selected>
                         Pilih Destinasi Tujuan
                       </option>
-                      <option value="Jember">Jember</option>
-                      <option value="Malang">Malang</option>
-                      <option value="Yogyakarta">Yogyakarta</option>
-                      <option value="Jakarta">Jakarta</option>
-                      <option value="Bandung">Bandung</option>
+                      <?php foreach($tujuans as $t): ?>
+                        <option value="<?= htmlspecialchars($t['tujuan']) ?>"><?= htmlspecialchars($t['tujuan']) ?></option>
+                      <?php endforeach; ?>
                     </select>
                   </div>
 
@@ -133,46 +130,8 @@
                   </div>
                   <div class="WadahTeksDalamLonjong">
                     <label class="LabelKecilDiAtasInput">Tanggal Pergi</label>
-                    <input type="date" name="tanggal" class="ElemenInputFormUtama" value="2026-04-28" required />
+                    <input type="date" name="tanggal" class="ElemenInputFormUtama" />
                   </div>
-                </div>
-
-                <div class="DesainInputBentukLonjong">
-                  <div class="WadahIkonDalamInput">
-                    <i class="fa-solid fa-chair"></i>
-                  </div>
-                  <div class="WadahTeksDalamLonjong">
-                    <label class="LabelKecilDiAtasInput">Jumlah Kursi</label>
-                    <select name="penumpang" class="ElemenInputFormUtama">
-                      <option value="0">Jumlah Kursi</option>
-                      <option value="1">1 Kursi Penumpang</option>
-                      <option value="2">2 Kursi Penumpang</option>
-                      <option value="3">3 Kursi Penumpang</option>
-                      <option value="4">4 Kursi Penumpang</option>
-                    </select>
-                  </div>
-
-                  <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
-
-                </div>
-
-                <div class="DesainInputBentukLonjong">
-                  <div class="WadahIkonDalamInput">
-                    <i class="fa-solid fa-bus-simple"></i>
-                  </div>
-                  <div class="WadahTeksDalamLonjong">
-                    <label class="LabelKecilDiAtasInput">Pilih Kelas</label>
-                    <select name="kelas" class="ElemenInputFormUtama">
-                      <option value="semua">Tipe Armada</option>
-                      <option value="super">Super Executive</option>
-                      <option value="exec">Executive Class</option>
-                      <option value="patas">Patas AC</option>
-                      <option value="eko">Ekonomi AC</option>
-                    </select>
-                  </div>
-
-                  <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
-
                 </div>
                 
                 <button type="submit" class="TombolProsesPencarianOranye">

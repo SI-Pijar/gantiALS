@@ -4,40 +4,34 @@ require_once __DIR__ . '/../models/JadwalModel.php';
 require_once __DIR__ . '/../models/LogModel.php';
 
 class JadwalController {
+    private $db;
+    private $jadwalModel;
+    private $logModel;
 
-    public function index() {
+    public function __construct() {
         session_start();
         if (!isset($_SESSION['admin_id'])) {
             header('Location: index.php?page=login');
             exit;
         }
-
         $database     = new Database();
-        $db           = $database->connect();
-        $jadwalModel  = new JadwalModel($db);
-        $jadwals      = $jadwalModel->getAllJadwal();
+        $this->db     = $database->connect();
+        $this->jadwalModel = new JadwalModel($this->db);
+        $this->logModel    = new LogModel($this->db);
+    }
+
+    public function index() {
+        $jadwals = $this->jadwalModel->getAllJadwal();
 
         require_once __DIR__ . '/../views/admin/jadwal/index.php';
     }
 
     public function tambahForm() {
-        session_start();
-        if (!isset($_SESSION['admin_id'])) {
-            header('Location: index.php?page=login');
-            exit;
-        }
-
         $jadwal = null;
         require_once __DIR__ . '/../views/admin/jadwal/form.php';
     }
 
     public function tambah() {
-        session_start();
-        if (!isset($_SESSION['admin_id'])) {
-            header('Location: index.php?page=login');
-            exit;
-        }
-
         $asal          = trim($_POST['asal']          ?? '');
         $tujuan        = trim($_POST['tujuan']        ?? '');
         $tanggal       = $_POST['tanggal']       ?? '';
@@ -54,35 +48,22 @@ class JadwalController {
             return;
         }
 
-        $database    = new Database();
-        $db          = $database->connect();
-        $jadwalModel = new JadwalModel($db);
-        $berhasil    = $jadwalModel->createJadwal($asal, $tujuan, $tanggal, $jam_berangkat, $jam_tiba, $harga, $kursi, $status);
+        $berhasil = $this->jadwalModel->createJadwal($asal, $tujuan, $tanggal, $jam_berangkat, $jam_tiba, $harga, $kursi, $status);
 
         if ($berhasil) {
-            $logModel = new LogModel($db);
-            $logModel->createLog($_SESSION['admin_id'], "Menambahkan jadwal baru: $asal - $tujuan", 'berhasil');
+            $this->logModel->createLog($_SESSION['admin_id'], "Menambahkan jadwal baru: $asal - $tujuan", 'berhasil');
             $success = 'Jadwal berhasil ditambahkan.';
         } else {
             $error = 'Gagal menyimpan jadwal.';
         }
 
-        $jadwals = $jadwalModel->getAllJadwal();
+        $jadwals = $this->jadwalModel->getAllJadwal();
         require_once __DIR__ . '/../views/admin/jadwal/index.php';
     }
 
     public function editForm() {
-        session_start();
-        if (!isset($_SESSION['admin_id'])) {
-            header('Location: index.php?page=login');
-            exit;
-        }
-
         $id          = (int)($_GET['id'] ?? 0);
-        $database    = new Database();
-        $db          = $database->connect();
-        $jadwalModel = new JadwalModel($db);
-        $jadwal      = $jadwalModel->getJadwalById($id);
+        $jadwal      = $this->jadwalModel->getJadwalById($id);
 
         if (!$jadwal) {
             header('Location: index.php?page=jadwal');
@@ -93,12 +74,6 @@ class JadwalController {
     }
 
     public function edit() {
-        session_start();
-        if (!isset($_SESSION['admin_id'])) {
-            header('Location: index.php?page=login');
-            exit;
-        }
-
         $id            = (int)($_POST['id']            ?? 0);
         $asal          = trim($_POST['asal']           ?? '');
         $tujuan        = trim($_POST['tujuan']         ?? '');
@@ -109,45 +84,31 @@ class JadwalController {
         $kursi         = (int)($_POST['kursi_tersedia'] ?? 0);
         $status        = $_POST['status']         ?? 'aktif';
 
-        $database    = new Database();
-        $db          = $database->connect();
-        $jadwalModel = new JadwalModel($db);
-        $berhasil    = $jadwalModel->updateJadwal($id, $asal, $tujuan, $tanggal, $jam_berangkat, $jam_tiba, $harga, $kursi, $status);
+        $berhasil = $this->jadwalModel->updateJadwal($id, $asal, $tujuan, $tanggal, $jam_berangkat, $jam_tiba, $harga, $kursi, $status);
 
         if ($berhasil) {
-            $logModel = new LogModel($db);
-            $logModel->createLog($_SESSION['admin_id'], "Mengubah jadwal ID#$id: $asal - $tujuan", 'berhasil');
+            $this->logModel->createLog($_SESSION['admin_id'], "Mengubah jadwal ID#$id: $asal - $tujuan", 'berhasil');
             $success = 'Jadwal berhasil diperbarui.';
         } else {
             $error = 'Gagal memperbarui jadwal.';
         }
 
-        $jadwals = $jadwalModel->getAllJadwal();
+        $jadwals = $this->jadwalModel->getAllJadwal();
         require_once __DIR__ . '/../views/admin/jadwal/index.php';
     }
 
     public function hapus() {
-        session_start();
-        if (!isset($_SESSION['admin_id'])) {
-            header('Location: index.php?page=login');
-            exit;
-        }
-
         $id          = (int)($_GET['id'] ?? 0);
-        $database    = new Database();
-        $db          = $database->connect();
-        $jadwalModel = new JadwalModel($db);
-        $jadwal      = $jadwalModel->getJadwalById($id);
+        $jadwal      = $this->jadwalModel->getJadwalById($id);
 
-        if ($jadwal && $jadwalModel->deleteJadwal($id)) {
-            $logModel = new LogModel($db);
-            $logModel->createLog($_SESSION['admin_id'], "Menghapus jadwal: {$jadwal['asal']} - {$jadwal['tujuan']}", 'berhasil');
+        if ($jadwal && $this->jadwalModel->deleteJadwal($id)) {
+            $this->logModel->createLog($_SESSION['admin_id'], "Menghapus jadwal: {$jadwal['asal']} - {$jadwal['tujuan']}", 'berhasil');
             $success = 'Jadwal berhasil dihapus.';
         } else {
             $error = 'Gagal menghapus jadwal.';
         }
 
-        $jadwals = $jadwalModel->getAllJadwal();
+        $jadwals = $this->jadwalModel->getAllJadwal();
         require_once __DIR__ . '/../views/admin/jadwal/index.php';
     }
 }
