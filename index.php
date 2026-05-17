@@ -1,28 +1,52 @@
 <?php
-define('BASEURL', 'http://localhost/ALS1/ALS/public');
+define('BASEURL', 'http://localhost/gantiALS');
 require_once __DIR__ . '/ALS/app/controllers/PenumpangController.php';
-$controller = new PenumpangController();
+require_once __DIR__ . '/ALS/app/controllers/OperatorController.php';
+
+$penumpangController = new PenumpangController();
+$operatorController = new OperatorController();
+
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
+
 switch ($page) {
+    // Penumpang Routes
     case 'jadwal':
-        $controller->jadwal();
+        $penumpangController->jadwal();
         break;
     case 'pemesanan':
-        $controller->pemesanan();
+        $penumpangController->pemesanan();
         break;
     case 'proses_pemesanan':
-        $controller->prosesPemesanan();
+        $penumpangController->prosesPemesanan();
         break;
     case 'tiket':
-        $controller->tiket();
+        $penumpangController->tiket();
         break;
     case 'pembayaran':
-        $controller->pembayaran();
+        $penumpangController->pembayaran();
         break;
     case 'proses_pembayaran':
-        $controller->prosesPembayaran();
+        $penumpangController->prosesPembayaran();
         break;
+
+    // Operator Routes
+    case 'operatorDashboard':
+        $operatorController->dashboard();
+        break;
+    case 'operatorJadwal':
+        $operatorController->jadwal();
+        break;
+    case 'operatorBus':
+        $operatorController->bus();
+        break;
+    case 'operatorPemesanan':
+        $operatorController->pemesanan();
+        break;
+    case 'operatorLogin':
+        $operatorController->login();
+        break;
+
     default:
-        $controller->index();
+        $penumpangController->index();
         break;
 }
