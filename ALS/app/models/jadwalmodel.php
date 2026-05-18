@@ -7,6 +7,52 @@ class JadwalModel {
         $this->conn = $db;
     }
 
+    public function getDistinctAsal() {
+        $query = 'SELECT DISTINCT asal FROM ' . $this->table . ' WHERE status = "aktif" ORDER BY asal ASC';
+        $stmt  = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getDistinctTujuan() {
+        $query = 'SELECT DISTINCT tujuan FROM ' . $this->table . ' WHERE status = "aktif" ORDER BY tujuan ASC';
+        $stmt  = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function searchJadwal($asal, $tujuan, $tanggal) {
+        $query = 'SELECT * FROM ' . $this->table . ' WHERE status = "aktif"';
+        $params = [];
+        if (!empty($asal)) {
+            $query .= ' AND asal = :asal';
+            $params[':asal'] = $asal;
+        }
+        if (!empty($tujuan)) {
+            $query .= ' AND tujuan = :tujuan';
+            $params[':tujuan'] = $tujuan;
+        }
+        if (!empty($tanggal)) {
+            $query .= ' AND tanggal = :tanggal';
+            $params[':tanggal'] = $tanggal;
+        }
+        $query .= ' ORDER BY tanggal ASC, jam_berangkat ASC';
+        $stmt = $this->conn->prepare($query);
+        foreach ($params as $key => $val) {
+            $stmt->bindValue($key, $val);
+        }
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function updateKursi($id, $jumlah) {
+        $query = 'UPDATE ' . $this->table . ' SET kursi_tersedia = kursi_tersedia - :jumlah WHERE id = :id';
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':jumlah', $jumlah, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     public function getAllJadwal() {
         $query = 'SELECT * FROM ' . $this->table . ' ORDER BY tanggal DESC, jam_berangkat ASC';
         $stmt  = $this->conn->prepare($query);

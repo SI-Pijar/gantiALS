@@ -8,7 +8,7 @@ class TransaksiModel {
     }
 
     public function getAllTransaksi() {
-        $query = 'SELECT t.*, a.username AS nama_pengguna, j.asal, j.tujuan
+        $query = 'SELECT t.*, a.username AS nama_Penumpang, j.asal, j.tujuan
                   FROM ' . $this->table . ' t
                   LEFT JOIN admins  a ON t.admin_id  = a.id
                   LEFT JOIN jadwals j ON t.jadwal_id = j.id
@@ -19,7 +19,7 @@ class TransaksiModel {
     }
 
     public function getTransaksiById($id) {
-        $query = 'SELECT t.*, a.username AS nama_pengguna, a.nama_lengkap,
+        $query = 'SELECT t.*, a.username AS nama_Penumpang, a.nama_lengkap,
                          j.asal, j.tujuan, j.tanggal, j.jam_berangkat, j.jam_tiba
                   FROM ' . $this->table . ' t
                   LEFT JOIN admins  a ON t.admin_id  = a.id
@@ -52,7 +52,7 @@ class TransaksiModel {
     }
 
     public function filterTransaksi($dari, $sampai, $status) {
-        $query = 'SELECT t.*, a.username AS nama_pengguna, j.asal, j.tujuan
+        $query = 'SELECT t.*, a.username AS nama_Penumpang, j.asal, j.tujuan
                   FROM ' . $this->table . ' t
                   LEFT JOIN admins  a ON t.admin_id  = a.id
                   LEFT JOIN jadwals j ON t.jadwal_id = j.id

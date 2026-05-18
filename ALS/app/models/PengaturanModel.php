@@ -11,7 +11,6 @@ class PengaturanModel {
         $query = 'SELECT kunci, nilai FROM ' . $this->table;
         $stmt  = $this->conn->prepare($query);
         $stmt->execute();
-        // kembalikan sebagai key => value
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
         foreach ($rows as $row) {
