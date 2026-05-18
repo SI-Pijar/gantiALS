@@ -12,6 +12,7 @@
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
+<<<<<<< HEAD
             <a href="/gantiALS/index.php?page=operatorDashboard" class="active">
                 <span>Dashboard</span>
             </a>
@@ -22,11 +23,27 @@
                 <span>Kelola Jadwal</span>
             </a>
             <a href="/gantiALS/index.php?page=operatorPemesanan">
+=======
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=dashboard" class="active">
+                <span>Dashboard</span>
+            </a>
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=bilList">
+                <span>Kelola Bus</span>
+            </a>
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=jadwalList">
+                <span>Kelola Jadwal</span>
+            </a>
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=pemesananList">
+>>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
                 <span>Kelola Pemesanan</span>
             </a>
         </nav>
         <div class="sidebar-footer">
+<<<<<<< HEAD
             <a href="/gantiALS/index.php?page=operatorLogout">
+=======
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=logout">
+>>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
                 <span>Logout</span>
             </a>
         </div>

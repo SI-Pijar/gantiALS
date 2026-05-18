@@ -12,6 +12,7 @@
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
+<<<<<<< HEAD
             <a href="/gantiALS/index.php?page=operatorDashboard">
                 <span>Dashboard</span>
             </a>
@@ -22,11 +23,27 @@
                 <span>Kelola Jadwal</span>
             </a>
             <a href="/gantiALS/index.php?page=operatorPemesanan" class="active">
+=======
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=dashboard">
+                <span>Dashboard</span>
+            </a>
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=bilList">
+                <span>Kelola Bus</span>
+            </a>
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=jadwalList">
+                <span>Kelola Jadwal</span>
+            </a>
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=pemesananList" class="active">
+>>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
                 <span>Kelola Pemesanan</span>
             </a>
         </nav>
         <div class="sidebar-footer">
+<<<<<<< HEAD
             <a href="/gantiALS/index.php?page=operatorLogout">
+=======
+            <a href="/gantiALS/ALS/index.php?controller=operator&action=logout">
+>>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
                 <span>Logout</span>
             </a>
         </div>
@@ -81,11 +98,19 @@
                             </td>
                             <td>
                                 <?php if ($pemesanan['status_verifikasi'] == 'Belum' || $pemesanan['status_verifikasi'] == 'Ditolak'): ?>
+<<<<<<< HEAD
                                     <a href="/gantiALS/index.php?page=operatorPemesanan&action=verifikasi&id=<?= $pemesanan['id'] ?>" class="btn btn-success" onclick="return confirm('Verifikasi pesanan ini?')">Verifikasi</a>
                                 <?php endif; ?>
                                 
                                 <?php if ($pemesanan['status_verifikasi'] == 'Belum' || $pemesanan['status_verifikasi'] == 'Terverifikasi'): ?>
                                     <a href="/gantiALS/index.php?page=operatorPemesanan&action=tolak&id=<?= $pemesanan['id'] ?>" class="btn btn-danger" onclick="return confirm('Tolak pesanan ini?')">Tolak</a>
+=======
+                                    <a href="/gantiALS/ALS/index.php?controller=operator&action=pemesananVerifikasi&id=<?= $pemesanan['id'] ?>" class="btn btn-success" onclick="return confirm('Verifikasi pesanan ini?')">Verifikasi</a>
+                                <?php endif; ?>
+                                
+                                <?php if ($pemesanan['status_verifikasi'] == 'Belum' || $pemesanan['status_verifikasi'] == 'Terverifikasi'): ?>
+                                    <a href="/gantiALS/ALS/index.php?controller=operator&action=pemesananTolak&id=<?= $pemesanan['id'] ?>" class="btn btn-danger" onclick="return confirm('Tolak pesanan ini?')">Tolak</a>
+>>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
                                 <?php endif; ?>
                             </td>
                         </tr>

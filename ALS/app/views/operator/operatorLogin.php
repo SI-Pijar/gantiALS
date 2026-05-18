@@ -15,7 +15,11 @@
             </div>
         <?php endif; ?>
 
+<<<<<<< HEAD
         <form action="/gantiALS/index.php?page=operatorLogin" method="POST">
+=======
+        <form action="/gantiALS/ALS/index.php?controller=operator&action=login" method="POST">
+>>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" name="email" required placeholder="Masukkan email operator">

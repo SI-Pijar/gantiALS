@@ -992,5 +992,28 @@ input[type="date"].ElemenInputFormUtama {
     padding-top: 20px;
     border-top: 1px solid #f1f5f9;
   }
-} }
 }
+
+.BgBannerHero { background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('../gambar/foto5.jpg'); }
+.PesanTidakTersedia { text-align: center; width: 100%; padding: 20px; }
+.TombolPenuh { background-color: #ccc; cursor: not-allowed; border: none; }
+.TombolLebarPenuh { border:none; width: 100%; }
+.TombolLebarPenuhPointer { width: 100%; border: none; cursor: pointer; }
+.NavigasiTiket { position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.MarginAtas10 { margin-top:10px; }
+.TeksNormal14 { font-size: 14px; font-weight: normal; }
+.TeksKanan { text-align: right; }
+.TeksHijau { color: #22c55e; }
+.BarisTanpaBatas { border: none; margin-bottom: 0; padding-bottom: 0; }
+.TeksBesar22 { font-size: 22px; }
+.TombolBiruMarginKiri { background: var(--biru-utama, #0ea5e9); margin-left: 10px; }
+
+.TicketContainer { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; }
+.TicketHeader { background: var(--biru-utama, #0ea5e9); color: #fff; padding: 20px; text-align: center; }
+.TicketHeader h2 { margin: 0; font-size: 24px; }
+.TicketBody { padding: 30px; }
+.TicketRow { display: flex; justify-content: space-between; margin-bottom: 20px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
+.TicketLabel { color: #64748b; font-size: 14px; margin-bottom: 5px; }
+.TicketValue { font-size: 18px; font-weight: 700; color: var(--biru-gelap, #0f172a); }
+.TicketFooter { background: #f8fafc; padding: 20px; text-align: center; }
+.BtnPrint { display: inline-block; padding: 10px 20px; background: var(--oranye-aksen, #f97316); color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; }
