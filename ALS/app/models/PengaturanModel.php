@@ -7,26 +7,26 @@ class PengaturanModel {
         $this->conn = $db;
     }
 
-    public function getAllPengaturan() {
-        $query = 'SELECT kunci, nilai FROM ' . $this->table;
-        $stmt  = $this->conn->prepare($query);
+    public function getSettings() {
+        $stmt = $this->conn->prepare("SELECT * FROM {$this->table} LIMIT 1");
         $stmt->execute();
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($rows as $row) {
-            $result[$row['kunci']] = $row['nilai'];
-        }
-        return $result;
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    public function upsert($kunci, $nilai) {
-        $query = 'INSERT INTO ' . $this->table . ' (kunci, nilai)
-                  VALUES (:kunci, :nilai)
-                  ON DUPLICATE KEY UPDATE nilai = :nilai2';
+    public function updateSettings($email_support, $nomor_telepon, $alamat) {
+        $stmt = $this->conn->prepare("SELECT COUNT(*) FROM {$this->table}");
+        $stmt->execute();
+        $exists = (bool)$stmt->fetchColumn();
+
+        $query = $exists
+            ? "UPDATE {$this->table} SET email_support = :email, nomor_telepon = :telp, alamat = :alamat LIMIT 1"
+            : "INSERT INTO {$this->table} (email_support, nomor_telepon, alamat) VALUES (:email, :telp, :alamat)";
+
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':kunci',  $kunci);
-        $stmt->bindParam(':nilai',  $nilai);
-        $stmt->bindParam(':nilai2', $nilai);
-        return $stmt->execute();
+        return $stmt->execute([
+            ':email' => $email_support,
+            ':telp' => $nomor_telepon,
+            ':alamat' => $alamat,
+        ]);
     }
 }

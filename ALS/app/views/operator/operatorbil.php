@@ -3,47 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Kelola Bus Operator</title>
-    <link rel="stylesheet" href="/gantiALS/ALS/public/css/operator.css?v=4">
+    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=4">
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-logo">
-            <img src="/gantiALS/ALS/public/gambar/logo%20als.jpg" alt="Logo ALS">
+            <img src="<?= BASEURL; ?>/ALS/public/gambar/logo%20als.jpg" alt="Logo ALS">
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
-<<<<<<< HEAD
-            <a href="/gantiALS/index.php?page=operatorDashboard">
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard">
                 <span>Dashboard</span>
             </a>
-            <a href="/gantiALS/index.php?page=operatorBus" class="active">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilList" class="active">
                 <span>Kelola Bus</span>
             </a>
-            <a href="/gantiALS/index.php?page=operatorJadwal">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=jadwalList">
                 <span>Kelola Jadwal</span>
             </a>
-            <a href="/gantiALS/index.php?page=operatorPemesanan">
-=======
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=dashboard">
-                <span>Dashboard</span>
-            </a>
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=bilList" class="active">
-                <span>Kelola Bus</span>
-            </a>
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=jadwalList">
-                <span>Kelola Jadwal</span>
-            </a>
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=pemesananList">
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=pemesananList">
                 <span>Kelola Pemesanan</span>
+            </a>
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=profil">
+                <span>Profil Saya</span>
             </a>
         </nav>
         <div class="sidebar-footer">
-<<<<<<< HEAD
-            <a href="/gantiALS/index.php?page=operatorLogout">
-=======
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=logout">
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
+
                 <span>Logout</span>
             </a>
         </div>
@@ -51,31 +38,36 @@
     <div class="content">
         <h2>Kelola Bus</h2>
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+        <?php if ($success): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-error"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+        <?php if ($error): ?>
+            <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
         <div class="card">
             <h3 id="formTitle">Tambah Bus</h3>
-<<<<<<< HEAD
-            <form id="busForm" action="/gantiALS/index.php?page=operatorBus&action=add" method="POST">
-=======
-            <form id="busForm" action="/gantiALS/ALS/index.php?controller=operator&action=bilAdd" method="POST">
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+<form id="busForm" action="<?= BASEURL; ?>/index.php?controller=operator&action=bilAdd" method="POST">
+
                 <div class="form-group">
                     <label>No Polisi</label>
                     <input type="text" name="no_polisi" id="no_polisi" required>
                 </div>
                 <div class="form-group">
                     <label>Kelas Bus</label>
-                    <input type="text" name="kelas_bus" id="kelas_bus" required>
+                    <select name="kelas_bus" id="kelas_bus" required onchange="updateKapasitas()">
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="Super Executive">Super Executive</option>
+                        <option value="Executive Class">Executive Class</option>
+                        <option value="Patas AC">Patas AC</option>
+                        <option value="Ekonomi AC">Ekonomi AC</option>
+                        <option value="Ekonomi Non-AC">Ekonomi Non-AC</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Kapasitas Kursi</label>
-                    <input type="number" name="kapasitas" id="kapasitas" required min="1">
+                    <p id="kapasitas_info" class="kapasitas-info">—</p>
+                    <small class="info-kecil">Ditentukan otomatis berdasarkan kelas bus.</small>
                 </div>
                 <div class="form-group">
                     <label>Status</label>
@@ -85,7 +77,7 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-success" id="btnSubmit">Simpan Bus</button>
-                <button type="button" class="btn btn-warning" onclick="resetForm()" style="display:none;" id="btnBatal">Batal Edit</button>
+                <button type="button" class="btn btn-warning tersembunyi" onclick="resetForm()" id="btnBatal">Batal Edit</button>
             </form>
         </div>
 
@@ -112,12 +104,9 @@
                             <td><?= $bus['kapasitas'] ?></td>
                             <td><?= $bus['status_bus'] ?></td>
                             <td>
-                                <button class="btn btn-warning" onclick="editBus(<?= $bus['id'] ?>, '<?= htmlspecialchars($bus['no_polisi']) ?>', '<?= htmlspecialchars($bus['kelas_bus']) ?>', <?= $bus['kapasitas'] ?>, '<?= $bus['status_bus'] ?>')">Edit</button>
-<<<<<<< HEAD
-                                <a href="/gantiALS/index.php?page=operatorBus&action=delete&id=<?= $bus['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus bus ini?')">Hapus</a>
-=======
-                                <a href="/gantiALS/ALS/index.php?controller=operator&action=bilDelete&id=<?= $bus['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus bus ini?')">Hapus</a>
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+                                <button class="btn btn-warning" onclick='editBus(<?= $bus['id'] ?>, <?= json_encode($bus['no_polisi']) ?>, <?= json_encode($bus['kelas_bus']) ?>, <?= $bus['kapasitas'] ?>, <?= json_encode($bus['status_bus']) ?>)'>Edit</button>
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilDelete&id=<?= $bus['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus bus ini?')">Hapus</a>
+
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -130,16 +119,26 @@
     </div>
 
     <script>
+        const KAPASITAS_TETAP = {
+            'Super Executive': 22,
+            'Executive Class': 30,
+            'Patas AC': 38,
+            'Ekonomi AC': 44,
+            'Ekonomi Non-AC': 50,
+        };
+
+        function updateKapasitas() {
+            const kelas = document.getElementById('kelas_bus').value;
+            const info = document.getElementById('kapasitas_info');
+            info.textContent = KAPASITAS_TETAP[kelas] ? KAPASITAS_TETAP[kelas] + ' kursi' : '—';
+        }
+
         function editBus(id, noPolisi, kelas, kapasitas, status) {
             document.getElementById('formTitle').innerText = 'Edit Bus';
-<<<<<<< HEAD
-            document.getElementById('busForm').action = '/gantiALS/index.php?page=operatorBus&action=edit&id=' + id;
-=======
-            document.getElementById('busForm').action = '/gantiALS/ALS/index.php?controller=operator&action=bilEdit&id=' + id;
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+            document.getElementById('busForm').action = '<?= BASEURL; ?>/index.php?controller=operator&action=bilEdit&id=' + id;
             document.getElementById('no_polisi').value = noPolisi;
             document.getElementById('kelas_bus').value = kelas;
-            document.getElementById('kapasitas').value = kapasitas;
+            updateKapasitas();
             document.getElementById('status_bus').value = status;
             document.getElementById('btnSubmit').innerText = 'Update Bus';
             document.getElementById('btnBatal').style.display = 'inline-block';
@@ -148,12 +147,9 @@
 
         function resetForm() {
             document.getElementById('formTitle').innerText = 'Tambah Bus';
-<<<<<<< HEAD
-            document.getElementById('busForm').action = '/gantiALS/index.php?page=operatorBus&action=add';
-=======
-            document.getElementById('busForm').action = '/gantiALS/ALS/index.php?controller=operator&action=bilAdd';
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+            document.getElementById('busForm').action = '<?= BASEURL; ?>/index.php?controller=operator&action=bilAdd';
             document.getElementById('busForm').reset();
+            document.getElementById('kapasitas_info').textContent = '—';
             document.getElementById('btnSubmit').innerText = 'Simpan Bus';
             document.getElementById('btnBatal').style.display = 'none';
         }

@@ -3,47 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Kelola Jadwal Operator</title>
-    <link rel="stylesheet" href="/gantiALS/ALS/public/css/operator.css?v=4">
+    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=4">
 </head>
 <body>
     <div class="sidebar">
         <div class="sidebar-logo">
-            <img src="/gantiALS/ALS/public/gambar/logo%20als.jpg" alt="Logo ALS">
+            <img src="<?= BASEURL; ?>/ALS/public/gambar/logo%20als.jpg" alt="Logo ALS">
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
-<<<<<<< HEAD
-            <a href="/gantiALS/index.php?page=operatorDashboard">
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard">
                 <span>Dashboard</span>
             </a>
-            <a href="/gantiALS/index.php?page=operatorBus">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilList">
                 <span>Kelola Bus</span>
             </a>
-            <a href="/gantiALS/index.php?page=operatorJadwal" class="active">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=jadwalList" class="active">
                 <span>Kelola Jadwal</span>
             </a>
-            <a href="/gantiALS/index.php?page=operatorPemesanan">
-=======
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=dashboard">
-                <span>Dashboard</span>
-            </a>
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=bilList">
-                <span>Kelola Bus</span>
-            </a>
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=jadwalList" class="active">
-                <span>Kelola Jadwal</span>
-            </a>
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=pemesananList">
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=pemesananList">
                 <span>Kelola Pemesanan</span>
+            </a>
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=profil">
+                <span>Profil Saya</span>
             </a>
         </nav>
         <div class="sidebar-footer">
-<<<<<<< HEAD
-            <a href="/gantiALS/index.php?page=operatorLogout">
-=======
-            <a href="/gantiALS/ALS/index.php?controller=operator&action=logout">
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
+
                 <span>Logout</span>
             </a>
         </div>
@@ -51,44 +38,53 @@
     <div class="content">
         <h2>Kelola Jadwal</h2>
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+        <?php if ($success): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-error"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+        <?php if ($error): ?>
+            <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
         <div class="card">
             <h3 id="formTitle">Tambah Jadwal</h3>
-<<<<<<< HEAD
-            <form id="jadwalForm" action="/gantiALS/index.php?page=operatorJadwal&action=add" method="POST">
-=======
-            <form id="jadwalForm" action="/gantiALS/ALS/index.php?controller=operator&action=jadwalAdd" method="POST">
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+<form id="jadwalForm" action="<?= BASEURL; ?>/index.php?controller=operator&action=jadwalAdd" method="POST">
+
                 <div class="form-group">
                     <label>Bus</label>
-                    <select name="bus_id" id="bus_id" required>
+                    <select name="bus_id" id="bus_id" required onchange="autofillKursi()">
                         <option value="">-- Pilih Bus --</option>
                         <?php foreach ($busListOptions as $busOp): ?>
-                            <option value="<?= $busOp['id'] ?>"><?= htmlspecialchars($busOp['no_polisi']) ?> (<?= htmlspecialchars($busOp['kelas_bus']) ?>)</option>
+                            <option value="<?= $busOp['id'] ?>" data-kapasitas="<?= (int)$busOp['kapasitas'] ?>">
+                                <?= htmlspecialchars($busOp['no_polisi']) ?> (<?= htmlspecialchars($busOp['kelas_bus']) ?>, <?= (int)$busOp['kapasitas'] ?> kursi)
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>Asal</label>
-                    <input type="text" name="asal" id="asal" required>
+                    <select name="asal" id="asal" required>
+                        <option value="">-- Pilih Kota Asal --</option>
+                        <?php foreach ($ruteList as $rute): ?>
+                            <option value="<?= htmlspecialchars($rute) ?>"><?= htmlspecialchars($rute) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Tujuan</label>
-                    <input type="text" name="tujuan" id="tujuan" required>
+                    <select name="tujuan" id="tujuan" required>
+                        <option value="">-- Pilih Kota Tujuan --</option>
+                        <?php foreach ($ruteList as $rute): ?>
+                            <option value="<?= htmlspecialchars($rute) ?>"><?= htmlspecialchars($rute) ?></option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Tanggal Keberangkatan</label>
-                    <input type="date" name="tanggal_keberangkatan" id="tanggal_keberangkatan" required>
+                    <input type="date" name="tanggal" id="tanggal" required>
                 </div>
                 <div class="form-group">
                     <label>Jam Keberangkatan</label>
-                    <input type="time" name="jam_keberangkatan" id="jam_keberangkatan" required>
+                    <input type="time" name="jam_berangkat" id="jam_berangkat" required>
                 </div>
                 <div class="form-group">
                     <label>Harga (Rp)</label>
@@ -96,10 +92,11 @@
                 </div>
                 <div class="form-group">
                     <label>Jumlah Kursi Tersedia</label>
-                    <input type="number" name="kursi_tersedia" id="kursi_tersedia" required min="0">
+                    <input type="number" name="kursi_tersedia" id="kursi_tersedia" min="0" readonly class="input-readonly">
+                    <small class="info-kecil">Otomatis diisi dari kapasitas bus yang dipilih.</small>
                 </div>
                 <button type="submit" class="btn btn-success" id="btnSubmit">Simpan Jadwal</button>
-                <button type="button" class="btn btn-warning" onclick="resetForm()" style="display:none;" id="btnBatal">Batal Edit</button>
+                <button type="button" class="btn btn-warning tersembunyi" onclick="resetForm()" id="btnBatal">Batal Edit</button>
             </form>
         </div>
 
@@ -124,16 +121,13 @@
                             <td><?= $jadwal['id'] ?></td>
                             <td><?= htmlspecialchars($jadwal['no_polisi']) ?></td>
                             <td><?= htmlspecialchars($jadwal['asal']) ?> - <?= htmlspecialchars($jadwal['tujuan']) ?></td>
-                            <td><?= htmlspecialchars($jadwal['tanggal_keberangkatan']) ?> <br> <?= htmlspecialchars($jadwal['jam_keberangkatan']) ?></td>
+                            <td><?= htmlspecialchars($jadwal['tanggal']) ?> <br> <?= htmlspecialchars($jadwal['jam_berangkat']) ?></td>
                             <td>Rp <?= number_format($jadwal['harga'], 0, ',', '.') ?></td>
                             <td><?= isset($jadwal['kursi_tersedia']) ? $jadwal['kursi_tersedia'] : '-' ?></td>
                             <td>
-                                <button class="btn btn-warning" onclick="editJadwal(<?= $jadwal['id'] ?>, <?= $jadwal['bus_id'] ?>, '<?= htmlspecialchars($jadwal['asal']) ?>', '<?= htmlspecialchars($jadwal['tujuan']) ?>', '<?= $jadwal['tanggal_keberangkatan'] ?>', '<?= $jadwal['jam_keberangkatan'] ?>', <?= $jadwal['harga'] ?>, <?= isset($jadwal['kursi_tersedia']) ? $jadwal['kursi_tersedia'] : 0 ?>)">Edit</button>
-<<<<<<< HEAD
-                                <a href="/gantiALS/index.php?page=operatorJadwal&action=delete&id=<?= $jadwal['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus jadwal ini?')">Hapus</a>
-=======
-                                <a href="/gantiALS/ALS/index.php?controller=operator&action=jadwalDelete&id=<?= $jadwal['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus jadwal ini?')">Hapus</a>
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+                                <button class="btn btn-warning" onclick='editJadwal(<?= $jadwal['id'] ?>, <?= $jadwal['bus_id'] ?>, <?= json_encode($jadwal['asal']) ?>, <?= json_encode($jadwal['tujuan']) ?>, <?= json_encode($jadwal['tanggal']) ?>, <?= json_encode($jadwal['jam_berangkat']) ?>, <?= $jadwal['harga'] ?>, <?= isset($jadwal['kursi_tersedia']) ? $jadwal['kursi_tersedia'] : 0 ?>)'>Edit</button>
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=jadwalDelete&id=<?= $jadwal['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus jadwal ini?')">Hapus</a>
+
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -146,20 +140,23 @@
     </div>
 
     <script>
+        function autofillKursi() {
+            const sel = document.getElementById('bus_id');
+            const opt = sel.options[sel.selectedIndex];
+            const kap = opt ? opt.dataset.kapasitas : '';
+            document.getElementById('kursi_tersedia').value = kap || '';
+        }
+
         function editJadwal(id, busId, asal, tujuan, tanggal, jam, harga, kursi) {
             document.getElementById('formTitle').innerText = 'Edit Jadwal';
-<<<<<<< HEAD
-            document.getElementById('jadwalForm').action = '/gantiALS/index.php?page=operatorJadwal&action=edit&id=' + id;
-=======
-            document.getElementById('jadwalForm').action = '/gantiALS/ALS/index.php?controller=operator&action=jadwalEdit&id=' + id;
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+            document.getElementById('jadwalForm').action = '<?= BASEURL; ?>/index.php?controller=operator&action=jadwalEdit&id=' + id;
             document.getElementById('bus_id').value = busId;
+            autofillKursi();
             document.getElementById('asal').value = asal;
             document.getElementById('tujuan').value = tujuan;
-            document.getElementById('tanggal_keberangkatan').value = tanggal;
-            document.getElementById('jam_keberangkatan').value = jam;
+            document.getElementById('tanggal').value = tanggal;
+            document.getElementById('jam_berangkat').value = jam;
             document.getElementById('harga').value = harga;
-            document.getElementById('kursi_tersedia').value = kursi;
             document.getElementById('btnSubmit').innerText = 'Update Jadwal';
             document.getElementById('btnBatal').style.display = 'inline-block';
             window.scrollTo(0, 0);
@@ -167,12 +164,9 @@
 
         function resetForm() {
             document.getElementById('formTitle').innerText = 'Tambah Jadwal';
-<<<<<<< HEAD
-            document.getElementById('jadwalForm').action = '/gantiALS/index.php?page=operatorJadwal&action=add';
-=======
-            document.getElementById('jadwalForm').action = '/gantiALS/ALS/index.php?controller=operator&action=jadwalAdd';
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
+            document.getElementById('jadwalForm').action = '<?= BASEURL; ?>/index.php?controller=operator&action=jadwalAdd';
             document.getElementById('jadwalForm').reset();
+            document.getElementById('kursi_tersedia').value = '';
             document.getElementById('btnSubmit').innerText = 'Simpan Jadwal';
             document.getElementById('btnBatal').style.display = 'none';
         }

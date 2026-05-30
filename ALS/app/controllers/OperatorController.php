@@ -1,351 +1,330 @@
 <?php
-
 require_once __DIR__ . '/../../config/database.php';
 require_once __DIR__ . '/../models/OperatorModel.php';
 
 class OperatorController {
-    private $db;
     private $operatorModel;
+
+    private const KELAS_KAPASITAS = [
+        'Super Executive' => 22,
+        'Executive Class' => 30,
+        'Patas AC' => 38,
+        'Ekonomi AC' => 44,
+        'Ekonomi Non-AC' => 50,
+    ];
 
     public function __construct() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        $database = new Database();
-        $this->db = $database->connect();
-        $this->operatorModel = new OperatorModel($this->db);
+        $this->operatorModel = new OperatorModel((new Database())->connect());
     }
 
     private function checkSession() {
         if (!isset($_SESSION['operator_id'])) {
-            header('Location: /gantiALS/ALS/index.php?controller=operator&action=login');
+            header('Location: ' . BASEURL . '/index.php?controller=auth&action=login');
             exit;
         }
     }
 
+    private function validasiJadwal($tanggal, $harga, $bus_id, $jam, $asal, $tujuan) {
+        if (empty($tanggal) || strtotime($tanggal) < strtotime(date('Y-m-d')))
+            return 'Tanggal keberangkatan tidak valid atau sudah lewat!';
+        if ($harga <= 0) return 'Harga harus lebih dari 0!';
+        if ($bus_id <= 0) return 'Bus harus dipilih!';
+        if (empty($jam)) return 'Jam keberangkatan wajib diisi!';
+        if (empty($asal) || empty($tujuan)) return 'Asal dan tujuan wajib diisi!';
+        return '';
+    }
+
     public function dashboard() {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
+        $op = $_SESSION['operator_id'];
 
-        $jadwalHariIni = $this->operatorModel->getJadwalHariIni($operator_id);
-        $penumpangTerverifikasi = $this->operatorModel->getPenumpangTerverifikasi($operator_id);
-        $penumpangBelumVerifikasi = $this->operatorModel->getPenumpangBelumVerifikasi($operator_id);
-        $busAktif = $this->operatorModel->getBusAktif($operator_id);
-        
-        $pemesananTerbaru = $this->operatorModel->getPemesananTerbaru($operator_id, 5);
+        $jadwalHariIni = $this->operatorModel->getJadwalHariIni($op);
+        $penumpangTerverifikasi = $this->operatorModel->getPenumpangTerverifikasi($op);
+        $penumpangBelumVerifikasi = $this->operatorModel->getPenumpangBelumVerifikasi($op);
+        $busAktif = $this->operatorModel->getBusAktif($op);
+        $pemesananTerbaru = $this->operatorModel->getPemesananTerbaru($op, 5);
 
         require_once __DIR__ . '/../views/operator/operatordashboard.php';
     }
 
     public function bilList() {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-        
-        $busList = $this->operatorModel->getAllBus($operator_id);
-
+        $busList = $this->operatorModel->getAllBus($_SESSION['operator_id']);
+        $success = $_SESSION['success'] ?? null;
+        unset($_SESSION['success']);
+        $error = $_SESSION['error'] ?? null;
+        unset($_SESSION['error']);
         require_once __DIR__ . '/../views/operator/operatorbil.php';
     }
 
     public function bilAdd() {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $kelas = trim($_POST['kelas_bus'] ?? '');
             $data = [
                 'no_polisi' => trim($_POST['no_polisi'] ?? ''),
-                'kelas_bus' => trim($_POST['kelas_bus'] ?? ''),
-                'kapasitas' => filter_var($_POST['kapasitas'] ?? 0, FILTER_VALIDATE_INT),
+                'kelas_bus' => $kelas,
+                'kapasitas' => self::KELAS_KAPASITAS[$kelas] ?? 0,
                 'status_bus' => trim($_POST['status_bus'] ?? 'Aktif'),
-                'operator_id' => $operator_id
+                'operator_id' => $_SESSION['operator_id'],
             ];
-
-            if (empty($data['no_polisi']) || empty($data['kelas_bus']) || $data['kapasitas'] === false || $data['kapasitas'] <= 0) {
-                $_SESSION['error'] = "Semua field harus diisi dengan format yang benar!";
+            if (empty($data['no_polisi']) || $data['kapasitas'] === 0) {
+                $_SESSION['error'] = 'No polisi wajib diisi dan kelas bus harus dipilih.';
             } else {
                 try {
-                    if ($this->operatorModel->tambahBus($data)) {
-                        $_SESSION['success'] = "Bus berhasil ditambahkan.";
-                    } else {
-                        $_SESSION['error'] = "Gagal menambahkan bus.";
-                    }
+                    $ok = $this->operatorModel->tambahBus($data);
+                    $_SESSION[$ok ? 'success' : 'error'] = $ok ? 'Bus berhasil ditambahkan.' : 'Gagal menambahkan bus.';
                 } catch (Exception $e) {
-                    $_SESSION['error'] = "Terjadi kesalahan sistem.";
+                    $_SESSION['error'] = 'Terjadi kesalahan sistem.';
                 }
             }
-            header('Location: /gantiALS/ALS/index.php?controller=operator&action=bilList');
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=bilList');
             exit;
         }
     }
 
     public function bilEdit($id) {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $kelas = trim($_POST['kelas_bus'] ?? '');
             $data = [
                 'no_polisi' => trim($_POST['no_polisi'] ?? ''),
-                'kelas_bus' => trim($_POST['kelas_bus'] ?? ''),
-                'kapasitas' => filter_var($_POST['kapasitas'] ?? 0, FILTER_VALIDATE_INT),
-                'status_bus' => trim($_POST['status_bus'] ?? 'Aktif')
+                'kelas_bus' => $kelas,
+                'kapasitas' => self::KELAS_KAPASITAS[$kelas] ?? 0,
+                'status_bus' => trim($_POST['status_bus'] ?? 'Aktif'),
             ];
-
-            if (empty($data['no_polisi']) || empty($data['kelas_bus']) || $data['kapasitas'] === false || $data['kapasitas'] <= 0) {
-                $_SESSION['error'] = "Semua field harus diisi dengan format yang benar!";
+            if (empty($data['no_polisi']) || $data['kapasitas'] === 0) {
+                $_SESSION['error'] = 'No polisi wajib diisi dan kelas bus harus dipilih.';
             } else {
                 try {
-                    if ($this->operatorModel->updateBus($id, $operator_id, $data)) {
-                        $_SESSION['success'] = "Bus berhasil diupdate.";
-                    } else {
-                        $_SESSION['error'] = "Gagal mengupdate bus.";
-                    }
+                    $ok = $this->operatorModel->updateBus($id, $_SESSION['operator_id'], $data);
+                    $_SESSION[$ok ? 'success' : 'error'] = $ok ? 'Bus berhasil diupdate.' : 'Gagal mengupdate bus.';
                 } catch (Exception $e) {
-                    $_SESSION['error'] = "Terjadi kesalahan sistem.";
+                    $_SESSION['error'] = 'Terjadi kesalahan sistem.';
                 }
             }
-            header('Location: /gantiALS/ALS/index.php?controller=operator&action=bilList');
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=bilList');
             exit;
         }
     }
 
     public function bilDelete($id) {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         try {
-            if ($this->operatorModel->hapusBus($id, $operator_id)) {
-                $_SESSION['success'] = "Bus berhasil dihapus.";
-            } else {
-                $_SESSION['error'] = "Gagal menghapus bus.";
-            }
+            $this->operatorModel->hapusBus($id, $_SESSION['operator_id']);
+            $_SESSION['success'] = 'Bus berhasil dihapus.';
         } catch (Exception $e) {
-            $_SESSION['error'] = "Terjadi kesalahan sistem.";
+            $_SESSION['error'] = 'Gagal menghapus bus. Pastikan bus tidak sedang digunakan di jadwal manapun.';
         }
-        header('Location: /gantiALS/ALS/index.php?controller=operator&action=bilList');
+        header('Location: ' . BASEURL . '/index.php?controller=operator&action=bilList');
         exit;
     }
 
     public function jadwalList() {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-        
-        $jadwalList = $this->operatorModel->getAllJadwal($operator_id);
-        $busListOptions = $this->operatorModel->getBusAktifByOperator($operator_id);
-
+        $jadwalList = $this->operatorModel->getAllJadwal($_SESSION['operator_id']);
+        $busListOptions = $this->operatorModel->getBusAktifByOperator($_SESSION['operator_id']);
+        $ruteList = RUTE_ALS;
+        $success = $_SESSION['success'] ?? null;
+        unset($_SESSION['success']);
+        $error = $_SESSION['error'] ?? null;
+        unset($_SESSION['error']);
         require_once __DIR__ . '/../views/operator/operatorjadwal.php';
     }
 
     public function jadwalAdd() {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $tanggal_keberangkatan = trim($_POST['tanggal_keberangkatan'] ?? '');
-            $harga = filter_var($_POST['harga'] ?? 0, FILTER_VALIDATE_FLOAT);
-            $bus_id = filter_var($_POST['bus_id'] ?? 0, FILTER_VALIDATE_INT);
-            $kursi_tersedia = filter_var($_POST['kursi_tersedia'] ?? 0, FILTER_VALIDATE_INT);
-            $jam_keberangkatan = trim($_POST['jam_keberangkatan'] ?? '');
+            $tanggal = trim($_POST['tanggal'] ?? '');
+            $harga = (float)($_POST['harga'] ?? 0);
+            $bus_id = (int)($_POST['bus_id'] ?? 0);
+            $kursi_tersedia = (int)($_POST['kursi_tersedia'] ?? 0);
+            $jam_berangkat = trim($_POST['jam_berangkat'] ?? '');
+            $asal = trim($_POST['asal'] ?? '');
+            $tujuan = trim($_POST['tujuan'] ?? '');
 
-            if (empty($tanggal_keberangkatan) || strtotime($tanggal_keberangkatan) < strtotime(date('Y-m-d'))) {
-                $_SESSION['error'] = "Tanggal keberangkatan tidak valid atau di masa lalu!";
-            } elseif ($harga === false || $harga <= 0) {
-                $_SESSION['error'] = "Harga harus lebih dari 0 dan berupa angka!";
-            } elseif ($bus_id === false || $bus_id <= 0) {
-                $_SESSION['error'] = "Bus harus dipilih!";
-            } elseif ($kursi_tersedia === false || $kursi_tersedia < 0) {
-                $_SESSION['error'] = "Jumlah kursi tidak valid!";
-            } elseif (empty($jam_keberangkatan) || !preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/', $jam_keberangkatan)) {
-                $_SESSION['error'] = "Jam keberangkatan tidak valid!";
+            $error = $this->validasiJadwal($tanggal, $harga, $bus_id, $jam_berangkat, $asal, $tujuan);
+            if ($error) {
+                $_SESSION['error'] = $error;
             } else {
-                $data = [
-                    'bus_id' => $bus_id,
-                    'asal' => trim($_POST['asal'] ?? ''),
-                    'tujuan' => trim($_POST['tujuan'] ?? ''),
-                    'tanggal_keberangkatan' => $tanggal_keberangkatan,
-                    'jam_keberangkatan' => $jam_keberangkatan,
-                    'harga' => $harga,
-                    'kursi_tersedia' => $kursi_tersedia,
-                    'operator_id' => $operator_id
-                ];
-
-                if (empty($data['asal']) || empty($data['tujuan'])) {
-                     $_SESSION['error'] = "Asal dan tujuan tidak boleh kosong!";
-                } else {
-                    try {
-                        if ($this->operatorModel->tambahJadwal($data)) {
-                            $_SESSION['success'] = "Jadwal berhasil ditambahkan.";
-                        } else {
-                            $_SESSION['error'] = "Gagal menambahkan jadwal.";
-                        }
-                    } catch (Exception $e) {
-                        $_SESSION['error'] = "Terjadi kesalahan sistem.";
-                    }
+                try {
+                    $data = [
+                        'bus_id' => $bus_id,
+                        'asal' => $asal,
+                        'tujuan' => $tujuan,
+                        'tanggal' => $tanggal,
+                        'jam_berangkat' => $jam_berangkat,
+                        'harga' => $harga,
+                        'kursi_tersedia' => $kursi_tersedia,
+                        'operator_id' => $_SESSION['operator_id'],
+                    ];
+                    $ok = $this->operatorModel->tambahJadwal($data);
+                    $_SESSION[$ok ? 'success' : 'error'] = $ok ? 'Jadwal berhasil ditambahkan.' : 'Gagal menambahkan jadwal.';
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Terjadi kesalahan sistem.';
                 }
             }
-            header('Location: /gantiALS/ALS/index.php?controller=operator&action=jadwalList');
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=jadwalList');
             exit;
         }
     }
 
     public function jadwalEdit($id) {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $tanggal_keberangkatan = trim($_POST['tanggal_keberangkatan'] ?? '');
-            $harga = filter_var($_POST['harga'] ?? 0, FILTER_VALIDATE_FLOAT);
-            $bus_id = filter_var($_POST['bus_id'] ?? 0, FILTER_VALIDATE_INT);
-            $kursi_tersedia = filter_var($_POST['kursi_tersedia'] ?? 0, FILTER_VALIDATE_INT);
-            $jam_keberangkatan = trim($_POST['jam_keberangkatan'] ?? '');
+            $tanggal = trim($_POST['tanggal'] ?? '');
+            $harga = (float)($_POST['harga'] ?? 0);
+            $bus_id = (int)($_POST['bus_id'] ?? 0);
+            $kursi_tersedia = (int)($_POST['kursi_tersedia'] ?? 0);
+            $jam_berangkat = trim($_POST['jam_berangkat'] ?? '');
+            $asal = trim($_POST['asal'] ?? '');
+            $tujuan = trim($_POST['tujuan'] ?? '');
 
-            if (empty($tanggal_keberangkatan) || strtotime($tanggal_keberangkatan) < strtotime(date('Y-m-d'))) {
-                $_SESSION['error'] = "Tanggal keberangkatan tidak valid atau di masa lalu!";
-            } elseif ($harga === false || $harga <= 0) {
-                $_SESSION['error'] = "Harga harus lebih dari 0 dan berupa angka!";
-            } elseif ($bus_id === false || $bus_id <= 0) {
-                $_SESSION['error'] = "Bus harus dipilih!";
-            } elseif ($kursi_tersedia === false || $kursi_tersedia < 0) {
-                $_SESSION['error'] = "Jumlah kursi tidak valid!";
-            } elseif (empty($jam_keberangkatan) || !preg_match('/^(?:2[0-3]|[01][0-9]):[0-5][0-9](?::[0-5][0-9])?$/', $jam_keberangkatan)) {
-                $_SESSION['error'] = "Jam keberangkatan tidak valid!";
+            $error = $this->validasiJadwal($tanggal, $harga, $bus_id, $jam_berangkat, $asal, $tujuan);
+            if ($error) {
+                $_SESSION['error'] = $error;
             } else {
-                $data = [
-                    'bus_id' => $bus_id,
-                    'asal' => trim($_POST['asal'] ?? ''),
-                    'tujuan' => trim($_POST['tujuan'] ?? ''),
-                    'tanggal_keberangkatan' => $tanggal_keberangkatan,
-                    'jam_keberangkatan' => $jam_keberangkatan,
-                    'harga' => $harga,
-                    'kursi_tersedia' => $kursi_tersedia
-                ];
-
-                if (empty($data['asal']) || empty($data['tujuan'])) {
-                     $_SESSION['error'] = "Asal dan tujuan tidak boleh kosong!";
-                } else {
-                    try {
-                        if ($this->operatorModel->updateJadwal($id, $operator_id, $data)) {
-                            $_SESSION['success'] = "Jadwal berhasil diupdate.";
-                        } else {
-                            $_SESSION['error'] = "Gagal mengupdate jadwal.";
-                        }
-                    } catch (Exception $e) {
-                        $_SESSION['error'] = "Terjadi kesalahan sistem.";
-                    }
+                try {
+                    $data = [
+                        'bus_id' => $bus_id,
+                        'asal' => $asal,
+                        'tujuan' => $tujuan,
+                        'tanggal' => $tanggal,
+                        'jam_berangkat' => $jam_berangkat,
+                        'harga' => $harga,
+                        'kursi_tersedia' => $kursi_tersedia,
+                    ];
+                    $ok = $this->operatorModel->updateJadwal($id, $_SESSION['operator_id'], $data);
+                    $_SESSION[$ok ? 'success' : 'error'] = $ok ? 'Jadwal berhasil diupdate.' : 'Gagal mengupdate jadwal.';
+                } catch (Exception $e) {
+                    $_SESSION['error'] = 'Terjadi kesalahan sistem.';
                 }
             }
-            header('Location: /gantiALS/ALS/index.php?controller=operator&action=jadwalList');
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=jadwalList');
             exit;
         }
     }
 
     public function jadwalDelete($id) {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         try {
-            if ($this->operatorModel->hapusJadwal($id, $operator_id)) {
-                $_SESSION['success'] = "Jadwal berhasil dihapus.";
-            } else {
-                $_SESSION['error'] = "Gagal menghapus jadwal.";
-            }
+            $this->operatorModel->hapusJadwal($id, $_SESSION['operator_id']);
+            $_SESSION['success'] = 'Jadwal berhasil dihapus.';
         } catch (Exception $e) {
-            $_SESSION['error'] = "Terjadi kesalahan sistem.";
+            $_SESSION['error'] = 'Gagal menghapus jadwal. Pastikan jadwal tidak memiliki data pemesanan terkait.';
         }
-        header('Location: /gantiALS/ALS/index.php?controller=operator&action=jadwalList');
+        header('Location: ' . BASEURL . '/index.php?controller=operator&action=jadwalList');
         exit;
     }
 
     public function pemesananList() {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-        
-        $pemesananList = $this->operatorModel->getAllPemesanan($operator_id);
-
+        $pemesananList = $this->operatorModel->getAllPemesanan($_SESSION['operator_id']);
+        $success = $_SESSION['success'] ?? null;
+        unset($_SESSION['success']);
+        $error = $_SESSION['error'] ?? null;
+        unset($_SESSION['error']);
         require_once __DIR__ . '/../views/operator/operatorpemesanan.php';
     }
 
     public function pemesananVerifikasi($id) {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         try {
-            if ($this->operatorModel->updateStatusVerifikasi($id, $operator_id, 'Terverifikasi')) {
-                $_SESSION['success'] = "Pemesanan berhasil diverifikasi.";
-            } else {
-                $_SESSION['error'] = "Gagal memverifikasi pemesanan.";
-            }
+            $ok = $this->operatorModel->updateStatusVerifikasi($id, $_SESSION['operator_id'], 'Terverifikasi');
+            $_SESSION[$ok ? 'success' : 'error'] = $ok ? 'Pemesanan berhasil diverifikasi.' : 'Gagal memverifikasi pemesanan.';
         } catch (Exception $e) {
-            $_SESSION['error'] = "Terjadi kesalahan sistem.";
+            $_SESSION['error'] = 'Terjadi kesalahan sistem.';
         }
-        header('Location: /gantiALS/ALS/index.php?controller=operator&action=pemesananList');
+        header('Location: ' . BASEURL . '/index.php?controller=operator&action=pemesananList');
         exit;
     }
 
     public function pemesananTolak($id) {
         $this->checkSession();
-        $operator_id = $_SESSION['operator_id'];
-
         try {
-            if ($this->operatorModel->updateStatusVerifikasi($id, $operator_id, 'Ditolak')) {
-                $_SESSION['success'] = "Pemesanan berhasil ditolak.";
-            } else {
-                $_SESSION['error'] = "Gagal menolak pemesanan.";
-            }
+            $ok = $this->operatorModel->updateStatusVerifikasi($id, $_SESSION['operator_id'], 'Ditolak');
+            $_SESSION[$ok ? 'success' : 'error'] = $ok ? 'Pemesanan berhasil ditolak.' : 'Gagal menolak pemesanan.';
         } catch (Exception $e) {
-            $_SESSION['error'] = "Terjadi kesalahan sistem.";
+            $_SESSION['error'] = 'Terjadi kesalahan sistem.';
         }
-        header('Location: /gantiALS/ALS/index.php?controller=operator&action=pemesananList');
+        header('Location: ' . BASEURL . '/index.php?controller=operator&action=pemesananList');
+        exit;
+    }
+
+    public function profil() {
+        $this->checkSession();
+        $operator = $this->operatorModel->getOperatorById($_SESSION['operator_id']);
+        if (!$operator) {
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=dashboard');
+            exit;
+        }
+        $success_profil = $_SESSION['success_profil'] ?? null;
+        unset($_SESSION['success_profil']);
+        $error_profil = $_SESSION['error_profil'] ?? null;
+        unset($_SESSION['error_profil']);
+        $success_password = $_SESSION['success_password'] ?? null;
+        unset($_SESSION['success_password']);
+        $error_password = $_SESSION['error_password'] ?? null;
+        unset($_SESSION['error_password']);
+        require_once __DIR__ . '/../views/operator/operatorProfil.php';
+    }
+
+    public function prosesUbahProfil() {
+        $this->checkSession();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=profil');
+            exit;
+        }
+        $nama = trim($_POST['nama'] ?? '');
+        if (empty($nama)) {
+            $_SESSION['error_profil'] = 'Nama tidak boleh kosong.';
+        } elseif ($this->operatorModel->updateProfilOperator($_SESSION['operator_id'], $nama)) {
+            $_SESSION['nama_operator'] = $nama;
+            $_SESSION['success_profil'] = 'Nama berhasil diperbarui.';
+        } else {
+            $_SESSION['error_profil'] = 'Gagal memperbarui nama.';
+        }
+        header('Location: ' . BASEURL . '/index.php?controller=operator&action=profil');
+        exit;
+    }
+
+    public function prosesGantiPassword() {
+        $this->checkSession();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASEURL . '/index.php?controller=operator&action=profil');
+            exit;
+        }
+        $password_lama = $_POST['password_lama'] ?? '';
+        $password_baru = $_POST['password_baru'] ?? '';
+        $konfirmasi = $_POST['konfirmasi_password'] ?? '';
+        $hash_lama = $this->operatorModel->getPasswordOperatorById($_SESSION['operator_id']);
+
+        if (!password_verify($password_lama, $hash_lama)) {
+            $_SESSION['error_password'] = 'Password lama tidak sesuai.';
+        } elseif (strlen($password_baru) < 8) {
+            $_SESSION['error_password'] = 'Password baru minimal 8 karakter.';
+        } elseif ($password_baru !== $konfirmasi) {
+            $_SESSION['error_password'] = 'Konfirmasi password tidak cocok.';
+        } elseif ($this->operatorModel->updatePasswordOperator($_SESSION['operator_id'], $password_baru)) {
+            $_SESSION['success_password'] = 'Password berhasil diubah.';
+        } else {
+            $_SESSION['error_password'] = 'Gagal mengubah password.';
+        }
+        header('Location: ' . BASEURL . '/index.php?controller=operator&action=profil');
         exit;
     }
 
     public function login() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        
-        if (isset($_SESSION['operator_id'])) {
-            header('Location: /gantiALS/ALS/index.php?controller=operator&action=dashboard');
-            exit;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
-            $password = $_POST['password'] ?? '';
-            
-            if (!$email) {
-                 $_SESSION['error'] = "Format email tidak valid.";
-            } elseif (empty($password)) {
-                 $_SESSION['error'] = "Password tidak boleh kosong.";
-            } else {
-                try {
-                    $query = "SELECT * FROM operators WHERE email = ?";
-                    $stmt = $this->db->prepare($query);
-                    $stmt->execute([$email]);
-                    $operator = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                    if ($operator && password_verify($password, $operator['password_hash'])) {
-                        $_SESSION['operator_id'] = $operator['id'];
-                        $_SESSION['nama_operator'] = $operator['nama'];
-                        header('Location: /gantiALS/ALS/index.php?controller=operator&action=dashboard');
-                        exit;
-                    } else {
-                        $_SESSION['error'] = "Email atau password salah.";
-                    }
-                } catch (Exception $e) {
-                    $_SESSION['error'] = "Terjadi kesalahan sistem.";
-                }
-            }
-        }
-
-        require_once __DIR__ . '/../views/operator/operatorLogin.php';
+        header('Location: ' . BASEURL . '/index.php?controller=auth&action=login');
+        exit;
     }
 
     public function logout() {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         session_destroy();
-        header('Location: /gantiALS/ALS/index.php?controller=operator&action=login');
+        header('Location: ' . BASEURL . '/index.php?controller=auth&action=login');
         exit;
     }
 }
-?>

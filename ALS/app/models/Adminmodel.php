@@ -1,4 +1,4 @@
- <?php
+<?php
 class AdminModel {
     private $conn;
     private $table = 'admins';
@@ -7,90 +7,78 @@ class AdminModel {
         $this->conn = $db;
     }
 
-    public function getAllAdmins() {
-        $query = 'SELECT id, username, nama_lengkap, role, status, created_at
-                  FROM ' . $this->table . '
-                  ORDER BY created_at DESC';
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
+    public function getAdminByUsername($username) {
+        $stmt = $this->conn->prepare("SELECT * FROM {$this->table} WHERE username = :username LIMIT 1");
+        $stmt->execute([':username' => $username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getAdminById($id) {
-        $query = 'SELECT id, username, nama_lengkap, role, status
-                  FROM ' . $this->table . '
-                  WHERE id = :id LIMIT 1';
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
+        $stmt = $this->conn->prepare(
+            "SELECT id, username, nama_lengkap, status FROM {$this->table} WHERE id = :id LIMIT 1"
+        );
+        $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getAdminByUsername($username) {
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE username = :username LIMIT 1';
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':username', $username);
+    public function getAllAdmin() {
+        $stmt = $this->conn->prepare(
+            "SELECT id, username, nama_lengkap, status, created_at FROM {$this->table} ORDER BY created_at DESC"
+        );
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function countAdmins() {
-        $query = 'SELECT COUNT(*) as total FROM ' . $this->table;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['total'];
-    }
-
-    public function createAdmin($username, $nama_lengkap, $password, $role, $status) {
-        $query = 'INSERT INTO ' . $this->table . '
-                  (username, nama_lengkap, password, role, status)
-                  VALUES (:username, :nama_lengkap, :password, :role, :status)';
-        $stmt = $this->conn->prepare($query);
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $stmt->bindParam(':username',     $username);
-        $stmt->bindParam(':nama_lengkap', $nama_lengkap);
-        $stmt->bindParam(':password',     $hashed);
-        $stmt->bindParam(':role',         $role);
-        $stmt->bindParam(':status',       $status);
-        return $stmt->execute();
-    }
-
-    public function updateAdmin($id, $nama_lengkap, $role, $status, $password = null) {
-        if ($password) {
-            $query = 'UPDATE ' . $this->table . '
-                      SET nama_lengkap = :nama_lengkap, role = :role,
-                          status = :status, password = :password
-                      WHERE id = :id';
+    public function usernameExists($username, $exclude_id = null) {
+        if ($exclude_id) {
+            $stmt = $this->conn->prepare("SELECT id FROM {$this->table} WHERE username = :u AND id != :id LIMIT 1");
+            $stmt->execute([':u' => $username, ':id' => $exclude_id]);
         } else {
-            $query = 'UPDATE ' . $this->table . '
-                      SET nama_lengkap = :nama_lengkap, role = :role, status = :status
-                      WHERE id = :id';
+            $stmt = $this->conn->prepare("SELECT id FROM {$this->table} WHERE username = :u LIMIT 1");
+            $stmt->execute([':u' => $username]);
         }
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id',           $id);
-        $stmt->bindParam(':nama_lengkap', $nama_lengkap);
-        $stmt->bindParam(':role',         $role);
-        $stmt->bindParam(':status',       $status);
-        if ($password) {
-            $hashed = password_hash($password, PASSWORD_DEFAULT);
-            $stmt->bindParam(':password', $hashed);
+        return $stmt->fetch() !== false;
+    }
+
+    public function createAdmin($username, $password, $nama_lengkap) {
+        if ($this->usernameExists($username)) return false;
+
+        $stmt = $this->conn->prepare(
+            "INSERT INTO {$this->table} (username, password, nama_lengkap, role, status)
+             VALUES (:username, :password, :nama_lengkap, 'admin', 'aktif')"
+        );
+        return $stmt->execute([
+            ':username' => $username,
+            ':password' => password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]),
+            ':nama_lengkap' => $nama_lengkap,
+        ]);
+    }
+
+    public function updateAdmin($id, $data) {
+        $allowed = ['nama_lengkap', 'status'];
+        $sets = [];
+        $params = [':id' => $id];
+
+        foreach ($allowed as $field) {
+            if (isset($data[$field])) {
+                $sets[] = "$field = :$field";
+                $params[":$field"] = $data[$field];
+            }
         }
-        return $stmt->execute();
+        if (isset($data['password']) && !empty($data['password'])) {
+            $sets[] = 'password = :password';
+            $params[':password'] = password_hash($data['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+        }
+
+        if (empty($sets)) return false;
+
+        $stmt = $this->conn->prepare("UPDATE {$this->table} SET " . implode(', ', $sets) . " WHERE id = :id");
+        return $stmt->execute($params);
     }
 
     public function deleteAdmin($id) {
-        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
-        $stmt  = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
-        return $stmt->execute();
-    }
-
-    public function toggleStatus($id, $status) {
-        $query = 'UPDATE ' . $this->table . ' SET status = :status WHERE id = :id';
-        $stmt  = $this->conn->prepare($query);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':id',     $id);
-        return $stmt->execute();
+        $stmt = $this->conn->prepare("DELETE FROM {$this->table} WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        return $stmt->rowCount() > 0;
     }
 }

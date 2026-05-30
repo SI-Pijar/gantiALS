@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan Sistem - Admin Panel ALS</title>
-    <link rel="stylesheet" href="/gantiALS/ALS/public/css/admin.css">
+    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/admin.css?v=<?= time(); ?>">
 </head>
 <body>
 
     <div class="admin-sidebar">
         <h2>Admin Panel</h2>
-        <a href="/gantiALS/admin">Dashboard</a>
-        <a href="/gantiALS/admin/jadwal">Kelola Jadwal</a>
-        <a href="/gantiALS/admin/transaksi">Laporan Transaksi</a>
-        <a href="/gantiALS/admin/penumpang">Kelola Penumpang</a>
-        <a href="/gantiALS/admin/log">Log Sistem</a>
-        <a href="/gantiALS/admin/pengaturan">Pengaturan</a>
-        <a href="/gantiALS/index.php?controller=auth&action=logout" style="margin-top: 20px; color: #e74c3c;">Logout</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=dashboard">Dashboard</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=jadwal">Kelola Jadwal</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=transaksi">Laporan Transaksi</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang">Kelola Penumpang</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=operator">Kelola Operator</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=manajemenAdmin">Kelola Admin</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=log">Log Sistem</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=pengaturan">Pengaturan</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=auth&action=logout" class="link-logout">Logout</a>
     </div>
 
     <div class="admin-main">
@@ -25,19 +27,15 @@
             <span>Selamat datang, <?php echo htmlspecialchars($_SESSION['admin_nama'] ?? 'Admin'); ?></span>
         </div>
 
-        <?php if (!empty($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?></div>
+        <?php if ($success): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
         <?php endif; ?>
-        <?php if (!empty($_SESSION['error'])): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?></div>
+        <?php if ($error): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
         <div class="admin-form">
-            <form action="/gantiALS/admin/pengaturan" method="POST">
-                <div class="form-group">
-                    <label for="nama_aplikasi">Nama Aplikasi</label>
-                    <input type="text" id="nama_aplikasi" name="nama_aplikasi" value="<?= htmlspecialchars($settings['nama_aplikasi'] ?? $settings['nama_situs'] ?? 'ALS') ?>">
-                </div>
+            <form action="<?= BASEURL; ?>/index.php?controller=admin&action=pengaturan" method="POST">
                 <div class="form-group">
                     <label for="email_support">Email Support</label>
                     <input type="email" id="email_support" name="email_support" value="<?= htmlspecialchars($settings['email_support'] ?? $settings['email_kontak'] ?? 'info@als.co.id') ?>">
@@ -50,7 +48,7 @@
                     <label for="alamat">Alamat</label>
                     <textarea id="alamat" name="alamat" rows="3"><?= htmlspecialchars($settings['alamat'] ?? '') ?></textarea>
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
+                <div class="form-group mt-15">
                     <button type="submit" class="btn btn-primary">Simpan Pengaturan</button>
                 </div>
             </form>

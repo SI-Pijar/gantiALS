@@ -6,63 +6,65 @@
     <title>Sistem Informasi Pemesanan Tiket - PT. Antar Lintas Sumatera</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<<<<<<< HEAD
-    <link rel="stylesheet" href="/gantiALS/ALS/public/css/penumpang.css" />
-=======
-    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpang.css" />
->>>>>>> b707894dbeeb19f3b91a36119529d92c5c40b53a
-    <link rel="stylesheet" href="<?= BASEURL; ?>/css/penumpangTambahan.css" />
+<link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/penumpang.css?v=<?= time(); ?>" />
   </head>
   <body>
-    
-    <div class="BagianPalingAtasHalaman">
-      <div class="WadahPembatasLebarKonten">
+
+    <div class="topbar">
+      <div class="container">
 
         <div>
           <i class="fa-solid fa-headset"></i>
           Layanan Pelanggan 24 Jam: <strong>0821-3825-9191</strong>
         </div>
 
-        <div class="GrupLinkNavigasiKecil">
-          <a href="#">
-            <i class="fa-solid fa-mobile-screen"></i> Unduh Aplikasi
-            <span class="BadgeBaru">BARU</span>
-          </a>
-          <a href="#">IDR - Rupiah</a>
-          <a href="#">Pusat Bantuan</a>
-          <a href="#">Cek Pesanan Saya</a>
+        <div class="topbar-links">
+          <?php if (isset($_SESSION['penumpang_id'])): ?>
+            <span><i class="fa-solid fa-circle-user"></i> Halo, <?= htmlspecialchars($_SESSION['penumpang_name'] ?? '') ?></span>
+          <?php else: ?>
+            <a href="#"><i class="fa-solid fa-mobile-screen"></i> Unduh Aplikasi <span class="badge-baru">BARU</span></a>
+            <a href="#">IDR - Rupiah</a>
+            <a href="#">Pusat Bantuan</a>
+            <a href="#">Cek Pesanan Saya</a>
+          <?php endif; ?>
         </div>
-        
+
       </div>
     </div>
 
-    <nav class="BatangNavigasiUtama">
-      <div class="WadahPembatasLebarKonten">
+    <nav class="navbar">
+      <div class="container">
 
-        <div class="ElemenLogoPerusahaan">
-          <img src="<?= BASEURL; ?>/gambar/logo als.jpg" alt="Logo ALS" width="58" height="58" />
-          <div class="WadahTeksLogo">
+        <div class="logo">
+          <img src="<?= BASEURL; ?>/ALS/public/gambar/logo als.jpg" alt="Logo ALS" width="58" height="58" />
+          <div class="logo-text">
             <h1>ALS</h1>
             <p>Bekerjasama Dan Sama-Sama Bekerja</p>
           </div>
         </div>
 
-        <div class="DaftarMenuNavigasi">
-          <a href="<?= BASEURL; ?>/index.php?page=home" class="MenuSaatIni">Tiket Bus</a>
+        <div class="nav-menu">
+          <a href="<?= BASEURL; ?>/index.php?page=home" class="menu-aktif">Tiket Bus</a>
           <a href="#kelas">Kelas Armada</a>
           <a href="#agen">Jaringan Agen</a>
         </div>
 
-        <div class="grup-tombol-pendaftaran">
-          <a href="#" class="TombolTipeGarisTepi">Daftar Akun</a>
-          <a href="#" class="TombolTipeWarnaBiru">Masuk</a>
+        <div class="nav-auth">
+          <?php if (isset($_SESSION['penumpang_id'])): ?>
+            <a href="<?= BASEURL; ?>/index.php?page=riwayat" class="btn-outline">Pesanan Saya</a>
+            <a href="<?= BASEURL; ?>/index.php?page=profil" class="btn-outline">Profil</a>
+            <a href="<?= BASEURL; ?>/index.php?controller=auth&action=logout" class="btn-biru">Keluar</a>
+          <?php else: ?>
+            <a href="<?= BASEURL; ?>/index.php?controller=auth&action=login" class="btn-outline">Masuk</a>
+            <a href="<?= BASEURL; ?>/index.php?controller=auth&action=register" class="btn-biru">Daftar</a>
+          <?php endif; ?>
         </div>
       </div>
     </nav>
 
-    <header class="AreaBannerHeroUtama BgBannerHero">
-      <div class="WadahPembatasLebarKonten">
-        <div class="WadahTeksPromosiHero">
+    <header class="hero hero-bg">
+      <div class="container">
+        <div class="hero-text">
           <h2>Jelajahi Nusantara dengan Nyaman</h2>
           <p>
             Nikmati kemudahan pesan tiket bus PO ALS secara daring. Tersedia
@@ -74,24 +76,24 @@
     </header>
 
     <main>
-      <div class="WadahPembatasLebarKonten">
-        <div class="AreaKotakPencarianInteraktif">
-          <div class="LabelIdentitasTabPencarian">
+      <div class="container">
+        <div class="search-box">
+          <div class="search-tab">
             <i class="fa-regular fa-calendar-check"></i> Pencarian Tiket Bus
           </div>
 
-          <div class="BingkaiPutihFormulirPencarian">
-            <form action="<?= BASEURL; ?>/index.php" method="GET" class="TataLetakFormulirDuaBaris">
+          <div class="search-form">
+            <form action="<?= BASEURL; ?>/index.php" method="GET" class="form-layout">
               <input type="hidden" name="page" value="jadwal">
-              <div class="BarisFormulirKe1">
-                <div class="DesainInputBentukLonjong">
-                  <div class="WadahIkonDalamInput">
+              <div class="form-row-1">
+                <div class="input-oval">
+                  <div class="input-icon">
                     <i class="fa-solid fa-location-dot"></i>
                   </div>
 
-                  <div class="WadahTeksDalamLonjong">
-                    <label class="LabelKecilDiAtasInput">Kota Asal</label>
-                    <select name="asal" class="ElemenInputFormUtama" required>
+                  <div class="input-text">
+                    <label class="input-label">Kota Asal</label>
+                    <select name="asal" class="input-main" required>
                       <option value="" disabled selected>
                         Pilih Kota Keberangkatan
                       </option>
@@ -101,18 +103,18 @@
                     </select>
                   </div>
 
-                  <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
+                  <i class="fa-solid fa-chevron-down icon-panah"></i>
 
                 </div>
 
-                <div class="DesainInputBentukLonjong">
-                  <div class="WadahIkonDalamInput">
+                <div class="input-oval">
+                  <div class="input-icon">
                     <i class="fa-solid fa-location-crosshairs"></i>
                   </div>
 
-                  <div class="WadahTeksDalamLonjong">
-                    <label class="LabelKecilDiAtasInput">Kota Tujuan</label>
-                    <select name="tujuan" class="ElemenInputFormUtama" required>
+                  <div class="input-text">
+                    <label class="input-label">Kota Tujuan</label>
+                    <select name="tujuan" class="input-main" required>
                       <option value="" disabled selected>
                         Pilih Destinasi Tujuan
                       </option>
@@ -122,24 +124,51 @@
                     </select>
                   </div>
 
-                  <i class="fa-solid fa-chevron-down IkonPanahKecil"></i>
+                  <i class="fa-solid fa-chevron-down icon-panah"></i>
 
                 </div>
               </div>
-              
-              <div class="BarisFormulirKe2">
-                <div class="DesainInputBentukLonjong">
-                  <div class="WadahIkonDalamInput">
+
+              <div class="form-row-2">
+                <div class="input-oval">
+                  <div class="input-icon">
                     <i class="fa-regular fa-calendar-days"></i>
                   </div>
-                  <div class="WadahTeksDalamLonjong">
-                    <label class="LabelKecilDiAtasInput">Tanggal Pergi</label>
-                    <input type="date" name="tanggal" class="ElemenInputFormUtama" />
+                  <div class="input-text">
+                    <label class="input-label">Tanggal Pergi</label>
+                    <input type="date" name="tanggal" class="input-main" />
                   </div>
                 </div>
-                
-                <button type="submit" class="TombolProsesPencarianOranye">
-                  <i class="fa-solid fa-magnifying-glass"></i> CARI JADWAL BUS
+
+                <div class="input-oval">
+                  <div class="input-icon">
+                    <i class="fa-solid fa-users"></i>
+                  </div>
+                  <div class="input-text">
+                    <label class="input-label">Penumpang</label>
+                    <input type="number" name="penumpang" min="1" max="4" value="1" class="input-main" />
+                  </div>
+                </div>
+
+                <div class="input-oval">
+                  <div class="input-icon">
+                    <i class="fa-solid fa-bus"></i>
+                  </div>
+                  <div class="input-text">
+                    <label class="input-label">Kelas Armada</label>
+                    <select name="kelas" class="input-main">
+                      <option value="">Semua Kelas</option>
+                      <option value="Super Executive">Super Executive</option>
+                      <option value="Executive Class">Executive Class</option>
+                      <option value="Patas AC">Patas AC</option>
+                      <option value="Ekonomi AC">Ekonomi AC</option>
+                    </select>
+                  </div>
+                  <i class="fa-solid fa-chevron-down icon-panah"></i>
+                </div>
+
+                <button type="submit" class="btn-cari">
+                  <i class="fa-solid fa-magnifying-glass"></i> CARI JADWAL
                 </button>
               </div>
             </form>
@@ -147,7 +176,7 @@
         </div>
 
         <section id="kelas">
-          <div class="KepalaSeksiTengah">
+          <div class="section-header">
             <h2>Layanan Kelas Armada ALS</h2>
             <p>
               Kami menghadirkan berbagai pilihan standar pelayanan untuk kenyamanan
@@ -155,57 +184,57 @@
             </p>
           </div>
 
-          <div class="TataLetakGridArmada">
-            <div class="KartuInformasiArmada">
-              <div class="WadahIkonArmadaBulat">
+          <div class="armada-grid">
+            <div class="armada-card">
+              <div class="armada-icon">
                 <i class="fa-solid fa-crown"></i>
               </div>
-              <h4 class="JudulTeksArmada">Super Executive</h4>
-              <p class="TeksKeteranganFasilitas">
+              <h4 class="armada-title">Super Executive</h4>
+              <p class="armada-desc">
                 Konfigurasi kursi 2-1 ekstra lega, fasilitas AC, Toilet, Bantal,
                 Selimut, Leg Rest, & Snack perjalanan.
               </p>
             </div>
 
-            <div class="KartuInformasiArmada">
-              <div class="WadahIkonArmadaBulat">
+            <div class="armada-card">
+              <div class="armada-icon">
                 <i class="fa-solid fa-gem"></i>
               </div>
-              <h4 class="JudulTeksArmada">Executive Class</h4>
-              <p class="TeksKeteranganFasilitas">
+              <h4 class="armada-title">Executive Class</h4>
+              <p class="armada-desc">
                 Susunan kursi 2-2 yang empuk, AC dingin, Toilet bersih, Reclining
                 Seat, serta hiburan Audio/Video.
               </p>
             </div>
 
-            <div class="KartuInformasiArmada">
-              <div class="WadahIkonArmadaBulat">
+            <div class="armada-card">
+              <div class="armada-icon">
                 <i class="fa-solid fa-snowflake"></i>
               </div>
-              <h4 class="JudulTeksArmada">Patas AC</h4>
-              <p class="TeksKeteranganFasilitas">
+              <h4 class="armada-title">Patas AC</h4>
+              <p class="armada-desc">
                 Kursi nyaman 2-2, penyejuk udara sentral, tanpa toilet dalam bus
                 (berhenti di tempat istirahat resmi).
               </p>
             </div>
 
-            <div class="KartuInformasiArmada">
-              <div class="WadahIkonArmadaBulat">
+            <div class="armada-card">
+              <div class="armada-icon">
                 <i class="fa-solid fa-wind"></i>
               </div>
-              <h4 class="JudulTeksArmada">Ekonomi AC</h4>
-              <p class="TeksKeteranganFasilitas">
+              <h4 class="armada-title">Ekonomi AC</h4>
+              <p class="armada-desc">
                 Pilihan armada hemat yang sudah dilengkapi penyejuk udara (AC)
                 dengan susunan kursi baris 2-2 atau 2-3.
               </p>
             </div>
 
-            <div class="KartuInformasiArmada">
-              <div class="WadahIkonArmadaBulat">
+            <div class="armada-card">
+              <div class="armada-icon">
                 <i class="fa-solid fa-bus-simple"></i>
               </div>
-              <h4 class="JudulTeksArmada">Ekonomi Non-AC</h4>
-              <p class="TeksKeteranganFasilitas">
+              <h4 class="armada-title">Ekonomi Non-AC</h4>
+              <p class="armada-desc">
                 Tarif paling kompetitif dan terjangkau dengan sirkulasi udara alami
                 untuk rute jarak menengah.
               </p>
@@ -214,7 +243,7 @@
         </section>
 
         <section id="agen">
-          <div class="BarisJudulSeksiAgen">
+          <div class="agen-header">
             <h2>Jaringan Agen Resmi</h2>
             <p>
               PT Antar Lintas Sumatera mengelola jaringan agen perwakilan yang
@@ -222,63 +251,63 @@
             </p>
           </div>
 
-          <div class="TataLetakGridAgen">
-            <div class="KartuWilayahAgen">
-              <div class="KontenInformasiAgen">
-                <span class="LabelIdentifikasiLokasi">WILAYAH</span>
-                <h4 class="NamaAreaAgen">Pulau Sumatera</h4>
-                <div class="GarisPembatasOranye"></div>
-                <p class="JumlahTitikKantorAgen">35 Lokasi Agen</p>
+          <div class="agen-grid">
+            <div class="agen-card">
+              <div class="agen-info">
+                <span class="agen-label">WILAYAH</span>
+                <h4 class="agen-nama">Pulau Sumatera</h4>
+                <div class="divider-orange"></div>
+                <p class="agen-count">35 Lokasi Agen</p>
               </div>
-              <img src="<?= BASEURL; ?>/gambar/foto1.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/ALS/public/gambar/foto1.jpg" class="agen-img" />
             </div>
 
-            <div class="KartuWilayahAgen">
-              <div class="KontenInformasiAgen">
-                <span class="LabelIdentifikasiLokasi">WILAYAH</span>
-                <h4 class="NamaAreaAgen">Pulau Jawa</h4>
-                <div class="GarisPembatasOranye"></div>
-                <p class="JumlahTitikKantorAgen">22 Lokasi Agen</p>
+            <div class="agen-card">
+              <div class="agen-info">
+                <span class="agen-label">WILAYAH</span>
+                <h4 class="agen-nama">Pulau Jawa</h4>
+                <div class="divider-orange"></div>
+                <p class="agen-count">22 Lokasi Agen</p>
               </div>
-              <img src="<?= BASEURL; ?>/gambar/foto2.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/ALS/public/gambar/foto2.jpg" class="agen-img" />
             </div>
 
-            <div class="KartuWilayahAgen">
-              <div class="KontenInformasiAgen">
-                <span class="LabelIdentifikasiLokasi">WILAYAH</span>
-                <h4 class="NamaAreaAgen">Jabodetabek</h4>
-                <div class="GarisPembatasOranye"></div>
-                <p class="JumlahTitikKantorAgen">15 Lokasi Agen</p>
+            <div class="agen-card">
+              <div class="agen-info">
+                <span class="agen-label">WILAYAH</span>
+                <h4 class="agen-nama">Jabodetabek</h4>
+                <div class="divider-orange"></div>
+                <p class="agen-count">15 Lokasi Agen</p>
               </div>
-              <img src="<?= BASEURL; ?>/gambar/foto3.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/ALS/public/gambar/foto3.jpg" class="agen-img" />
             </div>
 
-            <div class="KartuWilayahAgen">
-              <div class="KontenInformasiAgen">
-                <span class="LabelIdentifikasiLokasi">WILAYAH</span>
-                <h4 class="NamaAreaAgen">Pulau Bali</h4>
-                <div class="GarisPembatasOranye"></div>
-                <p class="JumlahTitikKantorAgen">1 Lokasi Agen</p>
+            <div class="agen-card">
+              <div class="agen-info">
+                <span class="agen-label">WILAYAH</span>
+                <h4 class="agen-nama">Pulau Bali</h4>
+                <div class="divider-orange"></div>
+                <p class="agen-count">1 Lokasi Agen</p>
               </div>
-              <img src="<?= BASEURL; ?>/gambar/foto4.jpg" class="ElemenGambarWilayahAgen" />
+              <img src="<?= BASEURL; ?>/ALS/public/gambar/foto4.jpg" class="agen-img" />
             </div>
           </div>
         </section>
       </div>
     </main>
 
-    <footer class="ElemenFooterPalingBawah">
-      <div class="WadahPembatasLebarKonten">
-        <div class="TataLetakGridFooter">
-          <div class="WadahBrandDiFooter">
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
             <h2>ALS Official</h2>
-            <p class="TeksDeskripsiFooter">
+            <p class="footer-desc">
               Portal resmi sistem informasi dan pemesanan tiket PT. Antar Lintas
               Sumatera. Kami berkomitmen menyediakan layanan transportasi darat
               yang aman dan andal.
             </p>
           </div>
-          <div class="KolomInformasiFooter">
+          <div class="footer-col">
             <h4>PRODUK & LAYANAN</h4>
             <ul>
               <li><a href="#kelas">Super Executive</a></li>
@@ -287,21 +316,21 @@
               <li><a href="#kelas">Ekonomi</a></li>
             </ul>
           </div>
-          <div class="KolomInformasiFooter">
+          <div class="footer-col">
             <h4>PUSAT INFORMASI</h4>
             <ul>
               <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
               <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
             </ul>
           </div>
-          <div class="KolomInformasiFooter">
+          <div class="footer-col">
             <h4>KEAMANAN TRANSAKSI</h4>
-            <div class="IkonPembayaran">
+            <div class="payment-icons">
               <i class="fa-brands fa-cc-visa"></i><i class="fa-brands fa-cc-mastercard"></i>
             </div>
           </div>
         </div>
-        <div class="WadahHakCiptaBawah">
+        <div class="footer-copy">
           Copyright &copy; 2026 PT. Antar Lintas Sumatera.
         </div>
       </div>
