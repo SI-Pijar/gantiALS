@@ -63,6 +63,12 @@ class OperatorModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getBusById($id, $operator_id) {
+        $stmt = $this->conn->prepare("SELECT * FROM bus WHERE id = ? AND operator_id = ? LIMIT 1");
+        $stmt->execute([$id, $operator_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getBusAktifByOperator($operator_id) {
         $stmt = $this->conn->prepare("SELECT * FROM bus WHERE status_bus = 'Aktif' AND operator_id = ?");
         $stmt->execute([$operator_id]);

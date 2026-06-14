@@ -53,15 +53,13 @@
                     <tr>
                         <td><?= htmlspecialchars($a['username']) ?></td>
                         <td><?= htmlspecialchars($a['nama_lengkap']) ?></td>
-                        <td><?= ucfirst($a['role']) ?></td>
-                        <td><?= ucfirst($a['status']) ?></td>
+                        <td><?= ucfirst($a['role'] ?? '') ?></td>
+                        <td><?= ucfirst($a['status'] ?? '') ?></td>
                         <td><?= date('d M Y', strtotime($a['created_at'])) ?></td>
                         <td>
                             <a href="<?= BASEURL ?>/index.php?controller=admin&action=manajemenAdmin&sub_action=edit&id=<?= $a['id'] ?>" class="btn btn-warning">Edit</a>
                             <?php if ($a['id'] != $_SESSION['admin_id']): ?>
-                            <a href="<?= BASEURL ?>/index.php?controller=admin&action=manajemenAdmin&sub_action=delete&id=<?= $a['id'] ?>"
-                               class="btn btn-danger"
-                               onclick="return confirm('Yakin hapus akun admin ini?')">Hapus</a>
+                            <a href="<?= BASEURL ?>/index.php?controller=admin&action=manajemenAdmin&sub_action=delete&id=<?= $a['id'] ?>" class="btn btn-danger">Hapus</a>
                             <?php endif; ?>
                         </td>
                     </tr>

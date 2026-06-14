@@ -19,7 +19,10 @@ class JadwalModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function searchJadwal($asal, $tujuan, $tanggal) {
+    public function searchJadwal($asal, $tujuan, $tanggal, $kelas = null, $waktu = null) {
+        if ($kelas !== null && empty($kelas)) return [];
+        if ($waktu !== null && empty($waktu)) return [];
+
         $query = "SELECT j.*, b.kelas_bus, b.no_polisi, b.kapasitas
                   FROM {$this->table} j
                   LEFT JOIN bus b ON j.bus_id = b.id
@@ -37,6 +40,23 @@ class JadwalModel {
         if (!empty($tanggal)) {
             $query .= ' AND j.tanggal = :tanggal';
             $params[':tanggal'] = $tanggal;
+        }
+        if (!empty($kelas)) {
+            $ph = [];
+            foreach ($kelas as $i => $k) {
+                $ph[] = ':kelas' . $i;
+                $params[':kelas' . $i] = $k;
+            }
+            $query .= ' AND b.kelas_bus IN (' . implode(', ', $ph) . ')';
+        }
+        if (!empty($waktu)) {
+            $wc = [];
+            foreach ($waktu as $w) {
+                if ($w === 'pagi')  $wc[] = "(j.jam_berangkat >= '05:00:00' AND j.jam_berangkat < '12:00:00')";
+                if ($w === 'siang') $wc[] = "(j.jam_berangkat >= '12:00:00' AND j.jam_berangkat < '18:00:00')";
+                if ($w === 'malam') $wc[] = "(j.jam_berangkat >= '18:00:00' OR j.jam_berangkat < '05:00:00')";
+            }
+            if (!empty($wc)) $query .= ' AND (' . implode(' OR ', $wc) . ')';
         }
 
         $query .= ' ORDER BY j.tanggal ASC, j.jam_berangkat ASC';
@@ -67,23 +87,6 @@ class JadwalModel {
         );
         $stmt->execute([':id' => $id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function createJadwal($asal, $tujuan, $tanggal, $jam_berangkat, $harga, $kursi, $status) {
-        $stmt = $this->conn->prepare(
-            "INSERT INTO {$this->table}
-             (asal, tujuan, tanggal, jam_berangkat, harga, kursi_tersedia, status)
-             VALUES (:asal, :tujuan, :tanggal, :jam_berangkat, :harga, :kursi, :status)"
-        );
-        return $stmt->execute([
-            ':asal' => $asal,
-            ':tujuan' => $tujuan,
-            ':tanggal' => $tanggal,
-            ':jam_berangkat' => $jam_berangkat,
-            ':harga' => $harga,
-            ':kursi' => $kursi,
-            ':status' => $status,
-        ]);
     }
 
     public function updateJadwal($id, $asal, $tujuan, $tanggal, $jam_berangkat, $harga, $kursi, $status) {

@@ -33,11 +33,29 @@ class PenumpangController {
     }
 
     public function jadwal() {
-        $asal = trim($_GET['asal'] ?? '');
-        $tujuan = trim($_GET['tujuan'] ?? '');
-        $tanggal = $_GET['tanggal'] ?? '';
+        $asal    = trim($_GET['asal']    ?? '');
+        $tujuan  = trim($_GET['tujuan']  ?? '');
+        $tanggal = trim($_GET['tanggal'] ?? '');
 
-        $jadwals = $this->jadwalModel->searchJadwal($asal, $tujuan, $tanggal);
+        $semua_kelas = ['Super Executive', 'Executive Class', 'Patas AC', 'Ekonomi AC', 'Ekonomi Non-AC'];
+        $semua_waktu = ['pagi', 'siang', 'malam'];
+
+        if (isset($_GET['filter_aktif'])) {
+            $filter_kelas = isset($_GET['kelas'])
+                ? array_values(array_intersect((array)$_GET['kelas'], $semua_kelas))
+                : [];
+            $filter_waktu = isset($_GET['waktu'])
+                ? array_values(array_intersect((array)$_GET['waktu'], $semua_waktu))
+                : [];
+        } else {
+            $kelas_awal = trim($_GET['kelas'] ?? '');
+            $filter_kelas = ($kelas_awal && in_array($kelas_awal, $semua_kelas))
+                ? [$kelas_awal]
+                : $semua_kelas;
+            $filter_waktu = $semua_waktu;
+        }
+
+        $jadwals = $this->jadwalModel->searchJadwal($asal, $tujuan, $tanggal, $filter_kelas, $filter_waktu);
         require_once __DIR__ . '/../views/penumpang/penumpangJadwal.php';
     }
 

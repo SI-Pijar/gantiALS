@@ -56,9 +56,7 @@
                         <td><?= date('d M Y', strtotime($op['created_at'])) ?></td>
                         <td>
                             <a href="<?= BASEURL ?>/index.php?controller=admin&action=operator&sub_action=edit&id=<?= $op['id'] ?>" class="btn btn-warning">Edit</a>
-                            <a href="<?= BASEURL ?>/index.php?controller=admin&action=operator&sub_action=delete&id=<?= $op['id'] ?>"
-                               class="btn btn-danger"
-                               onclick="return confirm('Yakin hapus operator <?= htmlspecialchars($op['nama']) ?>?')">Hapus</a>
+                            <a href="<?= BASEURL ?>/index.php?controller=admin&action=operator&sub_action=delete&id=<?= $op['id'] ?>" class="btn btn-danger">Hapus</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

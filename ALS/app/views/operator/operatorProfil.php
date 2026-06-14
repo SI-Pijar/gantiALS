@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Profil Saya - Operator ALS</title>
-    <link rel="stylesheet" href="<?= BASEURL ?>/ALS/public/css/operator.css?v=4">
+    <link rel="stylesheet" href="<?= BASEURL ?>/ALS/public/css/operator.css?v=<?= time() ?>">
 </head>
 <body>
     <div class="sidebar">
@@ -29,11 +29,11 @@
         <div class="card">
             <h3>Data Akun</h3>
 
-            <?php if ($successProfil): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($successProfil) ?></div>
+            <?php if ($success_profil): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($success_profil) ?></div>
             <?php endif; ?>
-            <?php if ($errorProfil): ?>
-                <div class="alert alert-error"><?= htmlspecialchars($errorProfil) ?></div>
+            <?php if ($error_profil): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($error_profil) ?></div>
             <?php endif; ?>
 
             <p class="info-akun">
@@ -41,17 +41,23 @@
                 Email: <strong><?= htmlspecialchars($operator['email'] ?? '') ?></strong>
             </p>
 
-            <p class="info-nama-perusahaan">Nama Perusahaan: <strong><?= htmlspecialchars($operator['nama'] ?? '') ?></strong></p>
+            <form action="<?= BASEURL ?>/index.php?controller=operator&action=prosesUbahProfil" method="POST">
+                <div class="form-group">
+                    <label>Nama Perusahaan</label>
+                    <input type="text" name="nama" value="<?= htmlspecialchars($operator['nama'] ?? '') ?>" required>
+                </div>
+                <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+            </form>
         </div>
 
         <div class="card">
             <h3>Ganti Password</h3>
 
-            <?php if ($successPassword): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($successPassword) ?></div>
+            <?php if ($success_password): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($success_password) ?></div>
             <?php endif; ?>
-            <?php if ($errorPassword): ?>
-                <div class="alert alert-error"><?= htmlspecialchars($errorPassword) ?></div>
+            <?php if ($error_password): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($error_password) ?></div>
             <?php endif; ?>
 
             <form action="<?= BASEURL ?>/index.php?controller=operator&action=prosesGantiPassword" method="POST">

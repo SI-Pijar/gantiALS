@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Metode Pembayaran - PT. Antar Lintas Sumatera</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/penumpang.css" />
+<link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/penumpang.css?v=<?= time(); ?>" />
   </head>
   <body>
     <div class="topbar">
@@ -18,10 +18,7 @@
           <?php if (isset($_SESSION['penumpang_id'])): ?>
             <span><i class="fa-solid fa-circle-user"></i> Halo, <?= htmlspecialchars($_SESSION['penumpang_name'] ?? '') ?></span>
           <?php else: ?>
-            <a href="#"><i class="fa-solid fa-mobile-screen"></i> Unduh Aplikasi <span class="badge-baru">BARU</span></a>
-            <a href="#">IDR - Rupiah</a>
-            <a href="#">Pusat Bantuan</a>
-            <a href="#">Cek Pesanan Saya</a>
+            <a href="<?= BASEURL; ?>/index.php?controller=auth&action=login">Cek Pesanan Saya</a>
           <?php endif; ?>
         </div>
       </div>
@@ -55,44 +52,41 @@
     </nav>
 
     <main class="container page-content">
+        <form action="<?= BASEURL; ?>/index.php?page=proses_pembayaran" method="POST">
+        <input type="hidden" name="id_pemesanan" value="<?= $pesanan['id'] ?>">
         <div class="payment-layout">
             <div class="payment-method">
-                <form action="<?= BASEURL; ?>/index.php?page=proses_pembayaran" method="POST" id="formBayar">
-                <input type="hidden" name="id_pemesanan" value="<?= $pesanan['id'] ?>">
-                <input type="hidden" name="metode_pembayaran" id="metodePembayaran" value="bca">
                 <h3>Pilih Metode Pembayaran</h3>
 
-                <div class="payment-card aktif" data-metode="bca">
+                <label class="payment-card">
+                    <input type="radio" name="metode_pembayaran" value="bca" checked>
                     <div class="payment-logo"><i class="fa-solid fa-building-columns"></i></div>
                     <div class="payment-info">
                         <h4>Virtual Account BCA</h4>
                         <p>Bayar dengan transfer dari ATM atau m-Banking BCA.</p>
                     </div>
                     <i class="fa-solid fa-chevron-right panah-pilih"></i>
-                </div>
+                </label>
 
-                <div class="payment-card" data-metode="mandiri">
+                <label class="payment-card">
+                    <input type="radio" name="metode_pembayaran" value="mandiri">
                     <div class="payment-logo"><i class="fa-solid fa-building-columns"></i></div>
                     <div class="payment-info">
                         <h4>Virtual Account Mandiri</h4>
                         <p>Bayar dengan transfer dari ATM atau Livin' by Mandiri.</p>
                     </div>
                     <i class="fa-solid fa-chevron-right panah-pilih"></i>
-                </div>
+                </label>
             </div>
 
             <aside class="summary-panel">
                 <div class="summary-card">
-                    <div class="payment-timer">
-                        <i class="fa-regular fa-clock"></i>
-                        Selesaikan pembayaran dalam <strong>23:59:10</strong>
-                    </div>
                     <h4>Ringkasan Pesanan</h4>
 
                     <div class="trip-info">
                         <p class="rute"><?= htmlspecialchars($pesanan['asal']) ?> &rarr; <?= htmlspecialchars($pesanan['tujuan']) ?></p>
                         <p class="tanggal-waktu"><?= date('d M Y', strtotime($pesanan['tanggal'] ?? 'now')) ?>, <?= isset($pesanan['jam_berangkat']) ? substr($pesanan['jam_berangkat'], 0, 5) : '-' ?> WIB</p>
-                        <p class="bus-info"><i class="fa-solid fa-bus"></i> Reguler</p>
+                        <p class="bus-info"><i class="fa-solid fa-bus"></i> <?= htmlspecialchars($pesanan['kelas_bus'] ?? '-') ?></p>
                     </div>
 
                     <div class="divider"></div>
@@ -111,23 +105,11 @@
 
                     <button type="submit" class="btn-bayar btn-full-click">BAYAR SEKARANG</button>
                 </div>
-                </form>
             </aside>
         </div>
+        </form>
     </main>
 
-    <script>
-        const kartuMetode = document.querySelectorAll('.payment-card');
-        const inputMetode = document.getElementById('metodePembayaran');
-
-        kartuMetode.forEach(kartu => {
-            kartu.addEventListener('click', () => {
-                kartuMetode.forEach(k => k.classList.remove('aktif'));
-                kartu.classList.add('aktif');
-                inputMetode.value = kartu.getAttribute('data-metode');
-            });
-        });
-    </script>
     <footer class="footer">
       <div class="container">
         <div class="footer-grid">
@@ -149,10 +131,10 @@
             </ul>
           </div>
           <div class="footer-col">
-            <h4>PUSAT INFORMASI</h4>
+            <h4>AKUN SAYA</h4>
             <ul>
-              <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
-              <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?controller=auth&action=login">Masuk / Daftar</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=riwayat">Cek Pesanan Saya</a></li>
             </ul>
           </div>
           <div class="footer-col">

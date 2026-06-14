@@ -341,7 +341,11 @@ body:has(.login-card) {
 .stat-box-red { background: #dc3545; }
 .info-akun { color: #64748b; margin-bottom: 16px; }
 .info-nama-perusahaan { color: #64748b; margin-bottom: 4px; }
-.kapasitas-info { margin: 4px 0; font-weight: 600; color: #1e293b; }
-.info-kecil { color: #64748b; }
-.input-readonly { background: #f1f5f9; cursor: not-allowed; }
-.tersembunyi { display: none; }
+body.konfirmasi-page { justify-content: center; align-items: center; }
+.konfirmasi-card { background: #ffffff; border-radius: 12px; padding: 40px; max-width: 420px; width: 100%; text-align: center; box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+.konfirmasi-ikon { width: 60px; height: 60px; border-radius: 50%; background: #fef3c7; color: #d97706; font-size: 28px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+.konfirmasi-card h2 { font-size: 20px; color: #0f172a; margin-bottom: 12px; }
+.konfirmasi-card p { color: #64748b; margin-bottom: 28px; font-size: 15px; }
+.konfirmasi-tombol { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-konfirmasi-ya { background-color: #ef4444; color: #ffffff; padding: 10px 24px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; font-size: 14px; }
+.btn-konfirmasi-batal { background-color: #f1f5f9; color: #334155; padding: 10px 24px; border-radius: 8px; border: 1px solid #e2e8f0; font-weight: 600; font-size: 14px; text-decoration: none; display: inline-block; }

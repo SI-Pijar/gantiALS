@@ -2,8 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kelola Bus Operator</title>
-    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=4">
+    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=<?= time(); ?>">
 </head>
 <body>
     <div class="sidebar">
@@ -12,7 +13,7 @@
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard">
                 <span>Dashboard</span>
             </a>
             <a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilList" class="active">
@@ -29,8 +30,7 @@
             </a>
         </nav>
         <div class="sidebar-footer">
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
-
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
                 <span>Logout</span>
             </a>
         </div>
@@ -45,39 +45,50 @@
             <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>
 
+        <?php
+        $isEdit = $busEdit !== null;
+        $KELAS_KAPASITAS = [
+            'Super Executive' => 22,
+            'Executive Class' => 30,
+            'Patas AC'        => 38,
+            'Ekonomi AC'      => 44,
+            'Ekonomi Non-AC'  => 50,
+        ];
+        $formAction = $isEdit
+            ? BASEURL . '/index.php?controller=operator&action=bilEdit&id=' . $busEdit['id']
+            : BASEURL . '/index.php?controller=operator&action=bilAdd';
+        ?>
         <div class="card">
-            <h3 id="formTitle">Tambah Bus</h3>
-<form id="busForm" action="<?= BASEURL; ?>/index.php?controller=operator&action=bilAdd" method="POST">
-
+            <h3><?= $isEdit ? 'Edit Bus' : 'Tambah Bus' ?></h3>
+            <form action="<?= $formAction ?>" method="POST">
                 <div class="form-group">
                     <label>No Polisi</label>
-                    <input type="text" name="no_polisi" id="no_polisi" required>
+                    <input type="text" name="no_polisi" value="<?= htmlspecialchars($busEdit['no_polisi'] ?? '') ?>" required>
                 </div>
                 <div class="form-group">
                     <label>Kelas Bus</label>
-                    <select name="kelas_bus" id="kelas_bus" required onchange="updateKapasitas()">
+                    <select name="kelas_bus" required>
                         <option value="">-- Pilih Kelas --</option>
-                        <option value="Super Executive">Super Executive</option>
-                        <option value="Executive Class">Executive Class</option>
-                        <option value="Patas AC">Patas AC</option>
-                        <option value="Ekonomi AC">Ekonomi AC</option>
-                        <option value="Ekonomi Non-AC">Ekonomi Non-AC</option>
+                        <?php foreach ($KELAS_KAPASITAS as $kelas => $kap): ?>
+                        <option value="<?= $kelas ?>" <?= ($busEdit['kelas_bus'] ?? '') === $kelas ? 'selected' : '' ?>>
+                            <?= $kelas ?> (<?= $kap ?> kursi)
+                        </option>
+                        <?php endforeach; ?>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label>Kapasitas Kursi</label>
-                    <p id="kapasitas_info" class="kapasitas-info">—</p>
-                    <small class="info-kecil">Ditentukan otomatis berdasarkan kelas bus.</small>
                 </div>
                 <div class="form-group">
                     <label>Status</label>
-                    <select name="status_bus" id="status_bus">
-                        <option value="Aktif">Aktif</option>
-                        <option value="Tidak Aktif">Tidak Aktif</option>
+                    <select name="status_bus">
+                        <option value="Aktif"      <?= ($busEdit['status_bus'] ?? 'Aktif') === 'Aktif'      ? 'selected' : '' ?>>Aktif</option>
+                        <option value="Tidak Aktif" <?= ($busEdit['status_bus'] ?? '')      === 'Tidak Aktif' ? 'selected' : '' ?>>Tidak Aktif</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success" id="btnSubmit">Simpan Bus</button>
-                <button type="button" class="btn btn-warning tersembunyi" onclick="resetForm()" id="btnBatal">Batal Edit</button>
+                <div class="grup-tombol">
+                    <button type="submit" class="btn btn-success"><?= $isEdit ? 'Update Bus' : 'Simpan Bus' ?></button>
+                    <?php if ($isEdit): ?>
+                    <a href="<?= BASEURL ?>/index.php?controller=operator&action=bilList" class="btn btn-warning">Batal Edit</a>
+                    <?php endif; ?>
+                </div>
             </form>
         </div>
 
@@ -104,9 +115,8 @@
                             <td><?= $bus['kapasitas'] ?></td>
                             <td><?= $bus['status_bus'] ?></td>
                             <td>
-                                <button class="btn btn-warning" onclick='editBus(<?= $bus['id'] ?>, <?= json_encode($bus['no_polisi']) ?>, <?= json_encode($bus['kelas_bus']) ?>, <?= $bus['kapasitas'] ?>, <?= json_encode($bus['status_bus']) ?>)'>Edit</button>
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilDelete&id=<?= $bus['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus bus ini?')">Hapus</a>
-
+                                <a href="<?= BASEURL ?>/index.php?controller=operator&action=bilList&edit_id=<?= $bus['id'] ?>" class="btn btn-warning">Edit</a>
+                                <a href="<?= BASEURL ?>/index.php?controller=operator&action=bilDelete&id=<?= $bus['id'] ?>" class="btn btn-danger">Hapus</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -117,42 +127,5 @@
             </table>
         </div>
     </div>
-
-    <script>
-        const KAPASITAS_TETAP = {
-            'Super Executive': 22,
-            'Executive Class': 30,
-            'Patas AC': 38,
-            'Ekonomi AC': 44,
-            'Ekonomi Non-AC': 50,
-        };
-
-        function updateKapasitas() {
-            const kelas = document.getElementById('kelas_bus').value;
-            const info = document.getElementById('kapasitas_info');
-            info.textContent = KAPASITAS_TETAP[kelas] ? KAPASITAS_TETAP[kelas] + ' kursi' : '—';
-        }
-
-        function editBus(id, noPolisi, kelas, kapasitas, status) {
-            document.getElementById('formTitle').innerText = 'Edit Bus';
-            document.getElementById('busForm').action = '<?= BASEURL; ?>/index.php?controller=operator&action=bilEdit&id=' + id;
-            document.getElementById('no_polisi').value = noPolisi;
-            document.getElementById('kelas_bus').value = kelas;
-            updateKapasitas();
-            document.getElementById('status_bus').value = status;
-            document.getElementById('btnSubmit').innerText = 'Update Bus';
-            document.getElementById('btnBatal').style.display = 'inline-block';
-            window.scrollTo(0, 0);
-        }
-
-        function resetForm() {
-            document.getElementById('formTitle').innerText = 'Tambah Bus';
-            document.getElementById('busForm').action = '<?= BASEURL; ?>/index.php?controller=operator&action=bilAdd';
-            document.getElementById('busForm').reset();
-            document.getElementById('kapasitas_info').textContent = '—';
-            document.getElementById('btnSubmit').innerText = 'Simpan Bus';
-            document.getElementById('btnBatal').style.display = 'none';
-        }
-    </script>
 </body>
 </html>

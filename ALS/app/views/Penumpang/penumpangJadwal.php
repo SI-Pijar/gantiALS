@@ -18,10 +18,7 @@
           <?php if (isset($_SESSION['penumpang_id'])): ?>
             <span><i class="fa-solid fa-circle-user"></i> Halo, <?= htmlspecialchars($_SESSION['penumpang_name'] ?? '') ?></span>
           <?php else: ?>
-            <a href="#"><i class="fa-solid fa-mobile-screen"></i> Unduh Aplikasi <span class="badge-baru">BARU</span></a>
-            <a href="#">IDR - Rupiah</a>
-            <a href="#">Pusat Bantuan</a>
-            <a href="#">Cek Pesanan Saya</a>
+            <a href="<?= BASEURL; ?>/index.php?controller=auth&action=login">Cek Pesanan Saya</a>
           <?php endif; ?>
         </div>
       </div>
@@ -65,31 +62,66 @@
 
         <div class="results-layout">
             <aside class="filter-panel">
-                <div class="filter-card">
-                    <h4><i class="fa-solid fa-filter"></i> Filter Hasil</h4>
-                </div>
+                <form method="GET" action="<?= BASEURL ?>/index.php">
+                    <input type="hidden" name="page" value="jadwal">
+                    <input type="hidden" name="asal" value="<?= htmlspecialchars($_GET['asal'] ?? '') ?>">
+                    <input type="hidden" name="tujuan" value="<?= htmlspecialchars($_GET['tujuan'] ?? '') ?>">
+                    <input type="hidden" name="tanggal" value="<?= htmlspecialchars($_GET['tanggal'] ?? '') ?>">
+                    <input type="hidden" name="filter_aktif" value="1">
 
-                <div class="filter-card">
-                    <h4>Kelas Armada</h4>
-                    <div class="filter-options">
-                        <label><input type="checkbox" checked> Super Executive</label>
-                        <label><input type="checkbox" checked> Executive Class</label>
-                        <label><input type="checkbox" checked> Patas AC</label>
-                        <label><input type="checkbox" checked> Ekonomi AC</label>
-                        <label><input type="checkbox" checked> Ekonomi Non-AC</label>
+                    <div class="filter-card">
+                        <h4><i class="fa-solid fa-filter"></i> Filter Hasil</h4>
                     </div>
-                </div>
 
-                <div class="filter-card">
-                    <h4>Waktu Keberangkatan</h4>
-                    <div class="filter-options">
-                        <label><input type="checkbox"> Pagi (05:00 - 11:59)</label>
-                        <label><input type="checkbox" checked> Siang (12:00 - 17:59)</label>
-                        <label><input type="checkbox"> Malam (18:00 - 04:59)</label>
+                    <?php
+                    $semua_kelas = ['Super Executive', 'Executive Class', 'Patas AC', 'Ekonomi AC', 'Ekonomi Non-AC'];
+                    if (isset($_GET['filter_aktif'])) {
+                        $aktif_kelas = isset($_GET['kelas']) ? (array)$_GET['kelas'] : [];
+                    } else {
+                        $kelas_awal = trim($_GET['kelas'] ?? '');
+                        $aktif_kelas = ($kelas_awal && in_array($kelas_awal, $semua_kelas))
+                            ? [$kelas_awal]
+                            : $semua_kelas;
+                    }
+                    ?>
+                    <div class="filter-card">
+                        <h4>Kelas Armada</h4>
+                        <div class="filter-options">
+                            <?php foreach ($semua_kelas as $kelas): ?>
+                            <label>
+                                <input type="checkbox" name="kelas[]" value="<?= htmlspecialchars($kelas) ?>"
+                                    <?= in_array($kelas, $aktif_kelas) ? 'checked' : '' ?>>
+                                <?= htmlspecialchars($kelas) ?>
+                            </label>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
-                </div>
 
-                <button type="button" class="btn-filter">Terapkan Filter</button>
+                    <?php
+                    $waktu_labels = [
+                        'pagi'  => 'Pagi (05:00 - 11:59)',
+                        'siang' => 'Siang (12:00 - 17:59)',
+                        'malam' => 'Malam (18:00 - 04:59)',
+                    ];
+                    $aktif_waktu = isset($_GET['filter_aktif'])
+                        ? (isset($_GET['waktu']) ? (array)$_GET['waktu'] : [])
+                        : array_keys($waktu_labels);
+                    ?>
+                    <div class="filter-card">
+                        <h4>Waktu Keberangkatan</h4>
+                        <div class="filter-options">
+                            <?php foreach ($waktu_labels as $val => $label): ?>
+                            <label>
+                                <input type="checkbox" name="waktu[]" value="<?= $val ?>"
+                                    <?= in_array($val, $aktif_waktu) ? 'checked' : '' ?>>
+                                <?= $label ?>
+                            </label>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-filter">Terapkan Filter</button>
+                </form>
             </aside>
 
             <section class="results-list">
@@ -174,10 +206,10 @@
             </ul>
           </div>
           <div class="footer-col">
-            <h4>PUSAT INFORMASI</h4>
+            <h4>AKUN SAYA</h4>
             <ul>
-              <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
-              <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?controller=auth&action=login">Masuk / Daftar</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=riwayat">Cek Pesanan Saya</a></li>
             </ul>
           </div>
           <div class="footer-col">

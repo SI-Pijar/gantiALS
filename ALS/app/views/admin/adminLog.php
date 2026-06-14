@@ -52,11 +52,7 @@
                 <a href="<?= BASEURL ?>/index.php?controller=admin&action=log" class="btn btn-warning">Reset</a>
             </form>
 
-            <form method="POST" action="<?= BASEURL ?>/index.php?controller=admin&action=log"
-                  onsubmit="return confirm('Yakin ingin menghapus semua log? Tindakan ini tidak dapat dibatalkan.')">
-                <input type="hidden" name="action" value="hapus_semua">
-                <button type="submit" class="btn btn-danger">Hapus Semua Log</button>
-            </form>
+            <a href="<?= BASEURL ?>/index.php?controller=admin&action=log&sub_action=hapus_semua" class="btn btn-danger">Hapus Semua Log</a>
         </div>
 
         <table class="admin-table">

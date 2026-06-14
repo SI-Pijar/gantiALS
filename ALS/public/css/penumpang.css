@@ -893,11 +893,18 @@ input[type="date"].input-main {
   transition: all 0.2s ease;
 }
 
+.payment-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
 .payment-card:hover {
   border-color: #cbd5e1;
 }
 
-.payment-card.aktif {
+.payment-card:has(input[type="radio"]:checked) {
   border-color: #1e3a8a;
   background-color: #eff6ff;
   box-shadow: 0 4px 10px rgba(30, 58, 138, 0.1);
@@ -915,7 +922,7 @@ input[type="date"].input-main {
   color: #0f172a;
 }
 
-.payment-card.aktif .payment-logo {
+.payment-card:has(input[type="radio"]:checked) .payment-logo {
   background-color: #ffffff;
   color: #1e3a8a;
 }
@@ -934,7 +941,7 @@ input[type="date"].input-main {
   transition: all 0.2s ease;
 }
 
-.payment-card.aktif .panah-pilih {
+.payment-card:has(input[type="radio"]:checked) .panah-pilih {
   color: #1e3a8a;
   transform: translateX(5px);
 }

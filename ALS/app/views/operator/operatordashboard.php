@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Operator</title>
-    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=4">
+    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=<?= time(); ?>">
 </head>
 <body>
     <div class="sidebar">
@@ -12,7 +12,7 @@
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard" class="active">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard" class="active">
                 <span>Dashboard</span>
             </a>
             <a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilList">
@@ -29,8 +29,7 @@
             </a>
         </nav>
         <div class="sidebar-footer">
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
-
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
                 <span>Logout</span>
             </a>
         </div>

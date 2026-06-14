@@ -41,7 +41,7 @@ class AdminController {
         $totalJadwal = $this->jadwalModel->countJadwal();
         $totalPenumpang = $this->penumpangModel->countPenumpang();
         $gangguanSistem = $this->logModel->countLogByLevel('error');
-        $aktivitasTerbaru = $this->logModel->getAllLog();
+        $aktivitasTerbaru = $this->logModel->getAktivitasTerbaru(5);
         require_once __DIR__ . '/../views/admin/adminDashboard.php';
     }
 
@@ -104,17 +104,24 @@ class AdminController {
     }
 
     private function jadwalDelete($id) {
-        try {
-            if ($this->jadwalModel->deleteJadwal($id)) {
-                $this->logModel->createLog($_SESSION['admin_id'], "Menghapus jadwal ID $id", 'berhasil');
-                $_SESSION['success'] = 'Jadwal berhasil dihapus.';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            try {
+                if ($this->jadwalModel->deleteJadwal($id)) {
+                    $this->logModel->createLog($_SESSION['admin_id'], "Menghapus jadwal ID $id", 'berhasil');
+                    $_SESSION['success'] = 'Jadwal berhasil dihapus.';
+                }
+            } catch (Exception $e) {
+                $this->logModel->createLog($_SESSION['admin_id'], "Gagal menghapus jadwal ID $id", 'error');
+                $_SESSION['error'] = 'Jadwal tidak bisa dihapus karena memiliki data transaksi terkait.';
             }
-        } catch (Exception $e) {
-            $this->logModel->createLog($_SESSION['admin_id'], "Gagal menghapus jadwal ID $id", 'error');
-            $_SESSION['error'] = 'Jadwal tidak bisa dihapus karena memiliki data transaksi terkait.';
+            header('Location: ' . BASEURL . '/index.php?controller=admin&action=jadwal');
+            exit;
         }
-        header('Location: ' . BASEURL . '/index.php?controller=admin&action=jadwal');
-        exit;
+        $konfirmasi_pesan   = 'Yakin ingin menghapus jadwal ini?';
+        $konfirmasi_action  = BASEURL . '/index.php?controller=admin&action=jadwal&sub_action=delete&id=' . $id;
+        $konfirmasi_kembali = BASEURL . '/index.php?controller=admin&action=jadwal';
+        $konfirmasi_css_file = 'admin';
+        require_once __DIR__ . '/../views/konfirmasi.php';
     }
 
     private function jadwalStatus($id, $status) {
@@ -161,16 +168,26 @@ class AdminController {
     }
 
     public function log() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'hapus_semua') {
-            $this->logModel->deleteAllLog();
-            $this->logModel->createLog($_SESSION['admin_id'], 'Menghapus semua log sistem', 'berhasil');
-            $_SESSION['success'] = 'Semua log berhasil dihapus.';
-            header('Location: ' . BASEURL . '/index.php?controller=admin&action=log');
-            exit;
+        $sub_action = $_GET['sub_action'] ?? '';
+
+        if ($sub_action === 'hapus_semua') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $this->logModel->deleteAllLog();
+                $this->logModel->createLog($_SESSION['admin_id'], 'Menghapus semua log sistem', 'berhasil');
+                $_SESSION['success'] = 'Semua log berhasil dihapus.';
+                header('Location: ' . BASEURL . '/index.php?controller=admin&action=log');
+                exit;
+            }
+            $konfirmasi_pesan    = 'Yakin ingin menghapus semua log sistem? Tindakan ini tidak dapat dibatalkan.';
+            $konfirmasi_action   = BASEURL . '/index.php?controller=admin&action=log&sub_action=hapus_semua';
+            $konfirmasi_kembali  = BASEURL . '/index.php?controller=admin&action=log';
+            $konfirmasi_css_file = 'admin';
+            require_once __DIR__ . '/../views/konfirmasi.php';
+            return;
         }
 
         $filter_level = $_GET['filter_level'] ?? '';
-        $filter_date = $_GET['filter_date'] ?? '';
+        $filter_date  = $_GET['filter_date'] ?? '';
         $logs = ($filter_level || $filter_date)
             ? $this->logModel->getLogFiltered($filter_level, $filter_date)
             : $this->logModel->getAllLog();
@@ -233,15 +250,24 @@ class AdminController {
     }
 
     private function penumpangSetStatus($id, $status) {
-        if ($this->penumpangModel->updateStatus($id, $status)) {
-            $label = $status === 'suspended' ? 'Nonaktifkan' : 'Aktifkan';
-            $this->logModel->createLog($_SESSION['admin_id'], "$label penumpang ID $id", 'berhasil');
-            $_SESSION['success'] = "Akun penumpang berhasil di-$status.";
-        } else {
-            $_SESSION['error'] = 'Gagal mengubah status penumpang.';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($this->penumpangModel->updateStatus($id, $status)) {
+                $label = $status === 'suspended' ? 'Nonaktifkan' : 'Aktifkan';
+                $this->logModel->createLog($_SESSION['admin_id'], "$label penumpang ID $id", 'berhasil');
+                $_SESSION['success'] = "Akun penumpang berhasil di-$status.";
+            } else {
+                $_SESSION['error'] = 'Gagal mengubah status penumpang.';
+            }
+            header('Location: ' . BASEURL . '/index.php?controller=admin&action=penumpang');
+            exit;
         }
-        header('Location: ' . BASEURL . '/index.php?controller=admin&action=penumpang');
-        exit;
+        $sub    = $status === 'suspended' ? 'suspend' : 'activate';
+        $label  = $status === 'suspended' ? 'nonaktifkan' : 'aktifkan kembali';
+        $konfirmasi_pesan   = "Yakin ingin $label akun penumpang ini?";
+        $konfirmasi_action  = BASEURL . '/index.php?controller=admin&action=penumpang&sub_action=' . $sub . '&id=' . $id;
+        $konfirmasi_kembali = BASEURL . '/index.php?controller=admin&action=penumpang&sub_action=detail&id=' . $id;
+        $konfirmasi_css_file = 'admin';
+        require_once __DIR__ . '/../views/konfirmasi.php';
     }
 
     public function operator() {
@@ -344,16 +370,23 @@ class AdminController {
     }
 
     private function operatorDelete($id) {
-        try {
-            if ($this->operatorModel->deleteOperator($id)) {
-                $this->logModel->createLog($_SESSION['admin_id'], "Menghapus operator ID $id", 'berhasil');
-                $_SESSION['success'] = 'Operator berhasil dihapus.';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            try {
+                if ($this->operatorModel->deleteOperator($id)) {
+                    $this->logModel->createLog($_SESSION['admin_id'], "Menghapus operator ID $id", 'berhasil');
+                    $_SESSION['success'] = 'Operator berhasil dihapus.';
+                }
+            } catch (Exception $e) {
+                $_SESSION['error'] = 'Gagal menghapus operator. Pastikan tidak ada bus/jadwal terkait.';
             }
-        } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menghapus operator. Pastikan tidak ada bus/jadwal terkait.';
+            header('Location: ' . BASEURL . '/index.php?controller=admin&action=operator');
+            exit;
         }
-        header('Location: ' . BASEURL . '/index.php?controller=admin&action=operator');
-        exit;
+        $konfirmasi_pesan   = 'Yakin ingin menghapus operator ini?';
+        $konfirmasi_action  = BASEURL . '/index.php?controller=admin&action=operator&sub_action=delete&id=' . $id;
+        $konfirmasi_kembali = BASEURL . '/index.php?controller=admin&action=operator';
+        $konfirmasi_css_file = 'admin';
+        require_once __DIR__ . '/../views/konfirmasi.php';
     }
 
     public function manajemenAdmin() {
@@ -449,13 +482,20 @@ class AdminController {
             header('Location: ' . BASEURL . '/index.php?controller=admin&action=manajemenAdmin');
             exit;
         }
-        if ($this->adminModel->deleteAdmin($id)) {
-            $this->logModel->createLog($_SESSION['admin_id'], "Menghapus akun admin ID $id", 'berhasil');
-            $_SESSION['success'] = 'Akun admin berhasil dihapus.';
-        } else {
-            $_SESSION['error'] = 'Gagal menghapus akun admin.';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($this->adminModel->deleteAdmin($id)) {
+                $this->logModel->createLog($_SESSION['admin_id'], "Menghapus akun admin ID $id", 'berhasil');
+                $_SESSION['success'] = 'Akun admin berhasil dihapus.';
+            } else {
+                $_SESSION['error'] = 'Gagal menghapus akun admin.';
+            }
+            header('Location: ' . BASEURL . '/index.php?controller=admin&action=manajemenAdmin');
+            exit;
         }
-        header('Location: ' . BASEURL . '/index.php?controller=admin&action=manajemenAdmin');
-        exit;
+        $konfirmasi_pesan   = 'Yakin ingin menghapus akun admin ini?';
+        $konfirmasi_action  = BASEURL . '/index.php?controller=admin&action=manajemenAdmin&sub_action=delete&id=' . $id;
+        $konfirmasi_kembali = BASEURL . '/index.php?controller=admin&action=manajemenAdmin';
+        $konfirmasi_css_file = 'admin';
+        require_once __DIR__ . '/../views/konfirmasi.php';
     }
 }

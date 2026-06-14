@@ -25,19 +25,19 @@ class LogModel {
     }
 
     public function getLogFiltered($level, $tanggal) {
-        $query  = "SELECT * FROM {$this->table} WHERE 1=1";
+        $query  = "SELECT l.*, a.username FROM {$this->table} l LEFT JOIN admins a ON l.admin_id = a.id WHERE 1=1";
         $params = [];
 
         if ($level) {
-            $query .= ' AND level = :level';
+            $query .= ' AND l.level = :level';
             $params[':level'] = $level;
         }
         if ($tanggal) {
-            $query .= ' AND DATE(created_at) = :tanggal';
+            $query .= ' AND DATE(l.created_at) = :tanggal';
             $params[':tanggal'] = $tanggal;
         }
 
-        $stmt = $this->conn->prepare("{$query} ORDER BY created_at DESC");
+        $stmt = $this->conn->prepare("{$query} ORDER BY l.created_at DESC");
         $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

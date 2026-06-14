@@ -62,7 +62,7 @@
             </thead>
             <tbody>
                 <?php if (!empty($aktivitasTerbaru)): ?>
-                    <?php foreach (array_slice($aktivitasTerbaru, 0, 5) as $log): ?>
+                    <?php foreach ($aktivitasTerbaru as $log): ?>
                         <tr>
                             <td><?= date('d M Y H:i', strtotime($log['created_at'])) ?></td>
                             <td><?= htmlspecialchars($log['username'] ?? ('ID: ' . ($log['admin_id'] ?? '-'))) ?></td>

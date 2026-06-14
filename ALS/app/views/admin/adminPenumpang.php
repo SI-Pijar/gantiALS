@@ -82,16 +82,12 @@
 
                     <?php if (($penumpang['status'] ?? 'aktif') !== 'suspended'): ?>
 
-                        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang&sub_action=suspend&id=<?= $penumpang['id'] ?>"
-                           class="btn btn-danger"
-                           onclick="return confirm('Yakin ingin menonaktifkan akun ini?')">
+                        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang&sub_action=suspend&id=<?= $penumpang['id'] ?>" class="btn btn-danger">
                             Nonaktifkan Akun
                         </a>
                     <?php else: ?>
 
-                        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang&sub_action=activate&id=<?= $penumpang['id'] ?>"
-                           class="btn btn-success"
-                           onclick="return confirm('Aktifkan kembali akun ini?')">
+                        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang&sub_action=activate&id=<?= $penumpang['id'] ?>" class="btn btn-success">
                             Aktifkan Kembali
                         </a>
                     <?php endif; ?>

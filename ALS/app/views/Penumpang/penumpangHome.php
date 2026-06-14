@@ -22,10 +22,7 @@
           <?php if (isset($_SESSION['penumpang_id'])): ?>
             <span><i class="fa-solid fa-circle-user"></i> Halo, <?= htmlspecialchars($_SESSION['penumpang_name'] ?? '') ?></span>
           <?php else: ?>
-            <a href="#"><i class="fa-solid fa-mobile-screen"></i> Unduh Aplikasi <span class="badge-baru">BARU</span></a>
-            <a href="#">IDR - Rupiah</a>
-            <a href="#">Pusat Bantuan</a>
-            <a href="#">Cek Pesanan Saya</a>
+            <a href="<?= BASEURL; ?>/index.php?controller=auth&action=login">Cek Pesanan Saya</a>
           <?php endif; ?>
         </div>
 
@@ -142,16 +139,6 @@
 
                 <div class="input-oval">
                   <div class="input-icon">
-                    <i class="fa-solid fa-users"></i>
-                  </div>
-                  <div class="input-text">
-                    <label class="input-label">Penumpang</label>
-                    <input type="number" name="penumpang" min="1" max="4" value="1" class="input-main" />
-                  </div>
-                </div>
-
-                <div class="input-oval">
-                  <div class="input-icon">
                     <i class="fa-solid fa-bus"></i>
                   </div>
                   <div class="input-text">
@@ -162,6 +149,7 @@
                       <option value="Executive Class">Executive Class</option>
                       <option value="Patas AC">Patas AC</option>
                       <option value="Ekonomi AC">Ekonomi AC</option>
+                      <option value="Ekonomi Non-AC">Ekonomi Non-AC</option>
                     </select>
                   </div>
                   <i class="fa-solid fa-chevron-down icon-panah"></i>
@@ -317,10 +305,10 @@
             </ul>
           </div>
           <div class="footer-col">
-            <h4>PUSAT INFORMASI</h4>
+            <h4>AKUN SAYA</h4>
             <ul>
-              <li><a href="<?= BASEURL; ?>/index.php?page=pemesanan">Panduan Pemesanan</a></li>
-              <li><a href="<?= BASEURL; ?>/index.php?page=pembayaran">Metode Pembayaran</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?controller=auth&action=login">Masuk / Daftar</a></li>
+              <li><a href="<?= BASEURL; ?>/index.php?page=riwayat">Cek Pesanan Saya</a></li>
             </ul>
           </div>
           <div class="footer-col">

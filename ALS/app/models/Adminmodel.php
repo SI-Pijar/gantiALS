@@ -23,7 +23,7 @@ class AdminModel {
 
     public function getAllAdmin() {
         $stmt = $this->conn->prepare(
-            "SELECT id, username, nama_lengkap, status, created_at FROM {$this->table} ORDER BY created_at DESC"
+            "SELECT id, username, nama_lengkap, role, status, created_at FROM {$this->table} ORDER BY created_at DESC"
         );
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

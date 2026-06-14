@@ -31,11 +31,11 @@
       <div class="profil-card">
         <h3><i class="fa-solid fa-user"></i> Data Akun</h3>
 
-        <?php if ($successProfil): ?>
-          <div class="profil-alert success"><?= htmlspecialchars($successProfil) ?></div>
+        <?php if ($success_profil): ?>
+          <div class="profil-alert success"><?= htmlspecialchars($success_profil) ?></div>
         <?php endif; ?>
-        <?php if ($errorProfil): ?>
-          <div class="profil-alert error"><?= htmlspecialchars($errorProfil) ?></div>
+        <?php if ($error_profil): ?>
+          <div class="profil-alert error"><?= htmlspecialchars($error_profil) ?></div>
         <?php endif; ?>
 
         <p class="info-akun-teks">Email: <strong><?= htmlspecialchars($penumpang['email'] ?? '') ?></strong></p>
@@ -54,11 +54,11 @@
       <div class="profil-card">
         <h3><i class="fa-solid fa-lock"></i> Ganti Password</h3>
 
-        <?php if ($successPassword): ?>
-          <div class="profil-alert success"><?= htmlspecialchars($successPassword) ?></div>
+        <?php if ($success_password): ?>
+          <div class="profil-alert success"><?= htmlspecialchars($success_password) ?></div>
         <?php endif; ?>
-        <?php if ($errorPassword): ?>
-          <div class="profil-alert error"><?= htmlspecialchars($errorPassword) ?></div>
+        <?php if ($error_password): ?>
+          <div class="profil-alert error"><?= htmlspecialchars($error_password) ?></div>
         <?php endif; ?>
 
         <form action="<?= BASEURL ?>/index.php?page=proses_ganti_password" method="POST">

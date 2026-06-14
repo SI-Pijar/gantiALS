@@ -54,7 +54,7 @@
                     $no = 1;
                     if (empty($jadwals)):
                     ?>
-                        <tr><td colspan="10" class="td-tengah">Belum ada jadwal.</td></tr>
+                        <tr><td colspan="9" class="td-tengah">Belum ada jadwal.</td></tr>
                     <?php else: ?>
                         <?php foreach ($jadwals as $j): ?>
                         <tr>
@@ -72,7 +72,7 @@
                                     <a href="<?= BASEURL; ?>/index.php?controller=admin&action=jadwal&sub_action=reject&id=<?= $j['id'] ?>" class="btn btn-warning btn-tolak-jadwal">Tolak</a>
                                 <?php endif; ?>
                                 <a href="<?= BASEURL; ?>/index.php?controller=admin&action=jadwal&sub_action=edit&id=<?= $j['id'] ?>" class="btn btn-warning">Edit</a>
-                                <a href="<?= BASEURL; ?>/index.php?controller=admin&action=jadwal&sub_action=delete&id=<?= $j['id'] ?>" class="btn btn-danger" onclick="return confirm('Yakin hapus jadwal ini?')">Hapus</a>
+                                <a href="<?= BASEURL; ?>/index.php?controller=admin&action=jadwal&sub_action=delete&id=<?= $j['id'] ?>" class="btn btn-danger">Hapus</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -91,10 +91,7 @@
             <?php endif; ?>
 
             <div class="admin-form admin-form-medium">
-                <form action="<?= $jadwal ? BASEURL . '/index.php?controller=admin&action=jadwal&sub_action=edit&id=' . $jadwal['id'] : BASEURL . '/index.php?controller=admin&action=jadwal&sub_action=add' ?>" method="POST">
-                    <?php if ($jadwal): ?>
-                        <input type="hidden" name="id" value="<?= $jadwal['id'] ?>">
-                    <?php endif; ?>
+                <form action="<?= BASEURL ?>/index.php?controller=admin&action=jadwal&sub_action=edit&id=<?= $jadwal['id'] ?>" method="POST">
 
                     <div class="form-group">
                         <label for="asal">Asal</label>

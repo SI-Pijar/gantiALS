@@ -27,9 +27,10 @@ class PemesananModel {
 
     public function getPemesananById($id) {
         $stmt = $this->conn->prepare(
-            "SELECT p.*, j.asal, j.tujuan, j.tanggal, j.jam_berangkat
+            "SELECT p.*, j.asal, j.tujuan, j.tanggal, j.jam_berangkat, b.kelas_bus
              FROM {$this->table} p
              JOIN jadwal j ON p.id_jadwal = j.id
+             LEFT JOIN bus b ON j.bus_id = b.id
              WHERE p.id = :id"
         );
         $stmt->execute([':id' => $id]);

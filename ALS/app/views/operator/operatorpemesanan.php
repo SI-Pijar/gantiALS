@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Kelola Pemesanan Operator</title>
-    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=4">
+    <link rel="stylesheet" href="<?= BASEURL; ?>/ALS/public/css/operator.css?v=<?= time(); ?>">
 </head>
 <body>
     <div class="sidebar">
@@ -12,7 +12,7 @@
             <span>Operator ALS</span>
         </div>
         <nav class="sidebar-nav">
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard">
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=dashboard">
                 <span>Dashboard</span>
             </a>
             <a href="<?= BASEURL; ?>/index.php?controller=operator&action=bilList">
@@ -29,8 +29,7 @@
             </a>
         </nav>
         <div class="sidebar-footer">
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
-
+            <a href="<?= BASEURL; ?>/index.php?controller=operator&action=logout">
                 <span>Logout</span>
             </a>
         </div>
@@ -88,11 +87,11 @@
                             </td>
                             <td>
                                 <?php if ($pemesanan['status_verifikasi'] == 'Belum' || $pemesanan['status_verifikasi'] == 'Ditolak'): ?>
-<a href="<?= BASEURL; ?>/index.php?controller=operator&action=pemesananVerifikasi&id=<?= $pemesanan['id'] ?>" class="btn btn-success" onclick="return confirm('Verifikasi pesanan ini?')">Verifikasi</a>
+<a href="<?= BASEURL; ?>/index.php?controller=operator&action=pemesananVerifikasi&id=<?= $pemesanan['id'] ?>" class="btn btn-success">Verifikasi</a>
                                 <?php endif; ?>
 
                                 <?php if ($pemesanan['status_verifikasi'] == 'Belum' || $pemesanan['status_verifikasi'] == 'Terverifikasi'): ?>
-                                    <a href="<?= BASEURL; ?>/index.php?controller=operator&action=pemesananTolak&id=<?= $pemesanan['id'] ?>" class="btn btn-danger" onclick="return confirm('Tolak pesanan ini?')">Tolak</a>
+                                    <a href="<?= BASEURL; ?>/index.php?controller=operator&action=pemesananTolak&id=<?= $pemesanan['id'] ?>" class="btn btn-danger">Tolak</a>
 
                                 <?php endif; ?>
                             </td>
