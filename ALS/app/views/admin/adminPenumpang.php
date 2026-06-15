@@ -9,11 +9,14 @@
 <body>
 
     <div class="admin-sidebar">
-        <h2>Admin Panel</h2>
+        <div class="admin-sidebar-logo">
+            <img src="<?= BASEURL; ?>/ALS/public/gambar/logo als.jpg" alt="Logo ALS">
+            <span>Admin Panel</span>
+        </div>
         <a href="<?= BASEURL; ?>/index.php?controller=admin&action=dashboard">Dashboard</a>
         <a href="<?= BASEURL; ?>/index.php?controller=admin&action=jadwal">Kelola Jadwal</a>
         <a href="<?= BASEURL; ?>/index.php?controller=admin&action=transaksi">Laporan Transaksi</a>
-        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang">Kelola Penumpang</a>
+        <a href="<?= BASEURL; ?>/index.php?controller=admin&action=penumpang" class="nav-aktif">Kelola Penumpang</a>
         <a href="<?= BASEURL; ?>/index.php?controller=admin&action=operator">Kelola Operator</a>
         <a href="<?= BASEURL; ?>/index.php?controller=admin&action=manajemenAdmin">Kelola Admin</a>
         <a href="<?= BASEURL; ?>/index.php?controller=admin&action=log">Log Sistem</a>
